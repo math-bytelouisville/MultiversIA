@@ -1,0 +1,27 @@
+V0.5.0 — STATUT ACTUEL DU VÉRIFICATEUR
+Le comparateur fini est conservé. Les fondations évoluées sont gelées dans FOUNDATION_V050.json, avec profil pure-int32-bool-wrap-call-1 : add32/sub32/mul32/neg32 modulo explicites. BASELINE_V2.json est historique et ne qualifie pas ces modifications. Le noyau de processus et les bornes de512cas/fonction restent inchangés ; le corpus contient désormais des témoins de débordement.
+C# source seulement en unchecked explicite pour ces opérations, Rust via wrapping_* ; Python interprété indique compile_status NOT_APPLICABLE et execution_status EXECUTED. Le C# et le Rust compilés exigent COMPILED. Les observations originales sont comparées séparément au modèle importé et au modèle courant ; les cibles au modèle courant et à ses contrats.
+Les huit scénarios d'intégration arithmétique sont qualifiés par la campagne initiale et une revalidation explicite de deux assertions Python incorrectes, sans nouvelle compilation : runs/arithmetic-revalidation-64a855ab94b3432986c4f2e527437ad5/summary.json. La suite initiale FAIL reste conservée. Chaque parcours C#/Rust vers les trois cibles porte1552cas et des attentes indépendantes.
+Les preuves formelles de l'arithmétique sont INCONCLUSIVE sans lancement Lean. Réparation arithmétique depuis un contrat constructif result==expression seulement ; la recherche bornée ne devient pas une synthèse générale. Division, exceptions checked, état et sites restent hors périmètre.
+Voir FINAL_RESULT.json et le manifeste de livraison pour les avis et le statut final ; pendant construction ces fichiers peuvent être absents.
+
+NOTES HISTORIQUES V0.4.1 CI-DESSOUS — les affirmations « fondations V2 byte-identiques » ou « sans arithmétique » concernent cette ancienne version uniquement.
+
+V0.4.1 — VÉRIFICATEUR DES CIBLES ET DES SOURCES ORIGINALES
+
+Le vérificateur conserve trois constats séparés : cible générée contre modèle courant, contrats du modèle, source originale contre modèle importé puis courant. Une révision volontaire peut produire source/current DIFFERENT avec source/baseline PASS. Aucun test fini ne devient une preuve universelle.
+
+DELTA V0.4.1
+Le C# original passe par original_csharp.admit avant toute cible. Une erreur d’admission conserve la demande et le reçu ; aucun programme généré ne démarre. Le helper réanalyse encore avant sa compilation de la source exacte. Ses valeurs passent ensuite dans le même comparateur indépendant que le Rust original : compte exact, bool et int distincts, bornes Int32, statut compilé/exécuté exigé. Une mauvaise association peut être révélée par les sentinelles distinctes et ne reçoit pas un accord.
+Le vérificateur capture les empreintes du helper Python, des deux scripts PowerShell, de l’importeur C#, de l’émetteur, de l’importeur Rust, du code commun et de lui-même avant admission. Il les contrôle avant effets et en fin, y compris les sorties anticipées. Le helper possède ses contrôles de runtime et de source ; ces couches ne sont pas une isolation système.
+Les cas restent communs à source/baseline/courant/cibles, au plus 512 par fonction ; constantes et voisins des deux modèles sont inclus. Les contrats et préconditions des appels restent diagnostiqués par les fondations V2 byte-identiques. Source absente = NOT_TESTED.
+
+PREUVES À CE GEL
+20 tests purs ou avec fixtures PASS : evidence/verifier-tests-5a8f3234a6b7427dba99ac038c7bb2cc/unit-results.json. Ils comprennent les 4 nouvelles vérifications du raccordement C# et 3 contrôles du comparateur. Ces fixtures ne sont pas une exécution réelle du C#. Les deux tests de timeout inchangés restent liés à leur qualification V0.4.0 ; ils ne sont pas inclus dans ces 20.
+Compilation syntaxique Python PASS. La campagne réelle V0.4.1 relève de root et du helper Aigle ; ses références seront ajoutées au checkpoint sans réétiqueter les preuves historiques.
+
+FONDATIONS HISTORIQUES PRÉSERVÉES
+V0.4.0 : vérificateur 67c810cb54210b0d161c79aace056dae56d257cd4a78b142ef0aed72cd3f223d, 15 tests auteur et compilations Python/C#/Rust + original Rust ; espace court qualifié contre le défaut csc CS1619 des archives profondes. Voir notes/checkpoint/revues de cette version. Ces campagnes ne portaient pas sur le raccordement C# V0.4.1.
+
+LIMITES
+Profil pur Int32/bool sans arithmétique, état, mutation, exceptions ni effets. Pas de traduction de site complet ni de preuve pour tous les Int32. DLL originale C# exécutée par un helper Roslyn/PWSH qualifié ; cibles C# simples via compilateur local existant. Aucun téléchargement, installation globale ni modification PATH globale. Les délais et dossiers bornent l’application sans constituer une sandbox OS ni un quota disque.

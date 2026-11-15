@@ -1,0 +1,30 @@
+QCM — décision utilisateur prioritaire, 15 novembre 2026
+Le démonstrateur doit être un vrai projet C# ASP.NET Core MVC. Il remplace le prototype shipping ; préserver les essais historiques sans les présenter comme livraison.
+
+Source : qcm_source, SDK Web net10.0, aucun package tiers ; Controllers/QuizController.cs, Models, Services, Views/Quiz/Index.cshtml, wwwroot/style.css et app.js, Data/questions.json, Rules.cs. SDK local géré par root, aucun PATH global.
+3 questions fixes, 4 réponses possibles indexées 0..3 :
+q1 « Combien font 2 + 3 ? » choix [4,5,6,7], correct=1.
+q2 « Quel est le carré de 4 ? » choix [8,12,16,20], correct=2.
+q3 « Combien de côtés possède un triangle ? » choix [2,3,4,5], correct=1.
+JSON données canonique source : {"title":"Le petit QCM des maths","questions":[{"id":"q1","text":"Combien font 2 + 3 ?","options":["4","5","6","7"],"correct":1},{"id":"q2","text":"Quel est le carré de 4 ?","options":["8","12","16","20"],"correct":2},{"id":"q3","text":"Combien de côtés possède un triangle ?","options":["2","3","4","5"],"correct":1}]} (formatage libre).
+
+Rules.cs : namespace QcmDemo; public static class QuizRules avec méthodes statiques publiques :
+bool IsCorrect(int answer,int correct) => answer == correct;
+int Score(bool a,bool b,bool c) => a ? (b ? (c ? 3 : 2) : (c ? 2 : 1)) : (b ? (c ? 2 : 1) : (c ? 1 : 0));
+bool Passed(int score) => score >= 2;
+Aucune autre déclaration métier dans ce fichier. C'est le sous-ensemble pur actuellement accepté. Le transport appelle ces trois fonctions. Le modèle mathématique porte leurs types, corps, propriétés, provenance, et références depuis chaque route ; le nombre de questions reste 3 dans ce profil expérimental.
+
+HTTP local uniquement,127.0.0.1 port choisi OS, aucune base ni authentification :
+GET / : page MVC Razor, style.css et app.js via /style.css et /app.js. Pas CDN ni fichiers distants.
+GET /api/meta : {"language":"C#","framework":"ASP.NET Core MVC","profile":"qcm-mvc-1"} ; Rust language=Rust framework=Rust std.
+GET /api/quiz/questions : title et questions id,text,options (sans correct).
+GET /api/quiz/grade?a=0&b=1&c=2 : EXACTEMENT a,b,c chacune une fois, chaque valeur exactement un chiffre ASCII0..3 ; ordre libre. JSON {"score":N,"total":3,"passed":bool,"correct":[bool,bool,bool],"expected":[1,2,1]}. Calcul pur, pas d'enregistrement ni changement d'état : GET cohérent ; pas besoin de désactiver antiforgery.
+Clés manquantes/supplémentaires/répétées, nombres malformés :400 JSON {"error":"INVALID_ANSWERS"}.
+Route inconnue :404. Méthode autre que GET sur ces routes :405. Aucun traitement métier via HEAD/POST.
+Pour simplifier la comparaison, aucune query permise sauf grade (sinon400 INVALID_ANSWERS). Cache-Control:no-store sur APIs.
+Page : questions/cartes, radios vrais labels, bouton « Corriger mes réponses », résultat score/3 et réussite, détails correct/incorrect, bouton recommencer. JS garde choix et erreurs explicites, accessible clavier et mobile. Langage/framework affichés via /api/meta.
+
+Migration contrôlée : inventaire complet des fichiers source (hors bin/obj générés), hashes et archive ; refuser fichiers inconnus ou adaptateurs contrôleur/vue modifiés hors profil qualifié. Le HTML rendu réellement par Razor sera archivé et servi en Rust ; CSS/JS/questions conservés octet pour octet, règles compilées depuis modèle. Contrôleur ASP.NET remplacé par adaptateur Rust explicite connu, pas traduction automatique générale d'ASP.NET/Razor. Représenter ces frontières honnêtement.
+Revision démontrée : modifier Passed vers score == 3 dans le modèle mathématique, avec intent ; source C# originale inchangée. Version Rust révisée doit refuser2/3 et accepter3/3, score inchangé. Tester les64combinaisons réponses0..3^3 + erreursHTTP et contrôle assets. Afficher original/reconstruit/révisé sans confondre équivalence et changement voulu.
+
+Répartition : interface qcm_source/** ; explorateur qcm_rust.py et qcm_templates/** ; root qcm_demo.py, launch_site.py, SDK.NET, intégration/tests/launcher ; Aigle revues architecture/cap. Deux avis indépendants PASS par composant sur empreintes finales. Décisions/questions restent persistées.

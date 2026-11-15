@@ -1,0 +1,52 @@
+V0.5.0 — C# ORIGINAL, API DU COMPOSANT
+
+original_csharp.admit(module, source_import, output_dir=None)
+Renvoie status ADMITTED / REFUSED / INCONCLUSIVE, reason, language=csharp, baseline,
+current_model, source, source_import, mapping, tools, evidence_dir.
+Le reçu importé est contrôlé, le texte exact est réanalysé par l'importeur Roslyn
+qualifié et le modèle baseline entier doit correspondre. La révision courante garde
+la provenance, le module_id et les signatures, mais peut changer les corps/contrats.
+Aucune compilation ni exécution du source pendant admit.
+
+original_csharp.execute(admission, records, output_dir)
+Renvoie status EXECUTED / REFUSED / INCONCLUSIVE / NON_COMPILE, reason,
+compile_status, execution_status, values, mapping, evidence_dir et empreintes.
+records est la liste commune du vérificateur, chaque élément possède unit_id et
+inputs ; seuls ces champs sont transmis au runner avec un index de cas.
+values est une liste de scalaires Python bool/int dans l'ordre exact des records.
+Le transport interne JSON lie explicitement index, unit_id, value ; le composant
+refuse compte, ordre, identité, type ou domaine différents. Maximum 512 cas par
+fonction, 4096 au total ; tous les arguments doivent être Int32/bool exacts.
+
+execute ne fait pas confiance à un dictionnaire ADMITTED fourni : il répète
+l'admission avant compilation. La source est compilée seule en DLL, avec C#12,
+la même référence corelib que l'extracteur. Le script de compilation vérifie les
+signatures Roslyn et produit les noms metadata ; il ne charge pas la DLL produite.
+Un second processus PWSH charge la DLL, résout les méthodes statiques déclarées
+public/private/internal par nom et types exacts, puis les invoque. Le texte source
+n'est pas réécrit et aucune méthode main n'est utilisée comme point d'entrée.
+
+Fichiers requis : original_csharp.py, original_csharp_compile.ps1,
+original_csharp_run.ps1. Tests : test_original_csharp.py.
+Les dépendances qualifiées Roslyn/PWSH historiques sont consultées sans téléchargement.
+Archives uniques et staging court V0.5.0 ; texte exact, reçus, cas, mapping, DLL,
+sorties et identités outils sont conservés. Contrôle des fichiers avant/après effets.
+Compilation 45 s, exécution 15 s, sorties lues au maximum 4 Mio ; ce ne sont pas
+des quotas disque ou une isolation système. Processus possédés seulement.
+
+Portée : profil pure-int32-bool-wrap-call-1, une classe, 1..8 méthodes, 1..3 paramètres,
+conditions/comparaisons/appels internes acycliques et add32/sub32/mul32/neg32.
+Les opérateurs C# +,-,* et négation Int32 doivent apparaître dans unchecked explicite,
+expression ou bloc ; les négatifs littéraux historiques restent des constantes.
+L’extracteur valide à la fois les ancêtres syntaxiques et IsChecked=false. Tout checked,
+même inaccessible, et toute division/modulo/conversion/mutation restent refusés.
+Analyse et émission fixent WithOverflowChecks(false) ; le reçu du compilateur doit
+attester CSharp12 et check_overflow=false, sinon aucune exécution ne commence.
+FOUNDATION_V050.json identifie les nouvelles fondations, les anciens manifestes
+restent historiques. Aucun réglage de projet externe n’est deviné. Les refus restent conservés.
+Le composant ne décide pas l'équivalence : le vérificateur compare ces valeurs au
+baseline et au modèle courant sur les mêmes cas finis. Aucun succès universel,
+aucune migration des états/effets/sites complets n'est revendiqué.
+
+VALIDATION DU DELTA V0.5.0
+18 tests helper avec fixtures PASS (evidence/original-tests-c78aba611a8640108316b58dfb48139f/result.json), dont refus avant exécution si check_overflow=true, absent, ou langue différente. Ces fixtures ne compilent pas la source ; la campagne réelle finale appartient au coordinateur. Le manifeste de fondation utilisé est lié au reçu, une mise à jour de l’extracteur ne réétiquette pas ce test. Les deux avis adaptateurs porteront sur les empreintes finales.

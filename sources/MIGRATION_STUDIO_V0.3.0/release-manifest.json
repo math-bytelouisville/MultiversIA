@@ -1,0 +1,130 @@
+{
+  "schema": "mia-scoring-bridge-release-1",
+  "status": "REVIEWED_SCORING_BRIDGE",
+  "at": "2026-11-15T17:55:35.396555+00:00",
+  "files_sha256": {
+    "scoring_model.py": "42aac66fe5628461f113e060bec45401b0bc01042b2304f83f5400a9003d4ee6",
+    "scoring_rust.py": "ba426cf799045f7b578154297a4654bc57d86888328738cb1b67504d98533509",
+    "rust_support.rs": "b54d16bd0f61083eafead9c97b6c4dab4bb11d61a1d6c32634bc3ec0721576ba",
+    "test_scoring.py": "20b49cdc8e314c6830d2465a6ba960f1534f8cafab1af9dbce201154fb459a22",
+    "MODEL_CONTRACT.txt": "24a5eb50cabd92b6dc5b40ef59e7e9462a9fd68a6adcfeecbfc31136f0de8e97",
+    "csharp_oracle.py": "8b12781a114115b943a38c59f0f66b263ebb2e8c09c00310e7efaacdef2d66b4",
+    "test_oracle.py": "9e3c0a20fb300316c8a052da115e476e3b7c58023d7184b4cd92aff834f592b1",
+    "ORACLE_NOTES.txt": "1c8e75683acc4877c17e95831f1feb9d646721f1ef84557c9f2a697db06963f4",
+    "INVARIANTS_TRANSITIONS_DIFFEREES.txt": "6700c1eba50830538999dba25f6547ce506ec05a5835e8d1a97bb02ae13ccd9c",
+    "profile_import.py": "219df02695f00ffa8c42e1fd161338f434a3eb8f3f54ded49fd873c1b9be2a54",
+    "migration_report.py": "3a40e6ee05d66ad8db2d20f6a4c5801f88d2c0f37615f48a7080341c2ec46fcd",
+    "test_profile_import.py": "8b6ea6ffd98eda9d897ad126b0b696117fa211b39a48536a0e74cab17166cb3c",
+    "test_migration_report.py": "73a6d6ad5a10c3f1fc61fffd630f2ab5f4e734153c7261f2cccbb392c73db19d",
+    "test_report_browser.cjs": "93491ad7b6badbe7f2f55ca21feaf013429bc69a510fa1b96bcdbd64b0a2e800",
+    "INVENTAIRE_INTERFACE_SITE.txt": "8dae8c4176eaf034eab027f2d0d7db7bb8edbd15ec45200db906b07fbba29a51",
+    "rust_runtime.py": "10551310eee61edbbdcde0f2ebc3481b60496c589594bf60c3f268a918797bf8",
+    "migration_pipeline.py": "5cbf31ea636782b3d5d476da76bff95fe9fd320bbd0c5b629b9acb7753ee912b",
+    "launch_migration.py": "2c3a074150d4777a61efcef4dfb1dc8d245ef4c2487d6dd3d235b7d06c3fa474",
+    "test_orchestration.py": "c949179ca091b74cf589bd390ad595ab02607d101d56c26803af7ed296b431e3",
+    "install_shortcut.ps1": "68163e949c95ad9f88780942f8056cb497b532e03a49e523e65a354aa75af743",
+    "GUIDE.txt": "472f21354d139f96a3c9e80cbb057fe5cdcbd1c1968234e6eb3555f20b26b4c2"
+  },
+  "components": [
+    {
+      "name": "scoring",
+      "reviews": [
+        {
+          "path": "REVUE_ROOT_SCORING.json",
+          "sha256": "09d5337421c3bb32bcf8994da350696571d49aa3840e3aba236e4b436c4e10cb"
+        },
+        {
+          "path": "REVUE_EXPLORATEUR_SCORING.json",
+          "sha256": "1c9f1b89c29cac31f3b655df654a7c1f563f1252654c990378d33ca818b6ec3d"
+        }
+      ],
+      "files": [
+        "scoring_model.py",
+        "scoring_rust.py",
+        "rust_support.rs",
+        "test_scoring.py",
+        "MODEL_CONTRACT.txt"
+      ]
+    },
+    {
+      "name": "oracle",
+      "reviews": [
+        {
+          "path": "REVUE_ROOT_ORACLE.json",
+          "sha256": "0449b7205f94a1cd8a61b34baf5fd975fe1a2c7f3c04b66ba4a4017e767f4255"
+        },
+        {
+          "path": "REVUE_AIGLE_ORACLE.json",
+          "sha256": "4f7e87f9439f3130cda4aaa841cbd89728bdc7753123ee99f2573a7d40134315"
+        }
+      ],
+      "files": [
+        "csharp_oracle.py",
+        "test_oracle.py",
+        "ORACLE_NOTES.txt",
+        "INVARIANTS_TRANSITIONS_DIFFEREES.txt"
+      ]
+    },
+    {
+      "name": "import_report",
+      "reviews": [
+        {
+          "path": "REVUE_ROOT_IMPORT_REPORT.json",
+          "sha256": "61257b9ca9335f0f9dabea30f7572951e0e32a4a06e506e6a51c4cb70718f3e7"
+        },
+        {
+          "path": "REVUE_AIGLE_IMPORT_REPORT.json",
+          "sha256": "dd452cb58e520e9d43d7696b8c466507951d1bda2af829695cd41b29aef337f1"
+        }
+      ],
+      "files": [
+        "profile_import.py",
+        "migration_report.py",
+        "test_profile_import.py",
+        "test_migration_report.py",
+        "test_report_browser.cjs",
+        "INVENTAIRE_INTERFACE_SITE.txt"
+      ]
+    },
+    {
+      "name": "orchestration",
+      "reviews": [
+        {
+          "path": "REVUE_INTERFACE_ORCHESTRATION.json",
+          "sha256": "448a9df361811f34fdf02c5c3dbff162bf3a220dfa5085886d0c3bc175de93f8"
+        },
+        {
+          "path": "REVUE_AIGLE_ORCHESTRATION.json",
+          "sha256": "ef9c0d4450d1b457da370de3cddc18285f9b0819f2f29304e4b1e6c08af22250"
+        }
+      ],
+      "files": [
+        "rust_runtime.py",
+        "migration_pipeline.py",
+        "launch_migration.py",
+        "test_orchestration.py"
+      ]
+    },
+    {
+      "name": "packaging",
+      "reviews": [
+        {
+          "path": "REVUE_INTERFACE_ORCHESTRATION.json",
+          "sha256": "448a9df361811f34fdf02c5c3dbff162bf3a220dfa5085886d0c3bc175de93f8"
+        },
+        {
+          "path": "REVUE_AIGLE_PACKAGING.json",
+          "sha256": "3d33122d1990ad1055b1bc52c83b98a4e494ece946f0cfe8f09edcfac9dd9b9d"
+        }
+      ],
+      "files": [
+        "install_shortcut.ps1",
+        "GUIDE.txt"
+      ]
+    }
+  ],
+  "qualification_report": "LOCAL_PATH_REDACTED_NOT_DISTRIBUTED",
+  "qualification_report_sha256": "b9b73f04696676237fb1133fc623a8b15b5e7c0f8804b26d08f4a7705328f1c4",
+  "source_site_migrated": false,
+  "scope": "Known-profile exact scoring kernel and explicit penalty revision; full MVC site not migrated."
+}

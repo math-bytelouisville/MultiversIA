@@ -1,0 +1,61 @@
+V0.2.0 — CONTRAT DU CHANTIER MODULES
+15 novembre 2026. Objectif utilisateur continu : logiciel/site existant vers maths modifiables, reconstruction notamment C# vers Rust. Le user a choisi son projet existant ; son chemin est demandé et attendu. Ne pas inventer un projet ni qualifier une migration de son site sans l'avoir lu.
+
+CAP ET PREMIERE REALISATION
+Prolonger le jalon livré en un petit module pur avec plusieurs fonctions reliées, identité de chaque unité, graphe d'appels, provenance API et révisions. Conserver V0.1.0 et toutes ses données. Ce nouveau dossier contient des copies de sources uniquement ; BASELINE_V0.1.0.json les identifie. Les nouveaux fichiers et copies modifiées ont besoin de leurs propres tests et deux revues.
+Grammaire : int32/bool, comparaisons, booléens, conditions et appels statiques directs à une autre fonction admise du même module. Aucune récursion, boucle, arithmétique générale, mutation, effet ou appel externe. Une classe avec 1 à 8 méthodes, 1 à 3 paramètres par méthode, toutes les méthodes inventoriées. Les membres refusés restent dans l'inventaire et le source exact reste archivé ; aucun import partiel silencieux.
+Les noms publics source sont conservés dans le modèle et une table de correspondance cible. La génération peut utiliser des symboles canoniques ; annoncer explicitement que l'API binaire/HTTP d'un site n'est pas encore reconstruite par cette table.
+
+RESPONSABILITES
+/root/moteur, rôle Aigle : module_model.py, test_module_model.py, MODULE_MODEL_NOTES.txt, CHECKPOINT_MOTEUR.json. Modèle typé, graphe, inlining borné, révision/provenance et suivi du cap. Reviewers root + Explorateur.
+/root/explorateur : module_backends.py, test_module_backends.py, MODULE_BACKENDS_NOTES.txt, CHECKPOINT_EXPLORATEUR.json. Emission module Python/C#/Rust, exécution réelle du module et oracle différent, comparaison contrôlée. Explorer le chemin Rust réellement exécutable avec sources officielles, communiquer avant téléchargement ; aucune installation globale ni modification PATH. Reviewers root + Aigle.
+/root/interface : app.py, ui_backend.py, test_ui.py, GUIDE.txt, CHECKPOINT_INTERFACE.json. UI modules avec grand schéma libre et zoom sur unités/appels/cibles ; import, propriété d'une unité éditable et révision, résultats/provenance. Maintenir ancien parcours fonctions si raisonnable sans masquer les modes. Aucun Bureau ni GUI visible par les agents. Reviewers Aigle + Explorateur.
+/root : module_import.ps1, module_import.py, module_pipeline.py, tests import/pipeline, protocoles, inspection projet réel quand chemin reçu, intégration/packaging/checkpoints. Reviewers Aigle + Interface (ou Explorateur si disponibilité).
+Les trois sous-agents existants sont réutilisés. Quatre places maximum avec root. Deux avis PASS indépendants aux mêmes empreintes pour chaque composant final. Les corrections invalident les avis concernés, anciens résultats conservés.
+
+SCHEMA DU MODELE
+schema_version = 'mia-module-1'
+semantic_profile = 'pure-int32-bool-call-1'
+module_id = identifiant stable créé à l'import
+name = nom descriptif
+parent_revision_id = null à l'import, ancien revision_id lors d'une modification
+intent = texte de l'intention (import initial ou changement volontaire)
+provenance = objet JSON contenant source_sha256, source_text exact, import_id, origine et limites ; gardé dans chaque révision, n'exécute ni ne lit un chemin reçu.
+units = liste de {id,name,qualified_name,parameters,return_type,body,contract}
+id est 'u0' ... 'u7', stable dans les révisions ; name et qualified_name conservent les noms source.
+parameters = [{name,type:'int'|'bool'}], return_type idem ; contraintes de noms compatibles avec math_core, result réservé.
+body = IR pur V0.1 ou nouveau nœud {kind:'call',type:'int'|'bool',target:'uN',arguments:[AST,...]}.
+contract = null à l'import initial, ou {precondition:string,postcondition:string} dans la DSL math_core. Le normaliseur peut créer le contrat exact result == expression à partir de l'inlining du body lors de l'import. Aucun appel dans la DSL de propriété pour ce jalon.
+revision_id = SHA256 canonique des champs sources du modèle, contrat généré inclus, sans les vues dérivées ; calculé par module_model. Si fourni, refuser une empreinte incorrecte, ne pas la réattribuer silencieusement.
+Vues dérivées : dependencies (id -> liste des fonctions appelées), topological_order, coverage. Recalculer depuis le modèle, jamais faire confiance à ces vues fournies. Couverture de chaque unité, frontières hors périmètre affichées.
+
+API MODULE_MODEL
+validate_module(module:dict) -> dict normalisé, avec revision_id, dependencies et topological_order ; lève ValueError/TypeError si non admis. Vérifier toutes unités et tous nœuds, appels résolus/types/arguments, absence cycles, tailles bornées. Provenance et champs arbitraires ne sont jamais exécutés.
+inline_unit(module:dict,unit_id:str) -> AST pur compatible math_core/code_backends, substitution respectant portée des paramètres ; bornes d'expansion <=4096 nœuds, profondeur <=64. Echec borné explicite, aucune valeur inventée.
+unit_spec(module:dict,unit_id:str) -> spécification publique mia-math-spec-1 normalisable par math_core (contrat, paramètres, retour).
+evaluate_unit(module:dict,unit_id:str,inputs:list) -> bool/int avec évaluation des appels bornée (ou via inlining validé).
+revise_unit(module:dict,unit_id:str,spec:dict,intent:str,limits=None) -> {status:'REVISED'|'REFUSED'|'INCONCLUSIVE',reason,module:dict|null,synthesis:dict|null,change:dict}.
+Révision par synthèse math_core d'une nouvelle propriété, même signature. Nouvelle body de l'unité, les appelants restent liés à son id. Enregistrer ancien/nouveau hash et dépendants affectés transitifs. Une révision intentionnelle n'est pas dite équivalente à l'ancien comportement. Ne pas modifier l'objet entrée. Si échec, ancien module reste intact.
+
+API MODULE_BACKENDS
+emit_module(module:dict,language:'python'|'csharp'|'rust') -> {language,source,extension,source_sha256,unit_mapping,semantic_scope}.
+unit_mapping id -> {source_name,qualified_name,target_symbol,parameters} ; exporter toutes les unités avec appels réellement présents dans le source cible. Symboles canoniques f0/f1... ou F0/F1... selon langage. Pas d'inlining dans le source émis pour ce test d'intégration de modules.
+validate_module_generated(artifact:dict,module:dict,output_dir:Path) -> {status,reason,compile_status,execution_status,units:[{unit_id,tests,...}],evidence_dir,limitations,...}.
+Régénérer depuis modèle validé et vérifier identité exacte avant exécution. Harness qui appelle chaque unité, réel code module complet compilé/exécuté, puis comparaison à un oracle indépendant de l'émetteur. Inlining + ancien oracle séparé possibles, avec limites communes explicites. Contrats et comparaison du code sont distingués ; une rupture de contrat d'un appelant après changement doit devenir COUNTEREXAMPLE et rester archivée. Réutiliser staging court unique runtime/ ; aucune exécution de C# collé arbitraire.
+Statuts comme V0.1 : TESTED_FINITE, NON_COMPILE, COUNTEREXAMPLE, REFUSED, INCONCLUSIVE, FAILED. Absence de rustc explicite ; préparation d'un compilateur portable est un chantier coordonné, pas un téléchargement caché dans l'API.
+
+API IMPORT ROOT
+import_csharp_module(source:str,output_dir:Path|None=None) -> {status:'IMPORTED'|'REFUSED'|'INCONCLUSIVE',reason,module:dict|null,inventory:list,coverage:dict,evidence_dir,limitations}.
+Extraction Roslyn réelle via runtime historique validé, nouveaux appels résolus par symboles sémantiques, pas traduction regex. Jamais compiler/exécuter le source fourni. PWSH script et sources hachés avant/après. Réponse entière conservée, même refus. Source exact UTF8 et inventaire conservés. Une classe et namespace optionnel, aucune syntaxe/effet non prise en charge effacé en silence.
+
+API PIPELINE ROOT
+run_module(module:dict,targets:list|None=None,preference:str='auto',output_root:Path|None=None) -> {run_id,status,reason,module,artifacts:list,verification:list,selected_language,selection_reason,events,evidence_dir,limitations}.
+archive demande brute avant validation, source/revisions/provenance ; code généré LF exact. Choix langue transparent depuis états réels, jamais 'meilleur langage universel'. Ne pas annoncer preuve universelle du module : formal_scope = 'NOT_PROVED_MODULE'; l'ancien pont de preuve de fonction reste distinct. Un appelant violant son contrat entraîne INCONCLUSIVE/contre-exemple global, aucun PASS par omission.
+revise_module(module,unit_id,spec,intent,output_root=None) -> rapport revise_unit complété evidence_dir, archives demande/ancien/nouveau/diff.
+UI : workers operations module_import/module_run/module_revise, JSON UTF8 ; provenance gérée dans API, pas seulement UI. Délais bornés, aucune reprise d'expérimentation automatique. Budget import120s, run120s, revision60s proposés ; révéler les délais comme résultats inconclusifs.
+
+QUALIFICATION AVANT LIVRAISON
+Scénarios préenregistrés : module Max2 appelé par Max3 ; mêmes résultats sur cibles réellement disponibles ; import complet et chaque symbole résolu ; modification Max2->Min2 conservant parent/provenance et révélant rupture du contrat Max3 ; module révisé avec contrats cohérents ; appels externes, récursion, unité non admise, données/provenance/identités altérées refusés. Comparer résultats par oracle indépendant sur cas connus, pas seulement AST contre lui-même. V0.1 toujours préservé. Visu réelle et accès Bureau par root après deux revues.
+
+CONTINUITE
+Checkpoints de chaque propriétaire avant revue et réduction contexte, exact état testé/non testé, prochains fichiers/actions. Dernierquota72%hebdomadaire restant, cinq heures absent. Si chemin projet reste attendu, continuer fondations sans prétendre inspecter ce projet. Ne pas clore objectifglobal uniquement parce qu'un sous-jalon est fini : enchaîner l'étape suivante autorisée, jusqu'à besoin réel de données utilisateur ou limite de ressources.

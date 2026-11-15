@@ -1,0 +1,25 @@
+MULTIVERSIA — PROTOCOLE D'ÉVALUATION DÉTERMINISTE V0.2.0
+Préenregistrement de conception : 15 novembre 2026. Aucun résultat de campagne n'a servi à sélectionner les cas ci-dessous.
+
+Question mesurée
+Dans six mondes booléens finis fixés à l'avance, comparer les stratégies targeted, exhaustive et none pour suivre une règle stable ou s'adapter à un changement. Il s'agit d'un banc d'essai fonctionnel ; il ne mesure ni intelligence générale, ni causalité physique, ni effet d'un modèle de langage.
+
+Plan figé
+Trois bras par cas, chacun dans sa propre mission neuve, budget total de 24 actions réservées. Les quatre premières entrées doivent être identiques : (0,0), (0,1), (1,0), (1,1). Le moteur utilise le même catalogue de 16 fonctions booléennes. Aucune note provenant d'un autre bras n'est transmise.
+Cas : stable XOR ; stable OR ; stable AND ; XOR vers OR ; AND vers OR ; OR vers XOR. Pour les changements, les huit premiers effets suivent l'ancienne règle, les suivants la nouvelle. Dans les cas stables, la règle reste identique pour tout l'horizon.
+Pas de panne de capteur ou de bruit dans ce protocole : ces causes nécessitent un simulateur et un protocole distincts. Pas de boucle de réglage après lecture des résultats. Une modification ultérieure crée une nouvelle version de protocole et une nouvelle campagne.
+
+Équité et portée
+Même horizon maximal, mêmes observations initiales et même instant de changement pour chaque trio. Les choix d'expériences après l'initialisation peuvent diverger : c'est précisément la stratégie étudiée. L'exactitude sur les tests choisis par l'agent n'est donc pas, seule, une comparaison sur un jeu de tests commun. Un contrôle externe final de la dernière règle étayée évalue les quatre entrées du domaine complet commun, sans transmettre ses réponses au planificateur.
+Le budget compte toutes les réservations, y compris celles qui n'aboutissent pas à une observation. Les erreurs, refus, budgets épuisés et résultats inconclusifs sont conservés dans les dénominateurs. Le temps de calcul est enregistré à titre descriptif, pas comme référence de performance matérielle.
+Les observations d'entraînement et la validation prospective restent celles décidées par le moteur. Les données attendues de l'évaluateur ne sont utilisées qu'après les étapes de chaque bras. La séparation est une séparation d'API et de données ; le système de fichiers n'est pas une frontière de sécurité prouvée.
+
+Mesures annoncées
+Actions réservées, nombre d'observations complètes, exactitude prédictive globale, exactitude après changement et liste des prédictions erronées. Une prédiction utilise la valeur archivée avant l'effet, jamais une reconstruction après observation.
+Nombre de dossiers de diagnostic, faux déclenchements dans un monde stable, latence du premier diagnostic déclenché après changement (en nombre d'effets après le changement), diagnostics ouverts ou inconclusifs en fin de budget.
+Dernière règle réellement étayée ou absence de règle étayée. Exactitude de cette règle sur les quatre entrées communes au temps final. Nombre de révisions qui étaient incorrectes par rapport à la règle réelle au moment de leur création, calculé depuis created_after_observation_id et conservé même si la révision a été remplacée.
+Pour un bras interrompu avant l'horizon, sa connaissance finale n'est pas comparée comme si le changement futur s'était déjà produit. Le rapport distingue contrôle à son dernier effet observé et résultat à l'horizon commun, ce dernier étant inconclusif si l'horizon n'est pas atteint.
+
+Décision et restitution
+Pas de seuil improvisé de supériorité, pas de significativité statistique sur six cas déterministes sélectionnés. Présenter les résultats par cas et par bras, les différences descriptives appariées et les échecs. Une méthode qui n'améliore pas le résultat reste publiée. La qualification technique PASS signifie seulement que le runner et le calcul des métriques ont passé leurs contrôles annoncés.
+La campagne enregistre protocol.json avant toute mission, les empreintes des sources au départ, chaque snapshot final complet, les métriques et report.json. Le protocole est ré-haché à la fin ; une modification invalide la campagne. Chaque exécution possède un nouveau dossier ; aucune campagne précédente n'est écrasée.

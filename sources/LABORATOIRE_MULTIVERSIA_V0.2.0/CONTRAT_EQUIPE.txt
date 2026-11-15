@@ -1,0 +1,33 @@
+MULTIVERSIA V0.2.0 — CONTRAT D'INTÉGRATION / 15 NOVEMBRE 2026
+
+Objectif de réalisation : laboratoire local fonctionnel, avec agents symboliques qui proposent une hypothèse, prédisent, expérimentent, détectent une contradiction, retestent et révisent une connaissance. Carte libre du Bureau reliée aux vrais événements. Comparaison expérimentale bornée et reproductible. Les modèles de langage, le monde réel et la généralisation scientifique ne sont pas revendiqués. Aucune inférence ni téléchargement dans cette livraison.
+
+Préserver toutes les versions précédentes. Tous les nouveaux fichiers dans ce dossier. Python standard et Tk existants. Aucun sous-agent ne modifie le raccourci du Bureau ; le coordinateur le fera après intégration et qualification. Ne pas ouvrir de fenêtre visible sans coordination.
+
+Responsabilités
+Moteur : engine.py, test_engine.py, ENGINE_NOTES.txt — journal durable, contrôleur, simulateur, exploration/diagnostic/mémoire versionnée.
+Évaluation : evaluation.py, test_evaluation.py, EVALUATION_PROTOCOL.txt — cas, comparaisons, mesures et revue indépendante.
+Interface : app.py, ui_backend.py, test_ui.py, GUIDE.txt — carte et commandes locales, preuves, architecture, contrats d'intégration.
+Coordinateur : contrats, pont C# limité, packaging, raccourci, tests d'intégration, checkpoints et revues finales.
+
+API moteur (à communiquer immédiatement aux collègues si adaptation nécessaire)
+class Lab(root: Path)
+  create(title: str, world='xor', change_to='or', change_after=4, max_actions=24, strategy='targeted') -> str mission_id
+  missions() -> list[dict] avec mission_id, title, status ; erreurs signalées sans réparation.
+  step(mission_id, count=1, crash=None) -> dict snapshot
+  snapshot(mission_id) -> dict, lecture seule, intégrité vérifiée ; erreur explicite sinon.
+  export(mission_id) -> chemin d'export complet
+  resume(mission_id) -> snapshot, rapprochement/reprise sans doubler l'effet.
+Le budget total de mission ne se réinitialise jamais. count est borné ; l'interface n'exécute pas de boucle infinie.
+
+Snapshot stable :
+schema_version, mission_id, title, status, phase, budget:{used,limit}, events:list, observations:list, hypotheses:list, knowledge:list, diagnostics:list, pending_action:dict|null, summary:str, integrity:'VERIFIED', scope:str.
+Chaque événement : seq, type, at, data, sha256. Conserver les liens d'observation et la prédiction initiale. Chaque observation expose observation_id, action_id, inputs:{a,b}, prediction, observed, context_id. État connaissance et état exécution distincts.
+Hypothèses limitées à un catalogue explicitement annoncé. Le planificateur reçoit uniquement les observations et références publiques, jamais le monde/cause injectée. Cela constitue une séparation d'API, pas une isolation de sécurité.
+L'état privé du simulateur peut rester accessible au coordinateur/évaluateur, mais ne figure pas dans le snapshot public ni dans les entrées des agents. Aucune affirmation de secret protégé contre accès disque.
+
+CLI : python engine.py --root DOSSIER list|create|step|snapshot|resume|export ...
+La UI peut utiliser Lab en lecture dans un thread et commander via sous-processus. Verrou de mutation interprocessus. Aucun effet sur l'import Python. Les étapes intermédiaires restent vérifiables après panne.
+
+Revue demandée : DEUX REVUES CROISÉES par module, auteurs distincts du propriétaire. Boucle simple : réalisation → revue A/B → correction des défauts → nouvelle revue sur empreintes finales → PASS des deux. Les agents ne déclarent pas PASS pour les domaines non testés ; ceux-ci restent des limites explicites. Un correctif après PASS invalide les approbations touchées.
+Après réalisation : moteur revu par évaluation et interface ; évaluation revue par moteur et interface ; interface revue par moteur et évaluation. Le coordinateur organise les revues à partir des rendus et veille au périmètre.

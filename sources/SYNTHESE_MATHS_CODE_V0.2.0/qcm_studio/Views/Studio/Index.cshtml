@@ -1,0 +1,22 @@
+@{ Layout = null; }
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>MultiversIA · QCM Studio</title><link rel="stylesheet" href="/style.css" /><script src="/app.js" defer></script></head>
+<body>
+<a class="skip" href="#panel">Aller au panneau</a>
+<header class="topbar"><a class="brand" href="#home"><span class="brand-mark">M</span><span>MultiversIA <small>QCM STUDIO</small></span></a><nav aria-label="Navigation principale"><button data-view="home">La carte</button><button data-view="editor">Game Editor</button><button data-view="quizzes">Mes QCM</button><button data-view="sessions">Mes parties</button><button data-view="results">Résultats</button><button data-view="scores">Classements</button></nav><button class="account" id="account">Joueur local</button></header>
+<main class="workspace">
+<section class="map-area" aria-label="Carte des points d’intérêt">
+ <div class="map-caption"><span class="eyebrow">TON TERRAIN D’EXPLORATION</span><h1 id="map-title">Des idées aux découvertes.</h1><p id="map-subtitle">Choisis un point d’intérêt. Explore à ton rythme.</p></div>
+ <svg id="world-map" viewBox="0 0 1000 800" tabindex="0" role="group" aria-label="Carte libre. Flèches pour déplacer, plus et moins pour zoomer, origine pour recentrer.">
+  <defs><pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#71806b" opacity=".18" /></pattern><filter id="shadow"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-opacity=".10" /></filter></defs>
+  <rect width="1000" height="800" fill="url(#dots)" />
+  <g id="map-world"><g id="terrain" aria-hidden="true"><path d="M-600 200Q-100-200 300 70T1200 120T1800 450"/><path d="M-600 230Q-100-170 300 100T1200 150T1800 480"/><path d="M-600 260Q-100-140 300 130T1200 180T1800 510"/><path d="M-300 680Q50 400 450 660T1250 600T1600 1000"/><path d="M-300 710Q50 430 450 690T1250 630T1600 1030"/><path d="M-300 740Q50 460 450 720T1250 660T1600 1060"/></g><g id="map-edges"></g><g id="map-nodes"></g></g>
+ </svg>
+ <div class="map-controls"><button id="zoom-out" aria-label="Réduire le zoom">−</button><output id="zoom-value">100 %</output><button id="zoom-in" aria-label="Augmenter le zoom">+</button><button id="map-home">Vue globale</button><span id="zoom-level">Vue d’ensemble</span></div>
+ <p class="map-help">Molette : zoom · glisser : déplacer · Tab : points d’intérêt · Entrée : ouvrir</p>
+</section>
+<aside class="panel" id="panel" aria-label="Détails et actions"><div id="status" role="status" aria-live="polite">Lecture des données locales…</div><div id="notice" role="alert" hidden></div><div id="panel-content"></div></aside>
+</main>
+<footer><span>Un compte local · tes jeux et tes parties restent sur cet ordinateur.</span><span id="connection-state">État du serveur à vérifier</span></footer>
+<noscript><p>JavaScript est nécessaire pour l’éditeur et la carte. Aucun jeu ne démarre automatiquement.</p></noscript>
+</body></html>

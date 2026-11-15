@@ -1,0 +1,28 @@
+V0.3 — noyau mathématique de notation, API figée
+Ce modèle est celui d'un profil C# connu explicitement reconnu par l'importeur ; ce n'est pas une extraction générique de C#, ni une migration MVC/stockage/identité.
+
+scoring_model.default_model(provenance=None) -> modèle JSON validé.
+validate_model(model) -> copie validée ; Refused(ValueError) sinon.
+revise_model(model, penalty_n=1, penalty_d=2, intent='...') -> nouvelle révision immuable, poids de pénalité rationnel de 0 à 1 inclus ; parent_revision_id garde l'ancienne identité.
+validate_case(case) -> copie validée ; evaluate(model,case) -> résultat exact décrit ci-dessous.
+scoring_rust.emit_rust(model) -> texte Rust complet, émission des expressions AST du modèle.
+encode_case(case) -> UNE ligne numérique fermée SANS saut de ligne ; parse_result(stdout_line) -> dict résultat strict ou Refused.
+Le pipeline possède compilation et invocation, l'émetteur ne lance aucun processus.
+
+Case JSON fermé :
+{questions:[{id,mode:'single'|'multiple',options:[{id,correct:bool}],selected:[optionId,...]}],grading:'partial'|'all-or-nothing',passing_percent:'60',show_correction:true}
+1..50 questions,2..8options,IDs alphanum/tiret1..80 uniques dans TOUT le quiz ; selected non vide, unique, sous-ensemble des options ; single exactement1 bonne et1 sélection ; multiple au moins1bonne.
+passing_percent est une chaîne DECIMALE exacte0..100, sans exposant/NaN/Inf ; échelle<=28 et coefficient96bits compatible System.Decimal après retrait des zéros décimaux finaux. Aucun float.
+show_correction concerne la projection HTTP : le calcul interne retourne toujours les points. L'oracle C# ne peut observer les points masqués et n'observe jamais n/d ; il doit le dire explicitement.
+
+Résultat EXACT, clés fermées :
+{score:{n:'N',d:'D'},percent:{n:'N',d:'D'},score_display:'2.50',percent_display:'83.33',passed:bool,correct_count:int,points:[{n:'N',d:'D',display:'0.50',is_correct:bool}]}
+Rationnels réduits d>0, n/d en chaînes entières ; display positif2décimales, moitié vers le haut comme Fraction.Rounded C#. Réussite selon fraction exacte, jamais affichage arrondi. correct_count est le compte d'ensembles exactement corrects, indépendant du poids modifié.
+
+IR schema mia-scoring-1 ; expressions point/score/percent/passed, penalty_weight rationnel, provenanceJSON bornée conservée, intent et parent_revision_id, revision_id SHA256 canonique hors revision_id. Ce hash n'est pas une signature.
+Noeuds typés rat/bool : lit(n,d),bool(value),var(name),add/sub/mul/div/comparaisons,not/and/or,if(cond,then,else). Tous les champs/variables/types vérifiés. if/and/or sont paresseux à l'exécution ; les branches non prises sont néanmoins validées structurellement.
+Point : variables g,b,sg,sb (comptes rationnels entiers),exact,single,partial(bool),w(poids). Score : sum,count ; percent : score,count ; passed : percent,threshold.
+Interprétation Python Fraction et Rust checked i128 : même refus d'overflow d'intermédiaire, division nulle, sortie hors [0,1]parquestion/[0,n]score/[0,100]percent. Pas de flottants ni code fourni par le modèle. AST<=512noeuds,profondeur24,constants|n|,d<=1e6 ; JSON total<=256KiB/profondeur40/20000visites.
+
+Protocole stdin fermé Rust : nq partial threshold_n threshold_d puis, pour chaque question, g b sg sb exact single. Valeurs séparées par espaces ASCII ; encode_case valide auparavant les IDs/ensembles et cette réduction est une partie explicite du profil connu. Rust revalide comptes/cohérence. Ne pas présenter ce protocole de comptes comme un importeur de l'application complète.
+Batch : <=4096lignes non vides,<=8MiBtotal ; une ligne JSON par entrée. Une erreur de cas produit {error:'REFUSED',message:'...'} ; erreurs globales protocole produisent une erreur unique. parse_result refuse une erreur et toute sortie parasite.

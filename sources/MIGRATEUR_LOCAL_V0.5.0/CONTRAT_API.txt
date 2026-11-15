@@ -1,0 +1,47 @@
+ETAT PRIORITAIRE V0.5.0 LIVREE : lire REPRISE.txt, CONTRAT_ARITHMETIQUE.txt et FINAL_RESULT.json. Nouveau profil pure-int32-bool-wrap-call-1 ; operations explicites modulo32. Les anciens contrats API ci-dessous restent applicables sous ces limites. Pas de migration universelle de site ni preuve universelle.
+
+HISTORIQUE CONSERVE
+V0.4.1 — EXTENSION C# ORIGINAL, prioritaire sur les passages historiques ci-dessous
+API originale : original_csharp.admit(module, source_import, output_dir=None), puis original_csharp.execute(admission, records, output_dir). Fichiers : original_csharp.py, original_csharp_compile.ps1, original_csharp_run.ps1. L’Aigle tient le contrat détaillé et les bornes.
+DLL compilée depuis source exacte, exécution par réflexion dans un second processus qualifié. Les lignes de sortie portent index et unit_id et sont typées avant conversion en values ; le vérificateur compare indépendamment aux cas et aux modèles baseline/courant. Même source_check que Rust : compile_status, execution_status, baseline_model_agreement et agreement.
+Revue helper : root + Explorateur. Revue verifier : root + Aigle. Rootmoteur et UI : Aigle + Explorateur. Aucun téléchargement. Les passages historiques indiquant original C# NOT_TESTED décrivent V0.4.0 ; V0.4.1 ne sera annoncée opérationnelle qu’après compilation/exécution réelle et revues finales.
+Dernier contexte28 %, quotahebdomadaire33 % restant, cinq heures non fourni.
+
+CONTRAT V0.4.0 HÉRITÉ — exigences communes conservées
+
+V0.4 — CONTRAT PARTAGÉ, reprise autorisée le 15 novembre 2026
+Le user a confirmé la vision puis « Ok, tu peux continuer ». Dernier signal de contexte : 9 %. Continuer avec checkpoints, sans confondre ce signal et un quota d'usage. Dernier quota mesuré : 42 % hebdomadaire restant ; cinq heures non fourni.
+
+Fondations copiées byte-identiques V2 et vérifiées dans BASELINE_V2.json : module_model.py, math_core.py, module_backends.py, code_backends.py, legacy_bridge.py, module_import.ps1. Ne pas les modifier sans besoin concret et nouvelle qualification. Leurs fonctions pures sont réutilisées ; ne pas appeler les anciens orchestrateurs qui choisissent leurs propres dossiers/runtime. Les toolchains Rust et Roslyn existantes sont consultées en lecture, toutes les nouvelles campagnes vont dans V0.4.
+
+MODULE COMMUN
+mia-module-1 / pure-int32-bool-call-1, source exacte/provenance, 1..8 fonctions, paramètres/retours Int32/bool, AST fermé, appels internes acycliques, contrats et identités. L'extension à d'autres profils sémantiques viendra ensuite. Pas de prétention de traduction générale Rust, ni de site complet.
+
+IMPORT RUST — moteur/Aigle
+rust_import.import_rust(source:str|bytes, output_dir=None) -> {status:'IMPORTED'|'REFUSED'|'INCONCLUSIVE',reason,module,inventory,coverage,evidence_dir,input_execution:false,limitations}.
+source n'est jamais un chemin. Réanalyse déterministe sans output_dir : même module et même révision. import_id/module_id dérivés du SHA source, pas de date/UUID dans le modèle. Répertoire d'archives unique si demandé. Conserver texte, tokens/commentaires, positions et inventaire complet même en cas de refus admissible. Parser et typer toute l'entrée, aucune sélection silencieuse.
+Paramètres p0..p2 avec mapping noms originaux. Unités u0..u7 dans ordre source. return et contextes de contrôle doivent garder leur sémantique exacte. Aucun compile/run dans l'importeur.
+
+ÉMISSION — root
+emitters.emit_module(module, language:'python'|'csharp'|'rust') -> format V2 {language,source,extension,source_sha256,unit_mapping,semantic_scope,module_id,revision_id,emitted_class}. Wrapper qualifié autour de module_backends.emit_module pur, pas d'exécution automatique. Artefacts fournis au vérificateur doivent correspondre exactement à une régénération fraîche.
+
+VÉRIFICATION — Explorateur
+verifier.verify(module, artifacts:list, output_dir, source_import=None) -> {status,reason,generated_checks:list,source_check:dict,evidence_dir,limitations,...}.
+Proposition source baseline validée : reparser les octets Rust exacts et comparer le modèle importé baseline fourni à cette réanalyse ; le modèle courant doit conserver la provenance, les unités et signatures correspondant à ce baseline. Une révision intentionnelle peut produire source_check.agreement='DIFFERENT' avec témoins. Ne pas refuser une variante uniquement parce qu'elle diffère de l'original, et ne pas annoncer équivalence.
+Sans source_import, source_check.status='NOT_TESTED'. Import C# : original peut être NOT_TESTED dans ce jalon, clairement visible. Rust admis : compilation/exécution réelle du source exact + harness, puis comparaison sur les mêmes cas que les cibles générées et le modèle. Aucun source non admis n'est compilé.
+Status généré TESTED_FINITE / COUNTEREXAMPLE / DIFFERENT / NON_COMPILE / REFUSED / INCONCLUSIVE selon observations. Contrats, accord au modèle et accord à la source restent séparés. Exposer les unités en échec et les contre-exemples pour la boucle de réparation ; annoncer la forme des champs à root dès qu'elle est figée.
+Réutiliser _records/_Oracle V2 (copiés) pour cas bornés et oracle d'appels indépendant ; ne pas utiliser validate_module_generated historique. Préconditions des appels et contrats appelants restent contrôlés. Hashes avant/après, délais bornés, sorties conservées. Aucun réseau/téléchargement, aucun PATH global modifié.
+
+MOTEUR + AUTO-CORRECTION — root
+migrator.import_source(source, source_language, output_root=None) -> reçu d'import avec source_language et module. Langages admis initialement rust/csharp ; registre déclaré, pas deviné selon le contenu.
+migrator.translate(module, targets:list, source_import=None, auto_correct=True, max_repairs=2, output_root=None) -> {status,reason,module,artifacts,verification,repair,events,evidence_dir,limitations}. Une cible unique est une liste de longueur1. Toujours archiver original, candidats, différences et contrôles.
+migrator.revise(module, unit_id, spec, intent, output_root=None) -> reçu compatible module_model.revise_unit {status,reason,module,synthesis,change,evidence_dir}. Propriété spec typée avec mêmes paramètres/retour et pré/postcondition. Contrats des appelants préservés. Aucun changement silencieux de la spécification.
+Première auto-correction réelle bornée : diagnostiquer un modèle dont un corps viole son contrat conservé, synthétiser un nouveau corps depuis CE MÊME contrat avec math_core/module_model, enregistrer nouvelle révision, revérifier. Ne pas modifier le contrat pour faire passer le test. Ne pas tenter de corriger un outil absent ou une syntaxe non admise en inventant un comportement. Deux contrôles indépendants machine requis avant promotion : oracle modèle/contrats et exécution réelle cible ; ne pas appeler ces contrôles deux revues humaines. Les deux revues indépendantes des agents restent une exigence distincte pour livrer les composants de l'atelier.
+Budget de réparations 0..3 ; arrêt sur absence de progrès/répétition, budget, refus ou succès contrôlé. Échec conserve le dernier candidat comme non promu et l'original intact. Ouverture UI sans expérimentation. Une source baseline non équivalente après modification volontaire reste affichée DIFFERENT.
+
+INTERFACE — Interface
+app.py Tk, Canvas libre zoom/pan, étapes source/fonctions du modèle/cible/contrôles/correction. Éditeur Rust/C#, modèle JSON et équations consultables ; édition d'une propriété de fonction avec intention puis revise. Cible C#/Rust/Python. Importer, Réviser, Générer et vérifier explicites. Afficher source/contrats/cibles et état de correction séparément.
+Worker subprocess app.py --worker, JSON UTF8, durée bornée, pas de lancement au démarrage. Contrats pipeline ci-dessus ; fixtures UI explicitement distinctes d'une intégration réelle. Agent peut coder selon ce contrat sans attendre chaque fichier root.
+
+REVUES ET CONTINUITÉ
+Parser : root + Explorateur. Vérificateur : root + Aigle. Moteur root : Aigle + Explorateur/Interface. Interface : Aigle + Explorateur. Empreintes finales, corrections puis nouveaux avis concernés. Sauvegarder régulièrement checkpoints et aucun PASS non exécuté. V0.2/V0.3 restent préservées. Root possède livraison Bureau et intégration finale.

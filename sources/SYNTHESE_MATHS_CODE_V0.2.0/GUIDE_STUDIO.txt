@@ -1,0 +1,55 @@
+MultiversIA — Game Editor / QCM Studio
+
+Ouvrir
+Double-cliquer sur « MultiversIA - Game Editor » sur le Bureau.
+La petite fenêtre démarre le serveur local puis ouvre la carte dans le navigateur.
+Garder cette fenêtre ouverte pendant l'utilisation. La fermer arrête le serveur.
+Les données déjà enregistrées restent disponibles à la prochaine ouverture.
+Le bouton « Ouvrir la carte et le Game Editor » rouvre la page si l'onglet a été fermé.
+
+Explorer la carte
+Les points d'intérêt relient Game Editor, Mes QCM, Mes parties, Résultats et Classements.
+Molette ou boutons +/− : zoom libre. Glisser : déplacer la carte. « Vue globale » : recentrer.
+Le zoom révèle progressivement les détails. La barre de navigation propose les mêmes actions.
+Au clavier : Tab atteint les points, Entrée les ouvre ; flèches déplacent la carte, +/− zooment et Origine recentre.
+Pendant une partie, chaque question devient un point du parcours.
+
+Créer ou modifier un QCM
+Game Editor → Nouveau QCM, ou Modifier ce QCM.
+Choisir un titre, ajouter les questions, écrire les options et cocher les bonnes réponses.
+Une question peut autoriser un seul choix ou plusieurs choix.
+Les boutons permettent d'ajouter, retirer et déplacer les questions, ainsi que d'ajouter ou retirer des options.
+Configuration et barème permet de choisir la notation, le seuil de réussite, le mélange des questions/options et l'affichage de la correction.
+Enregistrer crée une version sur le serveur. Les brouillons non enregistrés restent propres au navigateur et à son adresse ; ne pas les considérer comme une sauvegarde durable entre deux ports/ordinateurs.
+En cas de conflit, conserver le brouillon et comparer la version du serveur avant de le recopier explicitement.
+
+Les deux barèmes
+Tout-ou-rien : 1 point si tous les choix correspondent exactement aux bonnes réponses, sinon 0.
+Partiel : pour une question multiple, chaque bonne sélection apporte 1 / nombre de bonnes options ; chaque mauvaise sélection retire 1 / nombre de mauvaises options. Le minimum reste 0. Une question à choix unique vaut toujours 0 ou 1.
+Exemple : deux bonnes options et une mauvaise. Une bonne sélection seule vaut 0,5. Les deux bonnes seules valent 1. Une bonne et la mauvaise donnent 0 après application du minimum.
+Chaque question vaut au maximum 1 point. La réussite se calcule sur les fractions exactes ; les nombres affichés sont arrondis à deux décimales.
+
+Jouer et reprendre
+Mes QCM → Ouvrir / jouer → Commencer une nouvelle partie.
+Chaque tentative conserve une copie des questions, de l'ordre choisi, du barème et du nom du joueur à son démarrage.
+Les réponses s'enregistrent au fil du jeu. Vérifier le message « Réponses enregistrées sur le serveur » avant de fermer.
+Mes parties permet de reprendre la même tentative. « Terminer et corriger » exige une réponse à chaque question et enregistre un résultat définitif pour cette tentative.
+Modifier ou archiver ensuite un QCM ne change pas les questions et réponses des anciennes tentatives.
+Le classement sépare les versions et les barèmes ; une même terminaison rejouée ne crée pas plusieurs lignes.
+
+Compte et évolution
+Le premier Studio utilise un seul compte local, sans mot de passe. Son nom se modifie via le bouton du joueur.
+Le code prévoit un fournisseur d'identité remplaçable et un registre de jeux. QCM est le seul jeu implémenté. Les services de comptes externes ne sont pas encore branchés.
+Le serveur écoute uniquement sur cet ordinateur ; cette version n'est pas un service multijoueur sur le réseau.
+
+Sauvegardes et limites
+Les données se trouvent dans local/qcm-studio/studio-state.json, à côté d'une sauvegarde précédente .backup.
+Le stockage refuse de repartir à zéro si l'état est illisible. Les fichiers en erreur restent disponibles pour une récupération explicite.
+Un verrou empêche deux serveurs de modifier le même dossier en même temps. Si une seconde ouverture le signale, utiliser la première fenêtre encore ouverte.
+Ce profil accepte de 1 à 50 questions, de 2 à 8 options par question, jusqu'à 200 QCM, 2 000 versions conservées et 2 000 tentatives, dans un état de 32 Mio maximum. Les limites n'effacent pas l'historique.
+Les contrôles couvrent les scénarios documentés ; une panne physique de disque n'est pas simulée. Une copie externe régulière du dossier reste utile pour une sauvegarde indépendante.
+
+Lien avec l'atelier maths → code
+« MultiversIA - Atelier V0.2 » ouvre l'atelier de fonctions et modules purs avec appels internes, provenance, révisions mathématiques et sorties Python/C#/Rust.
+Le Studio MVC avec éditeur et stockage est une application C# réelle. Sa traduction complète vers Rust reste une étape à réaliser : le traducteur de fonctions pures ne traduit pas encore tout cet ensemble.
+qcm_source et qcm_rust conservent séparément le premier prototype borné ; son contrôle HTTP négatif restant empêche de le présenter comme une migration entièrement qualifiée.

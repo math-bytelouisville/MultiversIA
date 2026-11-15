@@ -1,0 +1,54 @@
+@model QcmDemo.Models.PublicQuiz
+@{ Layout = null; }
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@Model.Title · MultiversIA</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#questions">Aller aux questions</a>
+<div class="page">
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="MultiversIA, recommencer le QCM"><span class="brand-mark" aria-hidden="true">M</span>MultiversIA <span class="brand-sub">/ le petit labo</span></a>
+        <span class="server" id="server-status" role="status">Connexion au serveur…</span>
+    </header>
+    <main>
+        <section class="intro" aria-labelledby="page-title">
+            <p class="eyebrow">UN PETIT DÉFI, TROIS QUESTIONS</p>
+            <h1 id="page-title">@Model.Title</h1>
+            <p class="lede">Prends ton temps, choisis une réponse par question, puis découvre ton résultat.</p>
+            <div class="intro-bottom"><span class="badge">3 questions</span><span class="badge">Sans chronomètre</span><span id="progress" aria-live="polite">0 sur 3 réponses choisies</span></div>
+            <span class="math-art" aria-hidden="true">2 + 3<br /><span>4² △</span></span>
+        </section>
+        <form id="quiz-form" method="get" action="/api/quiz/grade">
+            <section class="questions" id="questions" aria-label="Questions du QCM">
+            @for (var i = 0; i < Model.Questions.Length; i++) {
+                var question = Model.Questions[i];
+                var answerKey = ((char)('a' + i)).ToString();
+                <fieldset class="question" data-question="@i">
+                    <legend><span class="question-number">0@(i + 1)</span><span>@question.Text</span></legend>
+                    <div class="options">
+                    @for (var j = 0; j < question.Options.Length; j++) {
+                        <label class="option" for="answer-@i-@j"><input id="answer-@i-@j" type="radio" name="@answerKey" value="@j" required /><span class="option-letter">@((char)('A' + j))</span><span>@question.Options[j]</span></label>
+                    }
+                    </div>
+                    <p class="feedback" id="feedback-@i" aria-live="polite"></p>
+                </fieldset>
+            }
+            </section>
+            <div class="actions"><p>Un seul choix par question.<br /><span>Tu peux changer d’avis avant de corriger.</span></p><button class="primary" id="submit-answers" type="submit">Corriger mes réponses <span aria-hidden="true">→</span></button></div>
+        </form>
+        <p class="error" id="error-message" role="alert" hidden></p>
+        <section class="result" id="result" aria-labelledby="result-title" aria-live="polite" tabindex="-1" hidden>
+            <span class="result-label">TON RÉSULTAT</span><h2 id="result-title"></h2><p id="result-copy"></p><button class="secondary" id="restart" type="button">Recommencer le QCM</button>
+        </section>
+        <noscript><p class="error">Active JavaScript pour afficher la correction dans cette page. Le formulaire reste utilisable et renvoie un résultat JSON.</p></noscript>
+    </main>
+    <footer><span>Un exercice pour apprendre, sans pression.</span><span>MultiversIA · QCM de démonstration</span></footer>
+</div>
+</body>
+</html>

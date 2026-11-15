@@ -1,0 +1,29 @@
+ATELIER DE MIGRATION — C# → MATHS → RUST
+
+Ouvrir « MultiversIA - Migration C# vers Rust » depuis le Bureau, puis « Ouvrir la carte de migration ».
+La carte se consulte hors connexion. La molette zoome librement, un glisser déplace le schéma, et un clic sur une étape ouvre ses détails. Les boutons de zoom, Vue globale, Tab, Entrée et les flèches donnent une navigation équivalente au clavier.
+Le résumé montre l'essentiel. « Données exactes » et « Fichiers » donnent les modèles, preuves et résultats complets. Les sources originales et les anciennes campagnes restent conservées.
+
+CE QUE CETTE VERSION FAIT
+Elle reconnaît la version précise du QCM Studio livré, conserve ses 16 fichiers, puis utilise une correspondance explicitement écrite entre ses règles de notation et un modèle mathématique. Elle génère du Rust depuis ce modèle et le compile réellement. Elle compare ensuite le calcul aux résultats du véritable serveur C#, avec des données de test séparées.
+La comparaison porte sur les points affichés, le total, le pourcentage, la réussite et le nombre de réponses entièrement correctes. Python et Rust comparent aussi leurs fractions exactes. L'interface C# n'expose pas ses fractions internes ; elles ne sont donc pas directement observées.
+Les scénarios couvrent choix unique et multiple, les deux barèmes, des seuils décimaux proches, des permutations et des sommes de fractions. Un PASS décrit cette campagne finie, pas tous les comportements imaginables d'un site.
+
+MODIFIER UNE RÈGLE
+Dans le lanceur, choisis le poids de pénalité puis clique « Construire et comparer » :
+- 1/1 : pénalité actuelle.
+- 1/2 : pénalité divisée par deux.
+- 0/1 : aucune pénalité pour une mauvaise option sélectionnée.
+Ce choix affecte seulement le barème partiel des questions multiples. Les réponses uniques et le barème tout-ou-rien conservent leur règle. Le score par question reste entre zéro et un. Par exemple, avec deux bonnes options et deux mauvaises, sélectionner une bonne et une mauvaise vaut 0 actuellement, puis 0,25 avec le poids 1/2.
+Une nouvelle campagne conserve le modèle initial, sa variante, leur lien de révision, les sources Rust, les exécutables et les différences. Elle ne change pas le Studio installé ni ses parties enregistrées. Ouvrir le lanceur ou le rapport ne relance jamais une expérience.
+Si tu fermes le lanceur pendant une comparaison, il se masque, termine la campagne bornée, arrête son serveur de test et se ferme. Les preuves restent dans runs/.
+
+LIMITES ET PROCHAINE ÉTAPE
+Ce premier pont reconnaît un profil C# exact. Une source modifiée ou inconnue est conservée quand elle respecte les bornes d'import, puis refusée comme traduction non reconnue. Ce n'est pas encore un analyseur C# général.
+Le calcul des scores est reconstruit en Rust. Le site complet, ses comptes, ses sauvegardes, les transitions de parties, son API et ses pages ne le sont pas encore. La carte les signale comme restant à représenter. Les données utilisateur et les brouillons du navigateur ne font pas partie de cet import de sources.
+Prochaine étape prévue : représenter les changements d'état d'une partie (répondre, terminer, reprendre), avec snapshots et révisions, puis les confronter au C# avant de reconstruire ces comportements en Rust.
+
+UTILISATION EN LIGNE DE COMMANDE
+Dans ce dossier : python migration_pipeline.py --penalty 1/2
+Le fichier latest-run.json pointe vers la dernière campagne ; chaque dossier runs/date-identifiant reste indépendant.
+En cas de refus ou résultat inconclusif, lire le rapport et error.txt s'il existe. Ne pas transformer un résultat incomplet en PASS. Les compilateurs portables déjà qualifiés de V0.2.0 sont réutilisés ; aucun téléchargement ou changement du PATH global n'est nécessaire.

@@ -1,0 +1,34 @@
+MULTIVERSIA - SOURCES DES DERNIERES VERSIONS, 15 NOVEMBRE 2026
+
+Cette archive permet de lire et telecharger les sources, tests et guides.
+Ce n'est pas un installateur autonome de l'ensemble des outils.
+Les sources logicielles et tests sont copies a l'identique. Trois manifestes documentaires sont des exports publics distincts : seuls les champs contenant les chemins de preuves/builds de la machine d'origine sont masques. MANIFEST_SOURCES.json donne les empreintes SHA-256 originales et distribuees et les champs retires ; les fichiers originaux restent intacts.
+Les donnees personnelles, parties et QCM enregistres, journaux locaux et outils tiers ne sont pas inclus. Ils restent dans l'installation d'origine.
+
+CHOISIR UN SUJET
+- MIGRATEUR_LOCAL_V0.5.0 : Rust/C# vers modele commun modifiable, puis Python/C#/Rust. Fonctions pures Int32/bool, appels internes sans cycle et arithmetique modulo32 explicite. Auto-correction locale bornee. Pas de migration generale de site ni de preuve universelle.
+- SYNTHESE_MATHS_CODE_V0.2.0/qcm_studio : Game Editor QCM MVC ASP.NET Core, mono-compte local, configuration, choix unique/multiple, suivi et scores. Le telechargement Game Editor Windows separe est conseille pour l'essayer.
+- SYNTHESE_MATHS_CODE_V0.2.0 : atelier maths vers code et fondations de modules. qcm_source/qcm_rust restent une reference ancienne ; leur migration HTTP complete n'est pas qualifiee.
+- MIGRATION_STUDIO_V0.3.0 : migration du calcul de scores QCM vers Rust sur un profil borne, pas du site complet.
+- LABORATOIRE_MULTIVERSIA_V0.2.0 : laboratoire et evaluation locale, pont historique C#/Lean.
+- CARTE_MULTIVERSIA_V0.1.0 : carte de suivi avec zoom libre et journal.
+- CYCLE_DURABLE_V0.1.0 : simulation de lampe, journal et reprise apres interruption de processus.
+- ARCHITECTURE_CHANTIER_2026-11-15/architecture.html : document de conception historique, ouvrable dans un navigateur. Il ne decrit pas toutes les capacites livrees depuis.
+
+DEMARRAGE ET DEPENDANCES
+Conserver tous les dossiers voisins apres extraction. Python 3.12 avec Tk est la version employee pour les interfaces locales.
+Carte et Cycle durable : ouvrir leur fichier Lancer MultiversIA.cmd sur Windows avec Python installe. Ces outils creent leurs nouvelles donnees locales.
+Les fichiers GUIDE des versions documentent l'installation d'origine : les anciens raccourcis Bureau et chemins personnels ne sont pas transferes avec cette archive. Ne pas utiliser leurs anciens installateurs comme un installateur universel.
+
+Migrateur, Atelier et Laboratoire : les interfaces Python et les modeles sont inclus, mais les parcours Roslyn, Lean et Rust dependent de runtimes et manifestes de la machine d'origine. Installer seulement Python, dotnet ou rustc ne remplace pas automatiquement ces manifestes epingles. Une preparation et une nouvelle qualification du nouvel environnement sont necessaires pour ces parcours. Aucun telechargement d'outil ne se lance a l'extraction de cette archive.
+Le pont LABORATOIRE_MULTIVERSIA_V0.2.0/csharp_bridge.py et deux sources historiques de CSHARP_LEAN_CANDIDAT_001 sont inclus pour garder les dependances sources. Le reste du candidat ancien, ses moteurs tiers et ses donnees ne sont pas distribues ici.
+Migration Studio V0.3 : l'oracle C# attend un recu de compilation historique precis. Cette campagne ne peut pas etre annoncee reproductible depuis cette seule archive.
+Game Editor : le projet qcm_studio cible net10.0 ; l'archive Windows separee fournit les instructions pour son runtime et son lanceur de distribution.
+
+VALIDATION
+Les empreintes de fichiers contenues dans les manifestes restent inchangees. Leurs references aux revues, campagnes et rapports locaux ne sont pas toutes embarquees ; l'archive ne se presente pas comme un dossier exhaustif de preuves. Les donnees, manifestes et preuves originaux restent preserves chez l'auteur. Le generateur historique du document d'architecture et l'ancien installateur de raccourci de la Carte, lies a la machine d'origine, sont exclus de cette distribution.
+Les tests fournis peuvent demander des outils et recus locaux absents. Les resultats historiques de la version locale ne valent pas qualification d'une autre machine.
+V0.5.0 : 4 composants avec chacun 2 revues PASS, 20 regressions PASS, 8 scenarios arithmetiques qualifies. Pour ces derniers, 6 avaient passe initialement ; 2 assertions de test sur Python interprete ont ete corrigees et revalidees sur les recus reels, sans recompilation. Le resultat negatif initial reste preserve localement.
+
+ACCES
+Publication publique pour consultation et telechargement. Aucun droit d'ecriture au depot n'est ajoute pour les visiteurs. Aucune licence open source n'est ajoutee par cette preparation.

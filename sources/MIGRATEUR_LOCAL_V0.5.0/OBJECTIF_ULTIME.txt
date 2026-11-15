@@ -1,0 +1,53 @@
+ETAT PRIORITAIRE V0.5.0 LIVREE : lire REPRISE.txt, CONTRAT_ARITHMETIQUE.txt et FINAL_RESULT.json. Nouveau profil pure-int32-bool-wrap-call-1 ; operations explicites modulo32. Les anciens contrats API ci-dessous restent applicables sous ces limites. Pas de migration universelle de site ni preuve universelle.
+
+HISTORIQUE CONSERVE
+ÉTAT PRIORITAIRE — V0.4.1 LIVRÉE
+Le cap ci-dessous est conservé. Au15novembre2026, la boucle locale bornée est implémentée et le C# original est compilé/exécuté après réadmission. Source/modèle/cibles comparés séparément sur cas finis.20tests d'intégration PASS, cinq groupes avec deux avis PASS, GUI C#→Rust392cas et raccourci V0.4.1 vérifiés. Lire FINAL_RESULT.json et REPRISE.txt.
+Les mentions historiques « à construire », « partiellement implémentée » et « original C# NOT_TESTED » plus bas décrivent les anciens jalons. Le profil reste pur Int32/bool sans arithmétique générale, état ou site complet. L'objectif universel n'est pas achevé.
+
+HISTORIQUE DE CONCEPTION CONSERVÉ
+
+CAP UTILISATEUR — MIGRATEUR AUTOMATIQUE LOCAL
+15 novembre 2026. Instructions prioritaires reçues : migrateur local maths vers le langage informatique choisi, par exemple Rust → maths puis maths → C#. Garder les fondations et choisir la meilleure méthode ; aucune réorientation artificielle nécessaire. Intégrer l'auto-correction dans l'atelier local.
+
+OBJECTIF
+Un atelier local prend du code existant ou une spécification mathématique, construit un modèle de comportement indépendant du langage, permet de modifier ce modèle et génère le code du langage choisi. L'objectif à terme inclut les projets et sites complets. Le QCM est un cas de validation, pas la frontière de l'outil.
+Le modèle commun représente types, valeurs, relations, invariants, états, transitions et effets. Les ressources d'un site, son interface, ses contrats externes et dépendances restent reliés au modèle. Il ne s'agit pas de comprimer tout un site dans une formule unique.
+Les importeurs et les générateurs sont des adaptateurs autour du même modèle. Rust → modèle → C#, C# → modèle → Rust et modèle → Python sont des parcours de cette architecture. Un langage proposé par l'interface doit avoir un adaptateur effectivement disponible ; une cible future ne doit pas être présentée comme prise en charge.
+
+AUTO-CORRECTION : FONCTION CENTRALE À CONSTRUIRE
+La boucle appartient au moteur de l'atelier, pas seulement au travail ponctuel des agents de cette conversation :
+1. Importer ou lire la spécification ; conserver l'entrée originale et fixer les comportements/contrats attendus.
+2. Générer, compiler et exécuter les contrôles applicables. Comparer source, modèle et cible avec des témoins indépendants, et des preuves formelles lorsque le profil le permet.
+3. En cas d'écart, enregistrer un contre-exemple reproductible et localiser sa cause : import, modèle, génération, compilation, environnement ou exigence ambiguë.
+4. Proposer une correction ciblée dans une nouvelle révision. Préserver les originaux, les contrats attendus et l'historique ; ne pas supprimer une fonctionnalité, affaiblir un test ou changer l'objectif pour obtenir PASS.
+5. Relancer le contrôle qui a échoué puis les régressions réellement affectées. Conserver aussi les tentatives infructueuses.
+6. Promouvoir un candidat seulement après accord du diagnostic modèle/contrats et des cibles réellement exécutées. Qualifier séparément chaque composant de l’atelier par deux revues indépendantes PASS sur ses fichiers finaux ; une modification du composant invalide ses avis concernés.
+7. Arrêter la boucle sur succès contrôlé, absence de progrès, ambiguïté qui exige une décision, outil manquant ou budget atteint. Afficher la cause précise ; ne pas boucler indéfiniment ni inventer une réussite.
+
+Les opérations routinières sans ambiguïté doivent progresser automatiquement dans le périmètre autorisé. Une intention métier nouvelle ou un comportement non représenté ne doit pas être deviné en silence. L'auto-correction du programme pour conserver son comportement est distincte d'une modification volontaire de ce comportement demandée par l'utilisateur.
+Chaque tentative porte les identités du modèle, des sources, du candidat et des contrôles ; les contre-exemples d'une ancienne version ne sont pas appliqués aveuglément à une autre. Une interruption conserve l'état et les reçus ; rouvrir l'atelier n'exécute pas automatiquement une action au résultat incertain.
+
+PAS DE PERTE D'INFORMATIONS
+Archiver les sources exactes, symboles, positions, commentaires, données et ressources dans le périmètre importé ; garder les liens de provenance et les éléments non représentés. Une donnée conservée n'est pas nécessairement traduite : afficher séparément conservé, représenté, généré, testé et restant. Aucun morceau non pris en charge n'est supprimé silencieusement.
+
+EXPÉRIENCE UTILISATEUR
+Accessible depuis le Bureau ; grand schéma avec zoom et déplacement libres. Vue globale du parcours et de la boucle de correction ; détails, erreurs, propositions et preuves à la demande. L'utilisateur choisit la source, le langage cible et les changements souhaités, puis suit le résultat sans devoir surveiller une multitude de fenêtres.
+
+ÉTAT RÉEL
+V0.2 a un modèle de modules purs Int32/bool et des générateurs Python/C#/Rust, avec import C# borné. V0.3 livre un pont de notation pour le profil exact du QCM, avec variante mathématique et comparaisons réelles. Ce sont des fondations vérifiées, pas un migrateur universel ni une boucle autonome de réparation déjà installée.
+V0.4 est partiellement implémentée : fondations copiées, adaptateurs et génération ébauchés, parseur Rust et vérificateur présents, première interface écrite. Les contrôles de syntaxe du parseur/vérificateur et trois imports Rust simples ont passé ; aucune campagne Rust vers C# ni boucle de réparation n'est qualifiée. migrator.py reste à écrire. L'interface n'est pas encore testée. Deux revues par composant restent à faire. Lire CHECKPOINT_ROOT.json et les checkpoints agents pour les preuves et défauts connus.
+
+PROCHAINE RÉALISATION
+Importer automatiquement un sous-ensemble explicite de Rust vers le modèle commun existant ; générer et vérifier du C# et les autres cibles déjà disponibles. Ajouter à ce même moteur le cycle durable diagnostic → candidat corrigé → vérification → double revue, avec budget et reçus. Étendre ensuite les profils mathématiques pour l'arithmétique, l'état, les effets, les données, les API et les sites complets.
+
+CLARIFICATION UTILISATEUR — 15 novembre 2026, contexte signalé 5 %
+« Mon but c'est de centraliser tous les langages informatiques en un. Les maths te paraissent une bonne option ? »
+Recommandation du coordinateur : un langage pivot formel fondé sur les maths, structuré en plusieurs niveaux, avec noyau commun et profils extensibles. Préserver comportements et intentions de haut niveau, types et règles numériques concrètes, états, effets, erreurs, ressources et interactions. Les importeurs et générateurs entourent ce centre commun. Une formule arithmétique seule ne suffit pas.
+Ne pas confondre universalité recherchée et couverture actuelle : une construction sans représentation ou sans équivalent cible doit rester archivée et signalée ; aucune traduction silencieusement approximative. La conservation du source ne prouve pas sa traduction. Une preuve universelle d'équivalence automatique pour tous programmes arbitraires n'est pas une promesse de l'atelier.
+Référence de conception consultée : https://mlir.llvm.org/ — représentation intermédiaire à plusieurs niveaux, extensible et modulaire. Inspiration architecturale seulement ; aucune installation ou adoption MLIR décidée à ce stade.
+
+JALON V0.4 RÉALISÉ — 15 novembre 2026
+Les paragraphes de conception ci-dessus décrivent le cap. État actuel : moteur local implémenté, Rust importé par grammaire complète dans le profil admis, C# importé avec Roslyn, génération Python/C#/Rust, vérification compilée et source Rust séparées. Auto-correction bornée réellement exécutée depuis le contrat conservé : défaut maximum réparé, C# compilé et contrôlé sur49cas. Suite root15tests PASS. Variante volontaire minimum conserve DIFFERENT avec la source ; ce n’est pas une erreur masquée.
+Interface Tk, zoom et déplacement libres, historique/drafts/provenance, adoption explicite d’une correction. Contrôle visuel réel : import Rust puis C# sur392cas, réouverture sans action automatique. Lire FINAL_RESULT.json et release-manifest.json pour le statut de livraison, les avis et l’installation définitifs.
+Restent hors profil : arithmétique générale, état, effets, concurrence, références et sites complets. Original C# : analyse et conservation, comparaison par exécution encore NOT_TESTED. Une conservation exacte ne signifie toujours pas que chaque élément est représenté ou traduit.

@@ -1,0 +1,24 @@
+QCM STUDIO — BACKEND MVC, périmètre du jalon
+Le Studio configurable à état ne passe pas dans le traducteur C#→maths→Rust. Il constitue l'application utilisateur demandée. qcm_source/qcm_rust restent une référence distincte, non livrée. Aucun transfert de PASS entre ces chantiers.
+
+API et architecture
+Endpoints et types camelCase définis dans QCM_STUDIO_CONTRAT.txt. QCM seul activé. IGameDefinition + GameCatalog sont un registre DI réellement consulté par /api/studio ; cela fournit un point d'extension du catalogue, pas des implémentations d'autres jeux. IPlayerProvider fournit un compte local unique stable, remplaçable ultérieurement ; aucune authentification ni intégration cloud.
+Programme lié exclusivement à 127.0.0.1, port OS, READY port. MIA_QCM_DATA_DIR absolu obligatoire. Mutations application/json seulement, origines étrangères refusées403, aucune CORS ; un client local sans Origin peut appeler l'API. L'éditeur local possède les bonnes réponses : ce modèle n'est pas une protection anti-triche entre utilisateurs.
+
+Continuité et état
+studio.lock FileShare.None conservé toute la vie du serveur ; un second processus sur les mêmes données échoue. Verrou mémoire sur opérations. Chaque mutation utilise une copie indépendante ; fichier temporaire unique, Flush(true), File.Replace atomique avec .backup (File.Move pour la première création), puis publication de la copie en mémoire. Aucun historique nettoyé automatiquement ; fichiers pending non rejoués. Corruption ou primaire absent avec backup : échec de démarrage explicite, jamais reset ni remplacement automatique depuis backup.
+Versions précédentes des QCM conservées dans quizHistory ; archives/tentatives conservées. Snapshot à démarrage : compte, titre, questions et options avec ordre tiré, barème et révision. Nom changé/quiz édité/archivé ensuite ne réécrit pas les anciens résultats.
+POST attempts : création201, replay requestId/payload identique200, collision409 ; recherche du reçu avant vérification du quiz actuel. Sauvegarde des réponses et édition du quiz exigent revision exacte409 sinon. Complete après achèvement retourne la même tentative sans nouvelle écriture, même avec ancienne revision.
+Question sans choix omise dans answers ; answers:[] efface toutes les réponses. En cours, pas de correct/explication dans le DTO de partie. Après achèvement, correction seulement result.details si showCorrection ; questions restent la projection publique.
+Données bornées : 1..50 questions,2..8 options ; titres/textes selon contrat ; IDs alphanumériques/tirets1..80, uniques à travers questions et options du quiz. Etat32MiB,200QCM,2000versions archivées,2000tentatives. Refus à la limite, sans suppression.
+
+Notation
+Tout-ou-rien : égalité des ensembles. Partiel uniquement multiple, bonnes/nbbonnes - mauvaises/nbmauvaises, pénalité0 si aucune mauvaise possible, plancher0. Fractions BigInteger réduites ; somme, pourcentage, seuil decimal et ordre des scores comparés exactement. Arrondi2décimales seulement présentation, demi au-dessus. Une somme des points affichés peut donc différer du score total correctement arrondi. correctCount compte les ensembles entièrement corrects. Scores séparés quiz/révision/barème, pourcentage interne décroissant puis date croissante et id.
+
+Validation
+Compilation réelle de copie par root : runtime/MVC-435b9e9dde044a58b58bce09c3705c8a/build.json, sans erreur ni warning. Tests HTTP principaux de root distincts de test_studio_backend_edges.py.
+Complément auteur : fraction exacte100/7 à seuils decimal voisins, concurrence vraie200/409, dossiers distincts, arrêt brutal après écriture confirmée/reprise même reçu, pending non rejoué, backup, corruption refusée, absence primaire avec backup refusée. Pas d'injection d'arrêt à chaque instruction d'écriture, pas de simulation panne physique ou disque défaillant : ne pas revendiquer ces garanties.
+Premier complément arrêté sur assertion du diagnostic tronqué par l'orchestrateur (STORAGE_INVALID présent au début du journal complet). Résultat négatif conservé ; lecture du journal complet corrigée dans le test.
+Deux revues root + Aigle sur empreintes finales attendues. Interface visuelle et orchestration ont leurs propres validations. Source backend inchangée pendant les suites.
+
+Complément auteur final : 26 contrôles PASS, evidence/studio-backend-edges-367da690cdce44a391b517f04028ef4a/result.json. Tous les processus de test fermés ; données de test isolées préservées.

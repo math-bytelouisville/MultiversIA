@@ -1,0 +1,180 @@
+{
+  "schema_version": "mia-studio-release-1",
+  "status": "REVIEWED_LOCAL_STUDIO",
+  "at": "2026-11-15T17:15:39.404141+00:00",
+  "files_sha256": {
+    "mvc_runtime.py": "92188186957566be6b0d443261ca5fe1f26f241396f2988d9b718d7e8a877173",
+    "launch_site.py": "25f32aaaf04fdc6fbefd53c7899c7267bf68ac8cd0004c6efcacf01946ed4430",
+    "install_studio_shortcuts.ps1": "c5bec64442767852d440a64076f1e4a80134617f965128f1f308d24c72a26370",
+    "app.py": "81138d3a026c61cb333c93d2986b30497e1200c3c8f637d6beb7b62f9858b050",
+    "ui_backend.py": "e18e26654ad8d52b8959ec45742e660fdd0361dcc5bd4b9392bb79e562f41485",
+    "math_core.py": "54dd71fe7a42f7f531a8ddbab23eca18367c7178d3693f84ccbd3ffa28891de8",
+    "code_backends.py": "cb41cf90c96684cc7fa583e34f21843f5fa7b7b9dd87c74dc448bf3e12947184",
+    "pipeline.py": "2f75501454949628e192a4fe55c86dae8e38b0a8de4de246e514558b728a95ce",
+    "migration.py": "807ca50446d7e231ad9e852d79269ed35d94afc4d0a07bae6d6337aa850813d2",
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "module_model.py": "ee897c54a2dc2adfcf89419a94e45c73259180e26cb66e5fda89559f6dc2ff63",
+    "module_backends.py": "6939dde1cd2b034953d9eb4677e667844af6209979c8ff21916fe9565b8fcd61",
+    "module_import.py": "a4259b14e5e69afe4fa46e5f42d84d4818de22d6fceacc8a426af33bc2700d59",
+    "module_import.ps1": "3d0dfb25779d021267d3665f010b5e04f3200246ddda3ea743b5693fff2cbdc1",
+    "module_pipeline.py": "401a53aec19a9cae8cf629f8ac15fe667dda57f36459fa8d06b43ad1aaefce5c",
+    "GUIDE.txt": "c0d3896105b69043d27eec7b41566e25bb6dbb71109dbd6b769c04cafc936cb7",
+    "GUIDE_STUDIO.txt": "e98cc0ee9cf304044b2a5b853e74ca03349c0f2515397228a1b31651a7d4e5cc",
+    "QCM_STUDIO_CONTRAT.txt": "cd7076aac290fa950e423154dc0e3645216461607e4f4308af5e41e515381535",
+    "qcm_studio/Program.cs": "c5b53894e1a7b9cdb7b36f28c889982996cad8556764334272a39567a78c4fb9",
+    "qcm_studio/QcmDemo.csproj": "1dfff0e68753b755ad9f91a74b3244e46be0af9785d4be9b0d493dd9b3c9e17e",
+    "qcm_studio/Rules.cs": "8f26d7134e9dcf1f006923438d069c7fe30246b867732441ca801b0403af7fae",
+    "qcm_studio/Controllers/QuizController.cs": "f4d54be857d5ba055e73fa9470a5053d74491578e8b2156e45066c1c1ed3ae62",
+    "qcm_studio/Controllers/StudioController.cs": "13354c248211e068ba53ec59da0caff60087b186f6e3630cc99c6d4072e3aad8",
+    "qcm_studio/Data/questions.json": "66af1188acdd6a79db5ddafe5ddcf0657766cf926a22a52c7be83ce36b15847c",
+    "qcm_studio/Models/QuizModels.cs": "35557d7cc4b623e7d1e4e79b9ef239edae84c730044a4ae0585b0d7bcae536c0",
+    "qcm_studio/Models/StudioModels.cs": "dab73245605f119a3f7c707c1b08bd35b4b72b9e364bed5b3da032b16f34b742",
+    "qcm_studio/Services/QuizCatalog.cs": "a4613a59d22294e2b74780c2caea3fc7b84506a561b64ac6352cbf9dc8cb1b0f",
+    "qcm_studio/Services/QuizService.cs": "957744f6d432c7ac3db97887fb77d9307d078750e3b82a08aa0bc6473e6f35fd",
+    "qcm_studio/Services/StudioExtensions.cs": "5b96e49de6c7cb6b5d513a8348ea926687b32bcc0df151832bd2bdd6b07c0d2f",
+    "qcm_studio/Services/StudioStore.cs": "dba50f86269d45247c00bcb0705a9709383a7d9d48e41504c5767df86c7aa774",
+    "qcm_studio/wwwroot/app.js": "20716b63727047b970197b5de83379ed615269739e6c2f40aed0995b19683ee4",
+    "qcm_studio/wwwroot/style.css": "c4432858fe1917ea42b4491a9c18de92cac1fb5fba3156d61c5ba9b8f9cd09c7",
+    "qcm_studio/Views/Quiz/Index.cshtml": "3804bfff884214547ca56182bbfe95542145d8ce52f8578835aadbfd5a5c4a5e",
+    "qcm_studio/Views/Studio/Index.cshtml": "757bd1039a29f42a23fa82d064410181fedeed44ec3c76e8c1369b2a337c2c89"
+  },
+  "components": {
+    "model": [
+      {
+        "report": "REVUE_ROOT_MODEL.json",
+        "report_sha256": "2774fc2b4c9c84cc0edd966b3fba428715de473ebf574e620a58926ed1ba1850",
+        "checked_files": 3
+      },
+      {
+        "report": "REVUE_EXPLORATEUR_MODEL.json",
+        "report_sha256": "b48700f418a2fd05d25b5ded8c53d03925f7bf47cc48e494a1f9595180eb3e64",
+        "checked_files": 3
+      }
+    ],
+    "backends": [
+      {
+        "report": "REVUE_ROOT_BACKENDS.json",
+        "report_sha256": "54c505b2069027551efe382d7e3099501520b636fe226f79fd982782541adaf7",
+        "checked_files": 3
+      },
+      {
+        "report": "REVUE_MOTEUR_BACKENDS.json",
+        "report_sha256": "32000a293642af2cd5983b4958515b15d249ea09d3d30bef66768802140a662a",
+        "checked_files": 3
+      }
+    ],
+    "import_pipeline": [
+      {
+        "report": "REVUE_INTERFACE_PIPELINE_MODULE.json",
+        "report_sha256": "ff3a3874ce03b66621958479d5ca5f92e838daf66d0242d717bec8cb85c91a53",
+        "checked_files": 4
+      },
+      {
+        "report": "REVUE_MOTEUR_ROOT.json",
+        "report_sha256": "c299e62dca80e0673f83d11c22a9abe0b839a2727c677bbeb82b6c782da699db",
+        "checked_files": 4
+      }
+    ],
+    "atelier": [
+      {
+        "report": "REVUE_EXPLORATEUR_INTERFACE.json",
+        "report_sha256": "d662cb3af63e16d82532f40bfbaf775980b3e57c88504ecdc4e01167c2e170cc",
+        "checked_files": 4
+      },
+      {
+        "report": "REVUE_MOTEUR_INTERFACE.json",
+        "report_sha256": "99faeba89768b908cf45a210a824b4d3d116890f8ba85ba3936df3d82a48a1c2",
+        "checked_files": 4
+      }
+    ],
+    "bootstrap": [
+      {
+        "report": "REVUE_INTERFACE_BOOTSTRAP.json",
+        "report_sha256": "4889377219a9de614bc0d06dd9f865e17fd082e077e98a014272e1639b99c007",
+        "checked_files": 2
+      },
+      {
+        "report": "REVUE_AIGLE_BOOTSTRAPS.json",
+        "report_sha256": "fec75e748ddc1d6c49de7476d8424dcf7579ca2d746f9b24755ae1f1fc5e66ae",
+        "checked_files": 2
+      }
+    ],
+    "studio_backend": [
+      {
+        "report": "REVUE_ROOT_STUDIO_BACKEND.json",
+        "report_sha256": "07ff70d7eb1530560f48c1b6fdb8fb844388a76444ef294ac39dd4f7e3dc0d83",
+        "checked_files": 6
+      },
+      {
+        "report": "REVUE_AIGLE_STUDIO_BACKEND.json",
+        "report_sha256": "df1b3b10386a52e7e8aca4cb5481650ba40bb153f986dfd39f321d1c65f84ba7",
+        "checked_files": 8
+      }
+    ],
+    "studio_frontend": [
+      {
+        "report": "REVUE_ROOT_STUDIO_FRONTEND.json",
+        "report_sha256": "633cebb4d1b5d2dadf794d2e6e21a3b4251277ebf00d3f4a000e7bfb64332737",
+        "checked_files": 3
+      },
+      {
+        "report": "REVUE_AIGLE_STUDIO_FRONTEND.json",
+        "report_sha256": "23106f8335bdd40a7ce26d8fb7c60ace32c9bcebb99685a26095c1f699f5f861",
+        "checked_files": 3
+      }
+    ],
+    "studio_runtime": [
+      {
+        "report": "REVUE_INTERFACE_STUDIO_ORCHESTRATION.json",
+        "report_sha256": "95d56da9df0ff171ab2ecbcc6d490f4b8899be5b449047b8142309b88e047317",
+        "checked_files": 5
+      },
+      {
+        "report": "REVUE_AIGLE_STUDIO_ORCHESTRATION.json",
+        "report_sha256": "cb9beb18d0de76259f56cf70e17399baedffa595b48c47927971d4534323ed11",
+        "checked_files": 4
+      }
+    ],
+    "guide": [
+      {
+        "report": "REVUE_EXPLORATEUR_GUIDE_STUDIO.json",
+        "report_sha256": "ed012e95f99d3bced9162bf8283d493a2b74419e5e744d9c37b6ceb81ab4d4f6",
+        "checked_files": 1
+      },
+      {
+        "report": "REVUE_AIGLE_GUIDE_STUDIO.json",
+        "report_sha256": "1f239557357b2a55ccd2f96104cabe759e0995b922fe8dcd833626853838a074",
+        "checked_files": 1
+      }
+    ]
+  },
+  "compiled_build": "LOCAL_PATH_REDACTED_NOT_DISTRIBUTED",
+  "evidence": {
+    "http70": "evidence/studio-http-7891f10545654031afbcc2c04d65defb/result.json",
+    "backend_edges26": "evidence/studio-backend-edges-367da690cdce44a391b517f04028ef4a/result.json",
+    "browser_final": [
+      "evidence/studio-final-desktop.jpg",
+      "evidence/studio-final-mobile.jpg"
+    ]
+  },
+  "scope": "Local single-account ASP.NET Core MVC QCM Studio; pure module maths/code atelier separately qualified",
+  "not_claimed": [
+    "Complete MVC Studio translation to Rust",
+    "Remote multiplayer/authentication integrations",
+    "Power-loss or physical storage fault proof"
+  ],
+  "release_audit": "REVUE_AIGLE_STUDIO_RELEASE.json",
+  "desktop_installation_report": "evidence/studio-desktop-shortcuts.json",
+  "native_launcher_report": "evidence/studio-launcher-qa.json",
+  "preserved_components": {
+    "source_version": "../SYNTHESE_MATHS_CODE_V0.1.0",
+    "files": [
+      "math_core.py",
+      "code_backends.py",
+      "pipeline.py",
+      "migration.py",
+      "legacy_bridge.py"
+    ],
+    "validation": "Byte-identical source and two historical reviews per component checked by Aigle; exact pointers in release_audit"
+  }
+}

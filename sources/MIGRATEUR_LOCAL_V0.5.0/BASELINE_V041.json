@@ -1,0 +1,33 @@
+{
+  "source": "MIGRATEUR_LOCAL_V0.4.1",
+  "manifest_sha256": "126ca683377a79adbe112d4852be91d288db66fed09b5ff3a8001accbbf7daa7",
+  "files_sha256": {
+    "rust_import.py": "6cdd975e32b89ff3dfdcce11fba89e0363e17134889fa7565d60eca01d4ad926",
+    "test_rust_import.py": "6d8ae02ffb6f3b8e6322d47c2099f8b095b013702e60543ace13809d390f0121",
+    "CONTRAT_RUST.txt": "2416e2175cd18d63b6eaa01703707cfb48ca682e46fbcdf782446406fb423a99",
+    "original_csharp.py": "425b6f21cda99ced8f565e6f7c27c9d6c88fcb2015904140d5971634ef3ff2f3",
+    "original_csharp_compile.ps1": "4f7adcf8cb67d84ac7e99bce2be637f152460c6d188b5c054dba59f714a11db9",
+    "original_csharp_run.ps1": "3d171a5dc82e377056742666658801b079b7aadc696e5709f7c95c7e4e0d3db5",
+    "test_original_csharp.py": "270ccbdbea06a68d1f334ec1937201c7243a4529b7e5b2d208ae7a392573f048",
+    "ORIGINAL_CSHARP_CONTRACT.txt": "179726cd1eb691f596cbcf7dc99b660f73075d01d5e478eb8bf4b52fb6a23174",
+    "verifier.py": "2afdf5bb84401e2e7603bbb652e7bab0302a5ac064688cd1ad889ddbf54a4803",
+    "test_verifier.py": "c00ec70f94e7c67ba2f04bb8917ab474f71916093fd28c7bd5755c92c25f5206",
+    "VERIFIER_NOTES.txt": "f565a841e8c429b941419461f07a2f6860f1cc6d324f70e0bb81810583f13d9b",
+    "migrator.py": "e887b83b28c1e094a51c8b9f52bda306487c70bd1b65b5edde2330eb56169b8b",
+    "common.py": "6ab09bd2f8e4d91e63105b80113a2ff4c5d5776895bdd6ae2663cf6a8c6b91ad",
+    "csharp_import.py": "2c89e973cd457235fb173b1ee57b916f778a172ef3efce0ab4daf8375a4461ea",
+    "emitters.py": "2cbfba3e1e7c3ef32fc10c941413307febef6a917eb034ccd9cbb555d2e651e2",
+    "test_migrator.py": "1347a714814b15a9040943644260ed3794af66a9c25eea897c7045b8d85462d9",
+    "app.py": "7f3921644511216326d3551b00cf5c33f1f4e8bc482186ebcd46bbc8abe73584",
+    "test_ui.py": "82965997dc1169e0bbc921abfe8b39f52c654094b9bf6d89d2e9e7b94cf148a3",
+    "GUIDE.txt": "f7a69e5899b05e4c051c76bdf13259c97defc0771af81040bbcd239c5165799e",
+    "install_shortcut.ps1": "585d92dfd70861c6e7aec122efd865113e0ff561026f2a495ee3ec7b233bfaac",
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "code_backends.py": "cb41cf90c96684cc7fa583e34f21843f5fa7b7b9dd87c74dc448bf3e12947184",
+    "module_import.ps1": "3d0dfb25779d021267d3665f010b5e04f3200246ddda3ea743b5693fff2cbdc1",
+    "math_core.py": "54dd71fe7a42f7f531a8ddbab23eca18367c7178d3693f84ccbd3ffa28891de8",
+    "module_model.py": "ee897c54a2dc2adfcf89419a94e45c73259180e26cb66e5fda89559f6dc2ff63",
+    "module_backends.py": "6939dde1cd2b034953d9eb4677e667844af6209979c8ff21916fe9565b8fcd61",
+    "BASELINE_V2.json": "a78044a07889c03bcf76df237e5d622e88a9a2ab7da7effb731f1e8cf66bc747"
+  }
+}

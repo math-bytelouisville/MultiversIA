@@ -1,0 +1,16 @@
+{
+  "schema": "mia-local-foundations-1",
+  "version": "0.5.0",
+  "status": "CANDIDATE_FOR_QUALIFICATION",
+  "at": "2026-11-15T19:42:26.863993+00:00",
+  "files_sha256": {
+    "module_model.py": "397c3f2a154738a0ed7acddee2a530ff394ae4f581b3a4716a72edf7f38b337c",
+    "math_core.py": "248f128e3eb8711ad50d5c99cea6ab274743b8b11f0fe8ce2a3697300c0ea315",
+    "module_backends.py": "72d98a836642c9cd19da58688aa173197f8b76a411c895dbbca9cefac400f677",
+    "code_backends.py": "6d4550fc3bf38e5bfe0a26a2284fbba65fdbf2d61f8dfdc6cfdff56d633dd7da",
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "module_import.ps1": "02482e39e553cc57658dce6c98fa54dbee25cf176e74dfc6f3d783519a8ddd42"
+  },
+  "scope": "New V050 source freeze for tests. Qualification requires final independent reviews and release manifest; historical BASELINE_V2 is not relabelled.",
+  "reason": "Roslyn unchecked expression wrapper operation resolution fixed; previous candidate manifest retained."
+}

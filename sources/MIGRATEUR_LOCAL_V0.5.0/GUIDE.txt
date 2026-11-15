@@ -1,0 +1,38 @@
+MIGRATEUR LOCAL V0.5.0 — SOURCE → MODÈLE COMMUN → CIBLE
+
+Ouvrir « MultiversIA - Migrateur local V0.5.0 » depuis le Bureau. Le lanceur ne démarre aucune importation, compilation ou expérience à l’ouverture. Les anciens raccourcis V0.4/V0.4.1 et leurs ateliers restent conservés ; cette version possède ses propres brouillons et archives. Les versions précédentes et le Studio QCM restent indépendants.
+
+PARCOURS
+1. Choisir Rust ou C# et saisir la source dans l’onglet Source. Cliquer « Importer ».
+2. Consulter les fonctions et les appels sur la carte. La molette zoome autour du pointeur ; glisser déplace le schéma. Les boutons +, −, Vue globale et les flèches du clavier permettent aussi de naviguer. Une actualisation de résultat conserve la position de la carte.
+3. L’onglet Mathématiques montre des équations lisibles. L’onglet Preuves conserve le module JSON complet, les noms d’origine, les contrats et la provenance.
+4. Pour changer une règle, ouvrir Propriété, sélectionner une fonction, modifier sa précondition/postcondition dans le JSON typé et décrire l’intention. « Créer une nouvelle révision » conserve l’original et les contrats des autres fonctions, y compris ceux qui appellent la fonction modifiée.
+5. Choisir une cible C#, Rust ou Python, régler l’option de correction puis cliquer « Générer et vérifier ». Une source ou une propriété encore modifiée doit d’abord être importée/révisée ; elle n’est pas ignorée silencieusement.
+
+MODÈLE COMMUN ET LIMITES
+Cette version utilise le profil fermé pure-int32-bool-wrap-call-1 : fonctions pures Int32/bool, arithmétique qui reboucle sur 32 bits, conditions et appels internes sans cycle, avec 1 à 8 fonctions. Ce profil est un début de langage pivot sémantique ; il ne prétend pas représenter tous les programmes Rust ou C#. Une construction non prise en charge doit être refusée, avec sa source conservée selon les bornes d’import.
+L’import ne lance pas le programme utilisateur. Après admission du profil, le vérificateur peut compiler et exécuter la source originale Rust ou C#, ainsi que les cibles produites, avec des cas de test bornés. La comparaison réelle du C# original introduite en V0.4.1 est conservée. L’onglet Résultats affiche explicitement la langue de cette source, son état de compilation/exécution et ses accords avec le modèle importé puis le modèle courant. Un contrôle absent ou refusé reste indiqué comme tel ; un succès d’une cible générée ne prouve pas que l’original a été exécuté. Il ne s’agit pas de la migration complète d’un site, de son interface, de ses données, de son réseau ou de sa concurrence.
+Un résultat TESTED_FINITE couvre les cas exécutés, pas toutes les entrées possibles. Contrats respectés, accord au modèle et accord à la source originale sont des constats séparés. DIFFERENT après une révision volontaire ne signifie pas que l’original a été remplacé.
+
+LA RÈGLE DES CALCULS INT32
+Les entiers signés sur 32 bits vont de -2147483648 à 2147483647. Cette version choisit explicitement un calcul modulo 2^32 : après la limite haute, on revient à la limite basse. Ainsi 2147483647 + 1 donne -2147483648, et l’opposé de -2147483648 reste -2147483648. Chaque étape applique cette règle, y compris dans une composition de fonctions.
+Les contrats et la vue mathématique utilisent add32(a,b), sub32(a,b), mul32(a,b) et neg32(a). Ils expriment addition, soustraction, multiplication et opposé avec cette règle précise. Les signes + et - généraux ne sont pas admis à leur place dans le texte des contrats.
+En Rust source, ces opérations doivent être explicites avec .wrapping_add, .wrapping_sub, .wrapping_mul et .wrapping_neg. En C# source, les opérations arithmétiques doivent être dans un contexte unchecked explicite ; un dépassement avec exception checked n’est pas cette même règle et n’est pas pris en charge.
+L’exemple proposé contient deux fonctions : AddPair/add_pair additionne deux entiers ; OverflowDemo/overflow_demo compose cet appel avec 2147483647. Avec l’entrée 1, la seconde fonction renvoie -2147483648. Les comparaisons, conditions et appels du profil précédent restent utilisables ; une fonction maximum peut toujours choisir « a si a >= b, sinon b ».
+La division, les exceptions de dépassement checked, les boucles, l’état et les comportements d’un site restent hors de ce profil. Aucun pourcentage global de couverture des langages n’est annoncé.
+
+CORRECTION BORNÉE
+L’option « Correcteur borné » s’applique uniquement à l’action explicite « Générer et vérifier ». L’interface autorise 0, 1 ou 2 essais. Elle ne lance jamais une boucle infinie et n’essaie pas de réparer un compilateur absent ou un langage hors profil.
+Le moteur peut chercher un nouveau corps qui respecte le contrat existant. Il ne doit pas changer le contrat pour obtenir un succès. Les candidats, contrôles et différences sont conservés. Le modèle corrigé ne devient le modèle éditable qu’après « Utiliser le modèle corrigé promu », disponible seulement quand le reçu indique sa promotion. Le module d’origine reste dans l’historique.
+Deux contrôles machine ne remplacent pas les deux revues indépendantes des composants de cet atelier.
+
+BROUILLONS, REPRISE ET PREUVES
+Le texte source est conservé séparément pour chaque langage. Les propriétés non envoyées sont conservées par module, révision et fonction. Changer de sélection ne transforme pas un brouillon d’un autre module en résultat validé. Les brouillons et la position de la carte sont enregistrés sous local/session.json. Si cette écriture échoue, la barre d’état indique une conservation en mémoire seulement.
+Chaque action crée un nouveau dossier local/requests/request-identifiant. La requête exacte, le contexte source, le résultat, leurs empreintes et les sorties du worker y sont conservés. Son sous-dossier backend contient les rapports du moteur et les références vers leurs preuves. La réadmission C# et certaines compilations utilisent aussi des chemins courts sous runtime/ de V0.5.0 : sources, binaires et journaux y restent conservés, reliés depuis les reçus par leurs chemins et empreintes (notamment readmission_evidence_dir, readmission et runtime_dir). L’historique vérifie les empreintes avant d’adopter un reçu. Les anciennes actions ne sont pas relancées lors d’une réouverture.
+« Ouvrir les preuves » ouvre le dossier de l’action sélectionnée. « Exporter JSON » enregistre le modèle actif et le reçu, sans lancer de calcul.
+Une importation dispose de 180 secondes, une révision de 120 secondes et une génération/vérification de 600 secondes au maximum dans le worker. En cas de dépassement, l’interface tente d’arrêter uniquement l’arbre de processus de ce worker et conserve les sorties partielles. Si Windows refuse cet arrêt d’arbre, elle arrête et attend le parent possédé, mais signale explicitement que l’arrêt des descendants reste non confirmé. Le résultat reste incertain/inconclusif ; aucune relance automatique n’est effectuée.
+Fermer l’atelier pendant une action le masque jusqu’au retour du worker ou à son délai maximal, puis le ferme. Cela évite de perdre son reçu. La fermeture ne lance aucune action supplémentaire.
+
+VÉRIFICATION DE CETTE LIVRAISON
+Les rapports de revue indiquent les empreintes exactes, les tests exécutés et leurs limites. Les tests Tk retirés de l’écran et les fixtures de transport vérifient l’interface ; ils ne suffisent pas à qualifier une vraie migration. Les campagnes réelles et le contrôle visuel sont conservés séparément dans les preuves de livraison.
+L’installation exige FOUNDATION_V050.json, manifeste des fondations courantes, et vérifie toutes les empreintes déclarées dans le manifeste de livraison. BASELINE_V2.json reste une trace historique ; il ne remplace pas le contrôle des fondations V0.5.0.

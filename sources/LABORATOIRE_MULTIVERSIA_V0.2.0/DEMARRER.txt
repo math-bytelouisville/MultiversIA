@@ -1,0 +1,30 @@
+MULTIVERSIA — LABORATOIRE V0.2.0
+
+Ouvrir « MultiversIA - Laboratoire » sur le Bureau.
+
+POUR VOIR LES AGENTS APPRENDRE
+Créer une mission. Les agents cherchent une règle dans un petit monde simulé.
+Lancer une expérience ou une séquence. La prédiction est conservée avant le résultat.
+Si le résultat surprend les agents, ils refont des essais puis peuvent réviser leur connaissance.
+Tourner la molette pour zoomer librement ; glisser pour déplacer le schéma.
+Cliquer sur une expérience, un diagnostic ou une connaissance pour consulter ses preuves à droite.
+Pause arrête la séquence après l'expérience déjà en cours. Réouvrir l'application ne relance rien.
+
+POUR EXAMINER DU C#
+Cliquer sur « C# → maths ». Un exemple de maximum de deux entiers est prérempli.
+Le programme décrit le calcul. Le contrat décrit ce que son résultat doit respecter.
+Lancer l'analyse pour obtenir la traduction mathématique et, si Lean la vérifie, une preuve ou un contre-exemple.
+Seuls certains petits programmes purs sont acceptés : entiers/booléens, comparaisons et conditions. Pas encore de calcul arithmétique, boucle, appel externe ou projet complet.
+Un verdict « conditionnel » porte sur la traduction. L'équivalence de la traduction avec C# n'est pas elle-même une preuve formelle.
+
+CE QUE CETTE VERSION DÉMONTRE
+Un laboratoire local qui exécute des règles et conserve ses décisions, observations et révisions.
+Les agents de ce prototype sont des algorithmes symboliques : aucun modèle de langage n'est chargé.
+La comparaison publiée porte sur six petits mondes déterministes. Elle ne démontre ni intelligence générale, ni supériorité générale d'une stratégie.
+
+OÙ RETROUVER LES INFORMATIONS
+local/ : missions et analyses effectuées depuis l'interface.
+evidence/ : essais de qualification, campagnes et résultats de revue.
+GUIDE.txt : commandes et limites détaillées.
+REPRISE_AUTOMATIQUE.txt : point de reprise du travail de construction.
+Les anciennes versions et l'ancien raccourci « MultiversIA - Carte » sont conservés.

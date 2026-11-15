@@ -1,0 +1,19 @@
+{
+  "source": "LOCAL_PATH_REDACTED_NOT_DISTRIBUTED",
+  "copies_sha256": {
+    "app.py": "819143a278f5d0ae8ccbbcda9051c03bae5217fbb9966d1ee2e3177f66a9fcf6",
+    "ui_backend.py": "73cef2b949cc5121ae298b2a54b76867a2e8953812881b22dfb1e1d2ad24da16",
+    "math_core.py": "54dd71fe7a42f7f531a8ddbab23eca18367c7178d3693f84ccbd3ffa28891de8",
+    "code_backends.py": "cb41cf90c96684cc7fa583e34f21843f5fa7b7b9dd87c74dc448bf3e12947184",
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "migration.py": "807ca50446d7e231ad9e852d79269ed35d94afc4d0a07bae6d6337aa850813d2",
+    "pipeline.py": "2f75501454949628e192a4fe55c86dae8e38b0a8de4de246e514558b728a95ce",
+    "test_math_core.py": "92369c8cc5997fff8f9996a7038924e5fb4f8f38bd42190d5be19dd79d6ea0cc",
+    "test_code_backends.py": "ac002e0852a83c6d4332a885a92ae04fa38d8a26ce93bf63d6d5760bd0a552da",
+    "test_ui.py": "8a27ce9c93ca727fe0c1046839b8fdc294a68590d19873e4d42f36b0f2d0dd66",
+    "test_pipeline.py": "8e5523bcf4982815d153e704f4924ae9c731a8b7b385e753688b7f484403b78c",
+    "GUIDE.txt": "a8401ab2a82009c0973cd361fe9679da7677783d17052d700f8bc048c799f926",
+    "install_shortcut.ps1": "3481977de1023ed58a8ab45cb8a44c485b9257a36c89cdf2d01d797d03edf519"
+  },
+  "scope": "Source-only copies; old evidence/runtime/local and old shortcuts preserved. V0.2 work not yet qualified."
+}

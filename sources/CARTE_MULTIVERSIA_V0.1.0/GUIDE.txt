@@ -1,0 +1,49 @@
+MULTIVERSIA — CARTE DE SUIVI V0.1.0
+
+OUVRIR
+Double-cliquer sur « MultiversIA - Carte » sur le Bureau.
+Secours : ouvrir « Lancer MultiversIA.cmd » dans ce dossier.
+Python et Tk déjà présents sur ce PC sont utilisés ; aucune nouvelle dépendance.
+
+SE REPÉRER
+Molette sur la carte : zoom libre, de 25 % à 280 %, autour du pointeur.
+Glisser sur la carte : se déplacer.
+Clic : sélectionner un élément. Double-clic : explorer une mission ou une expérience.
+« Vue globale » et « Voir la mission » recentrent la carte.
+Les noms se simplifient à petite échelle ; les états et valeurs apparaissent en rapprochant la vue.
+Le panneau de droite sépare résumé, journal et données brutes. Il se redimensionne par sa séparation verticale.
+Sur une expérience, « Voir le parcours et les preuves » rapproche la carte de ses événements réels. Cliquer sur une étape ouvre sa preuve et son empreinte. Les étapes détaillées disparaissent de la carte en dézoomant sous 115 %, mais restent intégralement dans le journal.
+Les expériences sont présentées par groupes de 12, des plus récentes aux plus anciennes ; toutes restent accessibles avec les flèches sous la carte. Les preuves complètes ne sont pas coupées dans les onglets ou l'export.
+
+ESSAYER
+1. Cliquer sur « Nouvelle mission » et donner un nom.
+2. Cliquer sur « Nouvelle expérience », choisir A, B et la prédiction, puis lancer.
+3. Sélectionner l'expérience pour voir le résultat et les événements.
+4. Pour tester la reprise, choisir la panne « Après effet ». Puis utiliser « Rapprocher / reprendre » sur cette expérience : le reçu simulé est recherché, sans second effet.
+5. « Après envoi » ne possède pas de reçu : la reprise reste incertaine et ne répète pas automatiquement l'action.
+
+SUIVRE
+Les journaux sont relus périodiquement, environ toutes les 1,2 secondes lorsque la lecture précédente est terminée. Ce n'est pas un délai garanti. L'interface affiche l'heure du dernier retour et les erreurs de lecture.
+Une commande tourne dans un processus séparé ; la carte reste consultable. Le zoom et la sélection ne changent pas lors des rafraîchissements.
+Un journal momentanément occupé, absent ou incohérent apparaît comme non vérifié. La dernière vue connue peut rester affichée, explicitement périmée. Aucune réparation automatique.
+Une action EN_COURS indique un envoi journalisé ; elle ne prouve pas qu'un processus travaille encore. Pour examiner un résultat incertain, utiliser la reprise.
+Une prédiction fausse est un écart observé. Elle ne permet pas de conclure automatiquement à une cause ou à une nouvelle règle.
+
+DONNÉES ET CONTINUITÉ
+local/missions/M-.../mission.json : nom et identité de la mission.
+local/missions/M-.../data/ : journal, reçus, permissions et preuves du moteur.
+local/view.json : position, zoom et sélection restaurés au redémarrage.
+local/exports/ : exports JSON complets, avec source et date de vérification.
+evidence/ : données de tests distinctes des missions personnelles.
+Ne pas supprimer une base pour débloquer une mission. Pour sauvegarder une mission, fermer les applications qui l'utilisent et copier son dossier entier.
+Si une commande est en cours à la fermeture, la fenêtre attend sa fin ou son délai maximal avant de se fermer. Après une fermeture forcée ou un arrêt Windows, relire le journal et rapprocher les actions incertaines ; ne pas lancer une répétition à l'aveugle.
+
+HISTORIQUE ET ARCHITECTURE
+Le cycle existant CYCLE_DURABLE_V0.1.0/data est seulement observé. Les expériences nouvelles de cette carte sont isolées dans local/missions. Aucun fichier de l'historique n'est réécrit par le lecteur.
+« Architecture » ouvre la revue de cette interface et les 14 sections intégrales de l'architecture. Les versions précédentes restent intactes.
+Le module de diagnostic causal, les connaissances révisables, les modèles IA et Lean ne sont pas encore raccordés. Ils sont indiqués comme prévus, sans activité inventée.
+
+LIMITES
+La carte suit ces journaux locaux, pas tout ce que fait Codex ou le PC. Le moteur exécute une simulation lampe déterministe dont la règle est accessible dans le code. Aucun modèle n'est chargé. Aucun gain scientifique n'est démontré ici.
+Les 15 tests de la carte couvrent simulation, lecture, refus, corruption, crash/reprise, zoom sur les événements et interface hors écran. Les contrôles visuels et les vérifications finales sont consignés dans checkpoint.json.
+Les protections et limites du moteur V1 restent applicables : pas de garantie sur les coupures électriques, les effets externes réels ou un plafond global CPU/GPU.

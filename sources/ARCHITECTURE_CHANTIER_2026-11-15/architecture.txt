@@ -1,0 +1,229 @@
+MULTIVERSIA — ARCHITECTURE DE TRAVAIL
+Révision du 15 novembre 2026 · conception évolutive · non intégrée
+
+01 | Décision et lecture rapide
+
+But : une petite équipe d'agents propose des explications, choisit des expériences, confronte ses prédictions aux observations et améliore ses connaissances sans effacer ses erreurs.
+
+Décision : construire autour d'un seul contrôleur durable, avec deux boucles métier : EXPLORER ce qui manque et DIAGNOSTIQUER ce qui surprend. Les modèles proposent ; le contrôleur applique les règles ; les observations et les évaluations départagent les propositions.
+
+L'idée nouvelle de l'utilisateur est retenue : une surprise déclenche une revalidation ciblée des connaissances déjà acquises. Ce mécanisme appartient au moteur d'apprentissage ; il ne nécessite pas une IA supplémentaire.
+
+Schéma général :
+Mission → hypothèses → plan et prédictions figés → contrôleur → expérience → observation vérifiée
+                                                                        ↓
+Mémoire versionnée ← décision de révision ← comparaison prédiction / observation
+        ↓                                  ↓ si surprise
+Prochain plan ← diagnostic ← contrôles de mesure + références + expériences discriminantes
+
+Permissions, budgets, journal et traçabilité entourent tout le circuit. Les contrôles s'appliquent aussi aux diagnostics, aux critiques, aux lectures sensibles et aux vérifications coûteuses.
+
+Cette livraison améliore la conception. Elle ne déclare ni apprentissage autonome implémenté, ni validation scientifique. L'ancien HTML V0.1.6 et le logiciel Cycle durable V0.1.0 gardent leurs numéros. Cette révision datée n'invente pas une succession V0.1.7–V0.1.9 dont les documents complets n'ont pas été fournis.
+
+02 | Point de départ vérifié
+
+Source de conception : MultiversIA_Hybride_V0.1.6_Cycle_Durable (2).html. Nouvel apport : le texte collé sur la surprise, la revalidation et les dépendances entre connaissances.
+
+Cycle durable V0.1.0 : engine.py contient déjà préparation, contrôle, intention, envoi, reçu, observation et reprise. Le registre valide les références et leurs valeurs. Le rapport archivé compte 37 tests réussis ; ces tests n'ont pas été relancés pour cette revue documentaire. La loi de la lampe est accessible dans le code et la prédiction vient de l'utilisateur. Ce n'est pas encore une expérience d'apprentissage avec solution cachée.
+
+Point d'intégration concret : Engine.projection refuse les types d'événements inconnus. Ajouter directement KNOWLEDGE_REVISED au journal V1 rendrait sa lecture incompatible. Le protocole actuel n'accepte également que la lampe booléenne. L'extension exige donc un nouveau contrat et une lecture de compatibilité explicite, pas seulement un nouveau prompt.
+
+CSharpLeanVerifier : le checkpoint local F001171 décrit une V0.2.3 globale INCONCLUSIVE, avec transport testé sur simulations et campagne réelle finale non qualifiée. Il restera un vérificateur spécialisé facultatif. Une preuve Lean porte sur la propriété traduite ; elle ne prouve pas seule la fidélité du traducteur, la pertinence du contrat ou le comportement réel.
+
+Prompt Manager : rôle cible de distribution des missions et de restitution de la mémoire. Son raccordement au cycle présent n'est pas démontré ici. Il ne doit pas devenir un second registre concurrent de la vérité.
+
+Les propositions ci-dessous sont des décisions pour ce chantier ; leur réalisation est ordonnée dans la feuille de route.
+
+03 | Composants et responsabilités
+
+Interface : affiche mission, coût, état d'exécution, qualité des observations, règles en révision et raison de la prochaine expérience. Elle ne transforme jamais un verdict incertain en succès.
+
+Contrôleur durable : seul composant autorisé à déclencher les adaptateurs. Réserve le budget, journalise l'intention, vérifie les droits au point d'effet, collecte le reçu, rapproche les résultats incertains. Les refus et dépassements restent visibles. Le noyau ne décide pas qu'une explication est vraie.
+
+Planificateur : construit une file bornée de propositions EXPLORATION, DIAGNOSTIC ou VALIDATION. Utilise d'abord des règles déterministes lisibles. Il ne s'accorde aucun droit et ne peut pas dépasser le budget parent. Aigle est un rôle de critique de ces propositions, pas un superutilisateur ni une preuve automatique d'indépendance.
+
+Registre des preuves : garde observations brutes, reçus, contexte, sources, versions et empreintes. Il distingue une donnée reçue d'une donnée admise à l'analyse. Les sorties de modèles sont des propositions avec provenance.
+
+Mémoire des connaissances : conserve les révisions, dépendances, conditions d'application et liens de preuve. Fournit une vue reconstruite pour le planificateur et Prompt Manager. Les résumés sont des caches révocables ; la preuve reste dans le registre.
+
+Moteur de diagnostic : ouvre un dossier, contrôle la mesure, propose des hypothèses concurrentes et des expériences discriminantes. Peut conclure INCONCLUSIF. N'altère pas les anciennes observations.
+
+Adaptateurs : simulateur, modèle local, vérificateur C#/Lean et, plus tard, monde externe. Chacun déclare entrées/sorties, effets, idempotence, rapprochement, ressources requises et niveau de qualification. Une capacité non qualifiée n'est pas disponible automatiquement.
+
+Évaluateur : utilise les cas réservés pour mesurer la qualité. Les agents ne peuvent modifier ni les réponses attendues, ni les critères d'acceptation, ni les résultats déjà publiés. Les solutions cachées restent hors des données accessibles aux agents.
+
+Organisation initiale : un processus de contrôle et des modules séparés, sans microservices ni nouvelle plateforme d'orchestration. Isoler les processus exécutants quand leurs effets ou leur accès aux solutions l'exigent. Une séparation de dossiers seule ne constitue pas une isolation.
+
+04 | Trois axes d'état, jamais un unique voyant vert
+
+Exécution : PRÉPARÉE, INTENTION_ENREGISTRÉE, EN_COURS, RÉSULTAT_À_VÉRIFIER, TERMINÉE, ÉCHEC_DOCUMENTÉ, REFUSÉE. Conserver la signification existante. Une interruption demandée est un événement de contrôle : elle ne prouve pas l'absence d'effet déjà envoyé.
+
+Observation : REÇUE → ADMISSIBLE ou EN_QUARANTAINE. ADMISSIBLE signifie que les contrôles définis de provenance, format, cohérence et mesure sont satisfaits, pas que toute erreur physique est impossible. Une nouvelle contestation produit une nouvelle évaluation de qualité ; les octets originaux restent conservés.
+
+Connaissance : HYPOTHÈSE → ÉTAYÉE_DANS_UN_PÉRIMÈTRE → EN_RÉVISION ; une révision peut aboutir à RÉFUTÉE_DANS_UN_PÉRIMÈTRE ou être REMPLACÉE par une version précisée. Les conditions et preuves accompagnent toujours le statut. « ÉTAYÉE » n'est jamais une vérité universelle.
+
+Exemple : une expérience TERMINÉE produit une observation ADMISSIBLE qui contredit une règle. L'exécution a réussi ; la prédiction est fausse ; la règle passe EN_RÉVISION. Une mesure absente laisse l'observation en quarantaine et ne réfute pas la règle.
+
+Les verdicts PROUVÉ / RÉFUTÉ / INCONCLUSIF des vérificateurs restent dans un quatrième champ spécialisé avec propriété, outil, version et périmètre.
+
+05 | Contrats de données à construire
+
+Tous les messages : schema_version, identité unique, mission_id, provenance, références, empreintes des contenus et tailles bornées. Refuser clés dupliquées, champs inconnus et valeurs hors domaine. Valider ensuite les relations et valeurs contre les sources : un JSON bien formé ne suffit pas.
+
+Contexte : context_id, version de simulateur ou environnement, paramètres pertinents, protocole, version du capteur, unités, conditions initiales et seed si applicable. Une valeur inconnue reste explicitement inconnue. Le contexte a une empreinte ; l'équivalence expérimentale se décide sur les champs déclarés pertinents, pas sur la seule égalité d'empreinte.
+
+Prédiction : prediction_id, action_id, hypothesis_revision, valeur ou distribution attendue, tolérance justifiée, contexte et identifiant de commit avant envoi. Le contrôleur vérifie l'ordre des événements ; un booléen locked_before_test n'est pas une preuve. Une probabilité doit être définie pour un événement observable et les distributions doivent être normalisées.
+
+Observation : observation_id, action_id, receipt_ref, contexte observé, mesure brute, unité, incertitude de mesure si connue, qualité et références des fichiers bruts. Manquant n'est jamais converti en zéro ou false.
+
+Connaissance : knowledge_id, revision_id, proposition testable, conditions d'application, prédictions attendues, preuves pour et contre, critères de réfutation, dépendances typées, références des tests, statut et révision remplacée. Ne pas stocker un pourcentage de confiance arbitraire comme s'il était calibré.
+
+Dossier de diagnostic : diagnostic_id, observations déclenchantes, connaissances concernées, hypothèses concurrentes incluant « autre/inconnue », tests prévus, résultats, budget réservé/consommé, règle d'arrêt et conclusion avec limites.
+
+Expérience de référence : reference_id, version, règle visée, contexte admissible, procédure de remise à l'état initial, prédiction figée, contrôle positif/négatif ou limite, répétitions et règle de décision. Une observation historique est une preuve ; elle ne compte pas comme une nouvelle exécution de référence.
+
+Décision de révision : anciennes et nouvelles révisions, justification, preuves, identité du décideur et critères appliqués. Pas de vote majoritaire entre modèles pour transformer une proposition en connaissance.
+
+06 | Comment traiter une surprise
+
+1. Détecter un écart selon une règle annoncée avant le test. Cas déterministe : discordance sur une observation admissible dans le contexte prévu. Cas bruité : critère statistique pré-enregistré, référence stable et traitement des observations répétées ; aucun seuil universel de type « 3 erreurs ».
+
+2. Dédupliquer l'alerte. Une même observation ne crée qu'un dossier pour la même règle/version de détection. Conserver les alertes supplémentaires dans le dossier. L'ouverture d'un dossier n'exécute aucune action à elle seule.
+
+3. Vérifier la chaîne de mesure : action réellement effectuée, reçu lié, unités, capteur, paramètres, versions, état initial. Une panne de collecte conduit à EN_QUARANTAINE ou INCONCLUSIF, pas à « loi du monde changée ».
+
+4. Vérifier l'applicabilité. Si les conditions sortent du domaine connu, ouvrir une hypothèse de généralisation. Ne pas déclarer l'ancienne règle fausse dans son ancien domaine.
+
+5. Répéter quand c'est pertinent et autorisé. Une répétition scientifique utilise un nouvel action_id et une nouvelle operation_key, liés par repeat_of. Une reprise après panne garde l'identité d'origine et cherche son reçu. Répéter une mesure n'est pas répéter aveuglément une action dont l'effet reste inconnu. Dans un monde avec état, prévoir remise à zéro, délai ou effets de l'ordre.
+
+6. Rejouer quelques références : mesure témoin, cas positif, cas négatif, limite pertinente. Établir avant les résultats les prédictions de chaque hypothèse pour chaque test.
+
+7. Choisir le test qui sépare le mieux les explications encore possibles, sous budget et risque. Si un facteur seul ne suffit pas, tester une interaction. Le plan n'est pas obligé de trancher entre des causes indiscernables avec les mesures disponibles.
+
+8. Réviser après application des critères. Conserver plusieurs explications si nécessaire. Un seul contre-exemple admissible peut réfuter une règle déterministe universelle dans son domaine ; il ne prouve pas automatiquement une cause de remplacement. Confirmer une nouvelle règle nécessite des observations prospectives, distinctes des résultats qui ont servi à la formuler.
+
+9. Fermer avec : cause étayée, erreur de mesure étayée, contexte différent, anomalie non reproduite, ou inconclusif/budget épuisé. Ne pas traduire « non reproduite » par « connaissance confirmée ». Réouverture uniquement pour nouvelle preuve pertinente, nouveau contexte ou budget explicitement renouvelé.
+
+Le contrôle des dérives progressives viendra après le diagnostic déterministe. Les références ne doivent pas s'ajuster automatiquement à chaque anomalie, sinon le système pourrait absorber une panne dans sa nouvelle normalité. Définir période de référence, fréquence, faux positifs acceptables et méthode de validation avant activation.
+
+07 | Dépendances, révision et mémoire
+
+Deux types de liens : DÉPEND_DE (prémisse nécessaire) et ASSOCIÉ_À (piste utile). Une règle en révision rend ses descendants nécessaires À_REVALIDER pour les usages concernés ; elle ne les réfute pas mécaniquement. Les liens associés n'entraînent pas de cascade automatique.
+
+Les dépendances nécessaires entre révisions forment un graphe sans cycle : rejeter l'ajout d'un cycle. Les liens associatifs peuvent être cycliques, mais leur parcours conserve un ensemble de visites. Dédupliquer les tâches et limiter l'expansion pour éviter qu'une alerte relance toute la mémoire.
+
+Une révision de connaissance et les marqueurs de revalidation des dépendants doivent apparaître atomiquement dans la projection utilisée par le planificateur. Pendant sa reconstruction, la vue est indisponible ou explicitement périmée ; aucune utilisation silencieuse d'un descendant encore présenté comme valide.
+
+Ne pas remplacer K1 par K2 partout : les missions anciennes restent attachées à K1. Les nouvelles missions sélectionnent la révision applicable à leur contexte. L'ancienne connaissance conserve sa validité historique et ses contre-exemples.
+
+Les notes de Prompt Manager portent les identifiants des révisions et le numéro de séquence source. Si elles sont périmées, les reconstruire ou refuser de les employer comme état courant. Les résumés ne peuvent ni supprimer une contradiction ni créer une preuve.
+
+08 | Choix des tests et coût du diagnostic
+
+Ordre initial : intégrité/mesure → applicability/contexte → références ciblées → expérience discriminante → nouvelle exploration. Parmi les tâches autorisées, préférer celles ayant le plus d'impact sur la mission et séparant réellement les hypothèses, puis le coût moindre. Chaque choix expose une justification courte.
+
+Ne pas annoncer un gain d'information chiffré sans probabilités justifiées. Au premier jalon, compter simplement les paires d'hypothèses qui prédisent des résultats différents, puis départager par coût et identifiant stable. Cette heuristique est un choix testable, pas une optimalité démontrée.
+
+Chaque mission possède un budget global ; chaque diagnostic reçoit une tranche de ce budget, jamais un budget supplémentaire implicite. Compter appels envoyés, tentatives, refus, temps, stockage et recherche de preuve séparément. Une nouvelle version de protocole ne réinitialise pas les compteurs parents.
+
+Prévoir une réserve bornée pour terminer le journal et enregistrer un checkpoint. Réserver avant envoi et rapprocher les coûts réels après réponse. Un appel envoyé dont le coût reste inconnu garde sa réservation ; ne pas le traiter comme gratuit.
+
+Exemple de budget pour un futur témoin sans IA : 8 nouvelles expériences maximum par diagnostic, 1 seul diagnostic actif, au plus 2 expériences pour le même couple hypothèse/contexte, puis clôture INCONCLUSIF si le budget ne permet pas de distinguer les causes. Valeurs de départ à qualifier, non seuils scientifiques. La référence ne doit pas partager la seed d'un essai si l'objectif est une répétition indépendante sous bruit.
+
+Le planificateur évite la famine de l'exploration par un quota de travail défini au début de la mission. En cas de mesure globalement non fiable, suspendre les expériences qui en dépendent et poursuivre seulement les travaux indépendants autorisés.
+
+09 | Durabilité et raccordement au prototype
+
+Créer une révision logicielle isolée du cycle, avec schéma V2 explicite. Conserver l'archive V1. Première étape : import en lecture seule vers un dossier de travail neuf ; référencer les empreintes originales, vérifier l'intégrité et produire un rapport de migration. Ne pas changer les observations V1 pour remplir des champs V2 inconnus.
+
+Un seul journal canonique et ses vues dérivées. Les tables de connaissances, diagnostics et index se reconstruisent depuis les événements. Le registre d'effets de l'adaptateur reste distinct, comme les reçus du simulateur actuel. Prompt Manager consomme une vue, pas une copie modifiable du canon.
+
+Les événements V2 ont une séquence globale dans la mission ; action_id peut être absent pour un événement de connaissance mais l'identité de l'entité métier est obligatoire. Le réducteur valide la liste autorisée et les transitions. Une version inconnue entraîne refus de lecture opérationnelle, jamais omission silencieuse.
+
+Événements à spécifier : PREDICTION_COMMITTED, OBSERVATION_QUALITY_ASSESSED, ANOMALY_OPENED, DIAGNOSTIC_PLAN_COMMITTED, DIAGNOSTIC_CLOSED, KNOWLEDGE_REVISION_CREATED et REVALIDATION_REQUIRED. Les événements d'exécution existants conservent une traduction explicite.
+
+Les commandes portent une clé d'idempotence ; même clé et mêmes octets donnent le même résultat logique, même clé et contenu différent sont refusés. Les écritures se font via un seul contrôleur coopératif. La mise à jour du journal et de ses vues locales partage une transaction lorsque possible.
+
+Le décalage possible entre journal et témoin de tête du prototype reste une limite ouverte. Le nouveau module ne doit pas « réparer » automatiquement ce décalage. Qualifier une procédure de récupération séparée, avec preuves préservées, avant de promettre une reprise de toutes les pannes.
+
+Un effet externe incertain reste incertain après redémarrage. Arrêt d'un processus ne signifie pas annulation d'une requête déjà partie. Le contrat d'adaptateur indique comment rechercher le reçu ; sans capacité fiable, pas de répétition automatique.
+
+10 | Exemple discriminant : la lampe change
+
+Exemple de conception, non résultat exécuté. Ancienne règle : lampe = A ET B. Une expérience A=1, B=0 prédit 0 et observe 1. Hypothèses : H1 règle devenue A OU B ; H2 capteur bloqué sur 1 ; H3 écart ponctuel, règle ET conservée ; H4 autre cause non modélisée.
+
+Références :
+                 H1 OU    H2 bloqué    H3 ET
+A=0, B=0           0          1          0
+A=1, B=1           1          1          1
+A=0, B=1           1          1          0
+
+Le cas 00 sépare H2 de H1/H3 ; 01 sépare ensuite H1 de H3. Le cas 11 ne sépare pas ces hypothèses, mais reste un contrôle positif utile. Le choix doit dire s'il recherche une séparation des causes ou un contrôle de la mesure.
+
+Même si les résultats correspondent à OU, une panne du capteur produisant exactement cette table reste possible : le diagnostic ne peut exclure ce qu'il ne mesure pas. Conclusion admissible : « données compatibles avec OU dans ce périmètre ; localisation physique non démontrée ». Une seconde mesure indépendante peut départager si elle est disponible.
+
+Le simulateur d'évaluation conserve la cause injectée hors du contexte de l'agent. Le diagnostic reçoit uniquement les observations autorisées. La comparaison à la cause réelle appartient à l'évaluateur après clôture.
+
+11 | Mesurer si cette architecture aide réellement
+
+Comparer trois stratégies sans modèle d'abord : aucune revalidation, reprise exhaustive bornée, diagnostic ciblé. Même catalogue de mondes, mêmes observations initiales, mêmes cas et mêmes plafonds. Compter le coût de construction des références et distinguer ce coût initial du coût amorti de réutilisation.
+
+Cas : monde stable, changement brusque, panne de capteur, bruit transitoire, changement de contexte, interaction de facteurs, cause indiscernable, retour à une ancienne règle. Inclure des cas négatifs où il ne faut pas réviser. Pour le bruit, plusieurs seeds et répétitions indépendantes ; pas une réussite choisie après coup.
+
+Mesures : fausses alertes, changements manqués, délai de détection, actions consommées, conclusions causales erronées, proportion d'inconclusifs, exactitude prospective après révision et calibration si probabilités annoncées. Rapporter toutes les missions, y compris refus et budgets épuisés. Ne pas récompenser seulement le nombre d'anomalies trouvées.
+
+Figer avant campagne les seuils d'acceptation, le nombre de cas, les seeds, le budget et la méthode de comparaison. Garder les cas d'évaluation séparés des cas utilisés pour concevoir le diagnostic. Une campagne pilote peut aider à fixer ces choix ; ses résultats ne servent pas ensuite de validation finale.
+
+Ajouter ensuite un modèle seul, puis plusieurs à budget total comparable si le premier est utile. Pour tester les notes de mémoire, donner les mêmes observations aux deux bras et ne varier que les notes. Pour tester l'accès aux observations, faire une autre expérience explicitement différente. Les erreurs communes des modèles ne sont pas une preuve indépendante.
+
+12 | Critères d'acceptation avant intégration
+
+A01 — Résultat conforme : aucune ouverture de diagnostic ; trace du contrôle conservée.
+A02 — Surprise admissible : un seul dossier malgré la livraison répétée du même événement.
+A03 — Mesure manquante/corrompue : quarantaine ; aucune réfutation de connaissance.
+A04 — Contexte hors domaine : demande d'extension ; ancienne règle conservée dans son périmètre.
+A05 — Reprise après effet : recherche du reçu ; aucun nouveau test émis sous couvert de reprise.
+A06 — Répétition scientifique : nouvelle identité liée à l'ancienne ; compteur de coût incrémenté.
+A07 — Budget épuisé ou droit révoqué : aucune nouvelle action ; dossier conservé et conclusion explicite.
+A08 — Règle révisée : descendants nécessaires à revalider, liens associés non invalidés ; cycle nécessaire refusé.
+A09 — Crash pendant révision : reconstruction sans moitié de révision visible ni double alerte.
+A10 — Preuve inventée, valeur modifiée, mauvais contexte ou mauvaise période : rejet sémantique.
+A11 — Notes périmées : reconstruction/refus ; aucune règle ancienne présentée comme courante.
+A12 — Même test non discriminant proposé en boucle : arrêt borné avec motif, pas de crédits recréés.
+A13 — Référence mise à jour après résultat : nouvelle version ; aucune réécriture de l'attendu initial.
+A14 — Deux causes indiscernables : conclusion limitée ou inconclusive, jamais cause unique forcée.
+A15 — Monde stable avec bruit : mesure des fausses alertes selon protocole fixé avant campagne.
+A16 — Import V1 : sources intactes, références résolues, champs inconnus explicites et états identiques.
+A17 — Solution cachée : accès interdit aux agents et traces d'accès vérifiées ; nom de fichier/erreur sans révélation.
+A18 — Modèle répond mal ou hors format : proposition refusée, journal conservé ; aucune promotion en connaissance.
+
+Ces scénarios constituent un cahier d'acceptation NON EXÉCUTÉ pour l'extension. Ils ne s'ajoutent pas aux 37 tests historiques du cycle actuel.
+
+13 | Feuille de route et décisions différées
+
+Jalon 1 — Contrats et reprise : schéma V2, réducteur, adaptateur de lecture V1, conservation de la chronologie et trois axes d'état. Sortie : A03/A05/A06/A09/A10/A16 et régressions du cycle passent sur une copie isolée.
+
+Jalon 2 — Diagnostic déterministe : références, dossier, hypothèses finies, choix de tests et budget. Sortie : témoin lampe avec changement, capteur défaillant et cause indiscernable ; A01/A02/A04/A07/A12/A14 passent. Pas de modèle nécessaire.
+
+Jalon 3 — Mémoire révisable : dépendances, révisions, invalidation des vues et notes. Sortie : A08/A11/A13 passent et ancienne mission toujours reproductible avec ses versions.
+
+Jalon 4 — Évaluation séparée : accès aux solutions protégé, campagnes figées, mesures comparatives et bruit. Sortie : A15/A17, résultats complets, conclusion positive ou négative selon seuils pré-enregistrés. Aucun gain promis avant cette étape.
+
+Jalon 5 — Modèles et vérificateurs : ressources et transport qualifiés, un modèle puis coopération conditionnelle ; A18 et campagnes comparatives. Raccorder Lean seulement aux tâches de son domaine. Les services lourds restent désactivés tant que leur qualification manque.
+
+Décisions différées : détecteur statistique précis, poids d'un planificateur probabiliste, outil de suivi distribué, entraînement des modèles, migration multimachines. Elles dépendent de mesures et ne bloquent pas les trois premiers jalons.
+
+Décision matérielle : concevoir des adaptateurs transportables sans exiger immédiatement une deuxième machine. Les mesures de ressources déclenchent des règles d'admission ; elles ne garantissent pas un plafond global CPU/GPU face aux autres applications.
+
+14 | Sources et limites de cette revue
+
+Sources locales : HTML V0.1.6 fourni précédemment ; texte collé fourni pour cette mission ; CHECKPOINT_AVIS_ARCHITECTURE_2026-11-14_01a1d9e0.json ; Cycle durable README.md, engine.py, checkpoint.json et evidence/test-results.json ; CSharpLeanVerifier F001171. Voir sources.json pour les chemins et empreintes. Pas de revue exhaustive des autres projets.
+
+NIST — un facteur à la fois peut manquer les interactions : https://www.itl.nist.gov/div898/handbook/pri/section2/pri212.htm
+Application à notre conception : prévoir des tests d'interactions lorsque les hypothèses le demandent.
+
+NIST — surveillance d'un processus de mesure : https://itl.nist.gov/div898/handbook/mpc/section2/mpc2.htm
+NIST — compromis entre détection et faux positifs : https://www.itl.nist.gov/div898/software/dataplot/refman1/auxillar/contchar.htm
+Application à notre conception : séparer panne de mesure et changement du monde ; qualifier le détecteur de dérive avant activation.
+
+Ces références soutiennent les précautions méthodologiques ; elles ne valident pas MultiversIA. Les contrats, modules et jalons proposés ici sont des choix d'architecture, à éprouver par les tests annoncés.

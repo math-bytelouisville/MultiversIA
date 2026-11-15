@@ -1,0 +1,29 @@
+MOTEUR SYMBOLIQUE FINI V0.2.0 — PÉRIMÈTRE
+
+Cette version exécute réellement la boucle proposée : prédiction enregistrée, expérience simulée, observation liée au reçu, apprentissage d'une table booléenne, surveillance, contradiction, reproduction, références, validation prospective et nouvelle révision de connaissance. Aucun modèle de langage ne tourne.
+
+Catalogue : les 16 fonctions de deux booléens. Les quatre premières entrées sont 00,01,10,11 pour tous les bras. Les hypothèses sont filtrées par les observations publiques. Une règle initiale est étayée seulement après couverture des quatre entrées, sous hypothèse de stabilité et de mesure fiable. La surveillance continue ensuite sur les quatre références.
+
+Surprise : l'ancienne règle passe EN_RÉVISION. Le bras targeted répète l'observation surprenante avec une identité nouvelle puis choisit les entrées séparant le plus de paires d'hypothèses. Le bras exhaustive répète puis rejoue quatre références. Les deux exigent un test prospectif distinct avant révision. Le bras none conserve sa prédiction ancienne mais marque son statut douteux et n'annonce aucune nouvelle confirmation.
+
+La règle retenue décrit la table d'entrée/sortie. Elle ne localise pas une cause physique. Un capteur présentant exactement la même table serait indiscernable avec ces observations. Un diagnostic sans modèle stable compatible reste INCONCLUSIVE et arrête les nouveaux essais automatiques. Le bruit, les changements continus, la protection OS des solutions et les dépendances entre plusieurs règles ne sont pas implémentés.
+
+Persistance : journal.sqlite3 contient événements et tête de chaîne dans une même transaction. receiver.sqlite3 contient configuration privée et reçus. L'effet SIMULÉ et le reçu sont atomiques dans la base du simulateur ; la journalisation du résultat est une transaction distincte. Le test after_effect arrête réellement le processus avant cette dernière transaction. La reprise retrouve le reçu. Après envoi sans reçu, le résultat reste inconnu et aucun nouvel effet n'est essayé.
+
+Une observation et sa révision scientifique sont écrites ensemble. La projection recalcule l'apprentissage depuis les seules observations et vérifie les SCIENCE_UPDATED archivés ; aucune moitié de révision n'est présentée comme complète. Les statuts passés restent dans les événements même si la vue courante indique EN_RÉVISION ou REMPLACÉE.
+
+Intégrité : chaîne SHA-256, tête transactionnelle, validation des reçus, correspondance des prédictions et observations, ordre des transitions et recalcul du plan. Une suppression de fin de table sans mise à jour cohérente de la tête est détectée. Le retour arrière de toute une ancienne base cohérente, ou un acteur réécrivant toutes les preuves, ne sont pas détectables sans ancrage indépendant. Les heures sont celles du PC, pas une certification temporelle externe.
+
+Lecture : snapshot et missions ne créent ni répertoire, ni verrou, ni base. Un journal incomplet ou altéré reste non vérifié, sans réparation. Une lecture peut être refusée pendant une écriture concurrente ; le client doit la représenter comme indisponible et réessayer sans modifier les preuves.
+
+Permissions et budget : chaque mission dispose d'une politique locale (allow_effect, max_actions, scope). Le plafond créé avec la mission ne peut pas être augmenté par la politique. Chaque prédiction préparée réserve une action, y compris un refus ou une interruption. Une reprise ne réserve pas une nouvelle action. L'admission est contrôlée avant envoi et renouvelée immédiatement avant l'effet simulé. La révocation arbitraire par un autre programme n'est pas atomique avec une transaction SQLite ; aucun verrou ne protège les éditeurs externes non coopératifs.
+
+Bornes : 4 à 128 actions par mission ; 1 à 24 par appel step ; politique pouvant limiter davantage ; seuil de stockage local de 30 Mo et disque libre minimum 64 Mo. Ce sont des contrôles applicatifs, pas des quotas système stricts. Pas de plafond global GPU/CPU revendiqué. Le moteur ne charge aucun modèle et ne fait aucun réseau.
+
+Crash points : after_prediction, after_dispatch, after_effect, after_observation. Ils utilisent os._exit(86), donc s'emploient dans un processus jetable, jamais directement dans le processus d'interface. Le paramètre crash est désactivé par défaut.
+
+API : Lab(root).create(title, world='xor', change_to='or', change_after=4, max_actions=24, strategy='targeted') renvoie une identité M-... ; N=change_after signifie les N premiers effets dans l'ancienne règle, puis la nouvelle. Pour monde stable, passer change_to=world. None n'est pas un monde accepté. Les paramètres privés restent dans receiver.sqlite3 et ne sont pas exposés dans le snapshot. Le planificateur est une fonction pure plan(observations,strategy) ; cette séparation API n'est pas une sandbox protégeant les fichiers.
+
+Le JSON de snapshot contient états métier, observations, hypothèses, connaissances, diagnostics, budget, actions, événements et pending_action. Les événements scientifiques sont regroupés dans SCIENCE_UPDATED ; les clients lisent les tableaux normalisés plutôt que supposer un événement distinct par chaque champ.
+
+Tests : voir evidence/engine-test-results.json pour le résultat sur l'empreinte actuelle. Ces tests ne valident ni une panne électrique, ni une intégration réseau, ni une intelligence générale, ni un gain scientifique. La comparaison des stratégies est un autre module avec ses propres cas et limites.

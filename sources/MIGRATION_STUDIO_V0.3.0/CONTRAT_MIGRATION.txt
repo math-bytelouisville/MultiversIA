@@ -1,0 +1,29 @@
+MIGRATION STUDIO V0.3.0 — chantier autorisé le 15 novembre 2026
+
+Objectif utilisateur : continuer après livraison du QCM Studio vers C# → modèle mathématique modifiable → Rust, sans perte d'informations.
+
+Jalon actif : importer le Studio livré sous un profil exact, conserver tous ses fichiers et distinguer ceux compilés de ceux exclus. Représenter le calcul des points et résultats dans un modèle typé de booléens et rationnels. Générer du Rust depuis ce modèle. Comparer le modèle et le Rust exécuté aux résultats du véritable backend C#. Montrer une modification volontaire du modèle et son effet dans le Rust généré.
+
+Ce jalon ne traduit pas encore l'état persistant, les transitions de parties, les routes HTTP, les comptes ou le rendu MVC. Les inventorier et les signaler explicitement comme restant à représenter. Une adaptation connue du Studio n'est pas un analyseur C# général. Les octets source restent conservés ; leur conservation ne prouve pas une équivalence de comportement.
+
+Source de référence : ../SYNTHESE_MATHS_CODE_V0.2.0/qcm_studio.
+Ne modifier aucun fichier de livraison V0.2.0 ni aucune donnée utilisateur.
+Réutiliser ses compilateurs qualifiés localement et son build MVC final vérifié.
+Chaque nouvelle campagne, import, build et contre-exemple a un dossier unique ici.
+Les expériences ne redémarrent jamais à l'ouverture d'un rapport ou après une interruption.
+
+Interface de calcul :
+scoring_model.default_model(provenance=None), validate_model(model), revise_model(model, penalty_n=1, penalty_d=2, intent='...'), validate_case(case), evaluate(model,case).
+Cas fermé : {questions:[{id,mode:'single'|'multiple',options:[{id,correct:bool}],selected:[ids]}],grading:'partial'|'all-or-nothing',passing_percent:'60',show_correction:true}.
+Le seuil est une chaîne décimale exacte. Les résultats distinguent les rationnels exacts et les chaînes de présentation à deux décimales.
+scoring_rust.emit_rust(model) -> code Rust ; encode_case(case) -> entrée fermée ; parse_result(stdout) -> résultat contrôlé.
+Pas d'exécution de texte ou de chemin arbitraire inclus dans un modèle.
+
+Responsabilités :
+- moteur/Aigle : modèle, interpréteur, génération Rust et tests ; revues par root et Explorateur.
+- Explorateur : oracle C# indépendant, cas et preuves ; revues par root et Aigle.
+- Interface : import/provenance/inventaire et rapport sous forme de carte ; revues par root et Aigle.
+- root : compilation/exécution Rust, pipeline, livraison et reprise ; revues par Interface et Aigle.
+Corriger puis refaire les avis affectés jusqu'à deux PASS sur les empreintes finales. Un PASS reste borné aux contrôles réellement effectués.
+
+Continuité : checkpoints locaux avant saturation ; conserver essais négatifs et preuves. Quota mesuré à l'ouverture : 53 % hebdomadaire restant ; fenêtre cinq heures non fournie. Ne pas confondre ce quota avec le contexte.

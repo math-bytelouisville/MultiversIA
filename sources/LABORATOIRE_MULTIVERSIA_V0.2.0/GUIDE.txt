@@ -1,0 +1,32 @@
+MULTIVERSIA — LABORATOIRE V0.2.0
+
+CE QUI FONCTIONNE
+Une mission fait agir des agents symboliques dans un monde déterministe fini. Le planificateur choisit une expérience, prédit son résultat puis reçoit une observation. Une surprise peut ouvrir un diagnostic et entraîner une révision des connaissances. Ces activités sont celles du moteur ; les objets de la carte ne sont pas une simulation supplémentaire.
+Les agents sont des algorithmes déterministes. Aucun modèle de langage n'est chargé. La séparation du monde injecté et des observations est une séparation d'API, pas une sandbox protégeant le secret sur le disque.
+
+COMMANDES
+Créer une mission : choisir le scénario simulé, le moment du changement et le budget global. Le scénario est une configuration d'évaluation et n'est pas transmis au planificateur.
+« Une expérience » fait une étape. « Lancer la séquence » fait entre 1 et 24 étapes maximum, chacune dans un sous-processus. Le budget global du moteur reste prioritaire.
+« Pause » laisse terminer l'expérience déjà en cours et empêche la suivante. Fermer la fenêtre a le même effet avant de quitter. Aucune séquence ne repart automatiquement après réouverture de l'application.
+Après une interruption, « Rapprocher l'action interrompue » cherche d'abord les preuves de l'action précédente. La carte ne répète jamais automatiquement une commande ayant dépassé son délai.
+« Exporter » conserve le snapshot et les preuves selon le contrat du moteur.
+
+CARTE LIBRE
+Molette : zoom autour du pointeur, de 25 % à 280 %. Glisser : déplacer. Clic : sélection. Double-clic sur une catégorie : rapprocher ses objets.
+La carte contient la mission, le planificateur, les hypothèses, les expériences, les diagnostics, les connaissances et les événements. Les noms et valeurs se précisent avec le zoom.
+Le panneau de droite sépare résumé, journal et données brutes. Le journal affiche tous les événements de la mission, sans prétendre que chaque événement prouve l'objet sélectionné. Les listes de la carte sont paginées par neuf ; tous les éléments restent accessibles. Les données brutes d'une catégorie et l'export conservent la liste complète.
+Le résumé d'un objet explique en français ses entrées, sa surprise, son état ou sa validation. Les identifiants techniques, empreintes et structures complètes restent dans Données brutes et Journal ; le résumé ne remplace jamais ces preuves.
+Une actualisation ne modifie pas le zoom ou la position. Une lecture échouée reste visible comme non vérifiée ; les dernières données connues peuvent être conservées avec ce signalement. L'heure affichée correspond au dernier retour de lecture, pas à une garantie de temps réel.
+Une lecture plus ancienne que la vue conservée bloque aussi les mutations jusqu'à lecture à jour. Le détail sélectionné reste consultable lorsqu'un nouvel événement le fait sortir de la page de neuf objets.
+
+C# VERS MATHÉMATIQUES
+La fenêtre « C# → maths » attend un programme C# pur du sous-ensemble accepté et une méthode C# bool Spec décrivant le contrat, avec paramètre result. Les exemples fournis cherchent le maximum de deux entiers.
+Le pont s'exécute dans un sous-processus. La carte reste consultable ; la vérification peut prendre plusieurs minutes, au maximum 240 secondes pour ce processus. Aucun code C# utilisateur n'est exécuté nativement par l'interface.
+Le résultat, la traduction mathématique, les tentatives et les limites sont présentés dans des onglets distincts. PROUVÉ_CONDITIONNEL ou RÉFUTÉ_CONDITIONNEL n'ont de sens que dans le périmètre annoncé par le pont et sa traduction. Un refus, une erreur ou un dépassement de délai restent INCONCLUSIF.
+Les entrées sont verrouillées pendant l'analyse puis restent celles du résultat affiché, même après fermeture et réouverture de cette fenêtre. « Modifier les entrées » les rend éditables et efface le résultat précédent de l'affichage ; son archive reste conservée.
+L'archive conserve source, contrat et réponse dans local/analyses-csharp. Les preuves formelles détaillées se trouvent au chemin renvoyé par le pont.
+
+CONTINUITÉ
+Les nouvelles missions sont dans local/. Les préférences de vue sont dans local/ui-view.json. Les dossiers de test evidence/ restent séparés. Les versions précédentes de la carte et les journaux V1 ne sont pas modifiés ni importés implicitement.
+Le bouton Architecture donne accès au document complet antérieur, au contrat d'équipe et à ce guide.
+Les modèles locaux, le monde réel, la généralisation scientifique et la protection d'un plafond global CPU/GPU ne sont pas validés par cette interface.

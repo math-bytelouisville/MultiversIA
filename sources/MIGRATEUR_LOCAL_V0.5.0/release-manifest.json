@@ -1,0 +1,111 @@
+{
+  "schema": "mia-local-migrator-release-1",
+  "version": "0.5.0",
+  "status": "REVIEWED_LOCAL_MIGRATOR",
+  "at": "2026-11-15T19:58:15.373463+00:00",
+  "files_sha256": {
+    "math_core.py": "248f128e3eb8711ad50d5c99cea6ab274743b8b11f0fe8ce2a3697300c0ea315",
+    "module_model.py": "397c3f2a154738a0ed7acddee2a530ff394ae4f581b3a4716a72edf7f38b337c",
+    "module_backends.py": "72d98a836642c9cd19da58688aa173197f8b76a411c895dbbca9cefac400f677",
+    "code_backends.py": "6d4550fc3bf38e5bfe0a26a2284fbba65fdbf2d61f8dfdc6cfdff56d633dd7da",
+    "test_arithmetic_core.py": "260cb298e1334962ca8459f25ef5ffafe06980f37c7b817fc68114ed4c943827",
+    "CONTRAT_ARITHMETIQUE.txt": "c37c6daaed245ad95b4352ebc3f28aca45e8aefd8e13a6a1ce2fbe0d0df5a78c",
+    "rust_import.py": "94f3837fad0179ce6aa1e277b7566f4d66de1cbd36329470e4309cbdd0b4601e",
+    "csharp_import.py": "8bc1cfc0ebb6a0f34e403dc3b20b00eb7513fedbb6056870ee522a4545cfcd87",
+    "module_import.ps1": "02482e39e553cc57658dce6c98fa54dbee25cf176e74dfc6f3d783519a8ddd42",
+    "original_csharp.py": "9e7d42e896c4b121ee4b7c90a02b534848be503b1ad4dd8038c5ed4d923d02ca",
+    "original_csharp_compile.ps1": "973bd1f248fc6c0a8c8dd3398d35851fd69b163724eeaece539c6281a8b8a09f",
+    "original_csharp_run.ps1": "3d171a5dc82e377056742666658801b079b7aadc696e5709f7c95c7e4e0d3db5",
+    "test_rust_import.py": "01deaa9322d873a551c2812664ee8b48caac08296e308abc6f72add106b6e51d",
+    "test_original_csharp.py": "db118b6b157ba7926dd75ddf7a9a3f9b3f206b177ab898b84917ac9173599d22",
+    "test_arithmetic_import.py": "41491914c9b6d7c5db4aa41bc84c1dc3b1c7d2892c05478dc5455ed92dcf037a",
+    "CONTRAT_RUST.txt": "7739a5fc95ffae9198a2f8dd3891030ad2b092c7997f2082d6e1a02ca819a790",
+    "ORIGINAL_CSHARP_CONTRACT.txt": "bdf2d14f0d3d0eba8e58b2acf4b99320f14fdc58100c8f6aeeb6c60d6c224de8",
+    "common.py": "ba55afb9c6686f8e747390a590de02d72196750571b485fb15b5dbc6d9260fc0",
+    "verifier.py": "b96db86368be8027b7065ef9e8db6593f4151653be706b29b3256f0e5066c8f8",
+    "migrator.py": "64c08ed7d0ab392855b3dd902779b4eb4fd2b943a451762770868832dfdb163d",
+    "emitters.py": "2cbfba3e1e7c3ef32fc10c941413307febef6a917eb034ccd9cbb555d2e651e2",
+    "test_migrator.py": "1347a714814b15a9040943644260ed3794af66a9c25eea897c7045b8d85462d9",
+    "test_verifier.py": "c00ec70f94e7c67ba2f04bb8917ab474f71916093fd28c7bd5755c92c25f5206",
+    "test_arithmetic_integration.py": "e06e9fbc1aa55249c11861c56d30eedc3e0a1fdff8cbf7f04b74e5853ec4118a",
+    "VERIFIER_NOTES.txt": "f86e6443479af46102d7616d30611a0cc15fc1b2a1d8b4286a033bffffe1b17e",
+    "app.py": "4c0d275d0ac0d3f88b12be309150f463527b3d98ca2a4c8d6febf3d0489103e4",
+    "test_ui.py": "52143465e36d5160dc078dc64011ded80c3d132fa839ede3d421f85f290b7f78",
+    "GUIDE.txt": "aadae5fe0d6e4f82950313143c679dab2eec19cfda0b8a406f81fe894def761d",
+    "install_shortcut.ps1": "903c6ee233e2c7e3c8eca5b99769df4a672a64591d6afa1b1404d0248797137e",
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "FOUNDATION_V050.json": "668f7e20de47432aac573f025c50effbd294aebf2d5d845b31b090eda24ede09",
+    "BASELINE_V2.json": "a78044a07889c03bcf76df237e5d622e88a9a2ab7da7effb731f1e8cf66bc747",
+    "BASELINE_V041.json": "88e6733fb7a7c14ba5477b9cd37b05bb9c59801c8f377ebe84f853b2908ac05d"
+  },
+  "reviews": {
+    "core": [
+      {
+        "file": "REVUE_ROOT_CORE.json",
+        "sha256": "e458224ac4a9e749916a4a5ad795908c34be92434a64c0b83baf1e496e02afc5",
+        "reviewer": "root",
+        "status": "PASS"
+      },
+      {
+        "file": "REVUE_EXPLORATEUR_CORE.json",
+        "sha256": "a69ba7be8a2d5fa61ac052f8075cba661cfc7c8fbdbdd0d64361d95b39d9b225",
+        "reviewer": "/root/explorateur",
+        "status": "PASS"
+      }
+    ],
+    "adapters": [
+      {
+        "file": "REVUE_ROOT_ADAPTERS.json",
+        "sha256": "a30f64aa7c8a885a04ddc39814040aabdfeb518acabb0c765df926cde13da3e3",
+        "reviewer": "root",
+        "status": "PASS"
+      },
+      {
+        "file": "REVUE_AIGLE_ADAPTERS.json",
+        "sha256": "729ec02405980ab3c2a006b2f06e952b032442c6380b141147f44b561b402c36",
+        "reviewer": "/root/moteur (Aigle)",
+        "status": "PASS"
+      }
+    ],
+    "engine": [
+      {
+        "file": "REVUE_AIGLE_ENGINE.json",
+        "sha256": "25a5b8f7297bea7efbd5e668f94b5941d7da120a7bb8c472a62f3d1b555341cd",
+        "reviewer": "/root/moteur (Aigle)",
+        "status": "PASS"
+      },
+      {
+        "file": "REVUE_EXPLORATEUR_ENGINE.json",
+        "sha256": "17bdeca0c9d150837e6311cb185b936ebdc7ccee24d16cedfe18326a8d30be28",
+        "reviewer": "/root/explorateur",
+        "status": "PASS"
+      }
+    ],
+    "interface": [
+      {
+        "file": "REVUE_AIGLE_INTERFACE.json",
+        "sha256": "b38435adcdc0f590f698f3a15afb69ba3b9d5bf63b69f0c56902237a1a60972e",
+        "reviewer": "/root/moteur (Aigle)",
+        "status": "PASS"
+      },
+      {
+        "file": "REVUE_EXPLORATEUR_INTERFACE.json",
+        "sha256": "0ac059415699b538475a12a64d5c61b408e90c38984352ff85b4ec41f8eb9b4f",
+        "reviewer": "/root/explorateur",
+        "status": "PASS"
+      }
+    ]
+  },
+  "qualification": {
+    "evidence_sha256": {
+      "runs/arithmetic-revalidation-64a855ab94b3432986c4f2e527437ad5/summary.json": "5302a19dc951c8424cbb20bf9859516cce0c4f715020813bbdf9133508f9f8ef",
+      "runs/root-tests-dae1c67d76484df28dc2ee3598fd5f01/summary.json": "5ae548fc258f1ea40013526c80ef3d1bc04bcd89eab660bec72948377a7210b2",
+      "evidence/verifier-tests-c69e5f0adba94ea8974e95c4840b6264/root-unit-results.json": "a1face265cba2a7b4a2be305583f964247b8fa8f0bc443100a3e6dd4c762a893"
+    },
+    "regression_tests": 20,
+    "arithmetic_scenarios": 8,
+    "arithmetic_note": "Initial suite 6 PASS and 2 failed test assertions about interpreted Python. Test-only correction; both scenarios fully revalidated against original actual receipts without recompilation. Original FAIL preserved.",
+    "foundation_note": "FOUNDATION_V050.json retains candidate freeze status and bytes used in actual receipts. This release attests qualification of those exact frozen bytes."
+  },
+  "scope": "Pure Int32/bool; explicit wrap arithmetic, finite validation, not universal proof or full site migration."
+}

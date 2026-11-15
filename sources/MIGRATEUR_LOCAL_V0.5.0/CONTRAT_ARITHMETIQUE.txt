@@ -1,0 +1,36 @@
+NOYAU V0.5.0 — INT32 MODULO EXPLICITE
+
+Nouveau profil module : pure-int32-bool-wrap-call-1. Ancien profil
+pure-int32-bool-call-1 conservé, mais il refuse toute opération nouvelle dans
+les corps ET les préconditions/postconditions. Schéma module mia-module-1 inchangé.
+
+IR fermé :
+{kind:'binary',type:'int',op:'add32'|'sub32'|'mul32',left:IR,right:IR}
+{kind:'neg32',type:'int',operand:IR}
+Les opérandes sont exactement int, jamais bool. Chaque opération renvoie
+wrap(n)=((n+2**31)%2**32)-2**31. Ce sont des Int32 signés avec résultat modulo,
+pas l'arithmétique illimitée Z ni les exceptions checked.
+Comparaisons, conditions et appels internes utilisent ensuite ce résultat signé.
+
+Texte mathématique : add32(a,b), sub32(a,b), mul32(a,b), neg32(a), appels fermés
+à noms/aritės fixes. Aucun eval, attribut, argument nommé, dépliage, appel libre
+ou opérateur arithmétique implicite. Le littéral -2147483648 reste une constante.
+Les bornes JSON/AST et budgets existants restent inchangés.
+
+API inchangée : math_core.parse_expression/validate_node/evaluate/validate_spec/solve,
+module_model.validate_module/inline_unit/evaluate_unit/unit_spec/revise_unit,
+module_backends.emit_module/_Oracle/_sample_inputs/_records,
+code_backends.emit/_oracle. solve garde la règle constructive result==expression ;
+la recherche conditionnelle bornée n'invente pas un espace arithmétique général.
+
+Cibles : C# unchecked à chaque opération ; Rust wrapping_add/sub/mul/neg avec
+constantes i32 explicites ; Python expression modulo inline, à chaque opération.
+Oracle indépendant : masque de32bits puis soustraction2**32 si bit de signe1,
+sans appeler l'interpréteur ni le wrap du noyau. L'émission n'est pas l'oracle.
+Preuve Lean héritée : arithmétique explicitement inconclusive, sans lancer Lean.
+
+Échantillons :≤512cas/fonction. Extrema, voisins,46340/46341, frontières2**30,
+diagonales et paires de débordement prioritaires avant remplissage déterministe.
+L'accord fini ne prouve pas toutes les entrées Int32, ni un site ou logiciel entier.
+Anciennes versions et preuves restent intactes ; la nouvelle fondation aura son
+propre manifeste. Les anciens reçus restent historiques, sans réétiquetage.

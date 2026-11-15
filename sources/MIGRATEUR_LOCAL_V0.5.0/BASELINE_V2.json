@@ -1,0 +1,12 @@
+{
+  "files_sha256": {
+    "legacy_bridge.py": "c71a9bd618c6a12a0eba89c4c9b0e906df044bdbc4cca9dcc406bb3585acf495",
+    "code_backends.py": "cb41cf90c96684cc7fa583e34f21843f5fa7b7b9dd87c74dc448bf3e12947184",
+    "module_import.ps1": "3d0dfb25779d021267d3665f010b5e04f3200246ddda3ea743b5693fff2cbdc1",
+    "math_core.py": "54dd71fe7a42f7f531a8ddbab23eca18367c7178d3693f84ccbd3ffa28891de8",
+    "module_model.py": "ee897c54a2dc2adfcf89419a94e45c73259180e26cb66e5fda89559f6dc2ff63",
+    "module_backends.py": "6939dde1cd2b034953d9eb4677e667844af6209979c8ff21916fe9565b8fcd61"
+  },
+  "scope": "Byte-identical reused foundations; V4 uses pure model/emission/oracle helpers and pins historical Roslyn bridge. New orchestration is separately reviewed.",
+  "source_version": "SYNTHESE_MATHS_CODE_V0.2.0"
+}

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Rules.cs;Controllers/QuizController.cs;Models/QuizModels.cs;Services/QuizCatalog.cs;Services/QuizService.cs" />
+    <Content Remove="Views/Quiz/**;Data/questions.json" />
+    <Content Update="wwwroot/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

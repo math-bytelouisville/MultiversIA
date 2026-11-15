@@ -1,0 +1,64 @@
+NOTE DE CONTINUITÉ — 15 novembre 2026
+Cet inventaire décrit le constat initial, avant implémentation. Depuis, profile_import.py et migration_report.py sont implémentés dans V0.3 uniquement. Les tests et revues actuels sont dans CHECKPOINT_INTERFACE.json ; le corps ci-dessous reste la trace de l’inventaire initial.
+
+INVENTAIRE INTERFACE / SITE — MIGRATION STUDIO V0.3.0
+État : lecture seule du Studio V0.2 livré. Aucun code de migration écrit ; contrat de chantier attendu.
+
+SOURCE VÉRIFIÉE
+Les empreintes de tous les fichiers déclarés dans studio-release-manifest.json concordent au moment de cette lecture. Le checkpoint contient les empreintes exactes.
+Le projet qcm_studio comporte 16 fichiers physiques déclarés : 9 actifs et 7 exclus par le csproj. Les fichiers historiques Rules.cs, QuizController.cs, QuizModels.cs, QuizCatalog.cs, QuizService.cs, Views/Quiz/Index.cshtml et Data/questions.json doivent rester archivés mais ne décrivent pas les routes actives ni les données initiales du Studio. Le seed actif est dans StudioStore.Seed().
+
+SURFACE ACTIVE À CONSERVER
+GET / — HTML MVC rendu
+GET /style.css — asset CSS
+GET /app.js — asset JavaScript
+GET /api/studio — compte, jeux, résumés QCM et tentatives
+GET /api/account — compte stable
+PUT /api/account — displayName, identité inchangée
+GET /api/quizzes/{id} — QCM éditeur complet
+POST /api/quizzes — création201
+PUT /api/quizzes/{id} — révision optimiste
+POST /api/quizzes/{id}/archive — archive sans effacer historique
+POST /api/attempts — création201/rejeu200 requestId
+GET /api/attempts/{id} — snapshot public sans clés de correction
+PUT /api/attempts/{id}/answers — réponses et révision
+POST /api/attempts/{id}/complete — calcul serveur/rejeu du même résultat
+GET /api/scores — groupes parQCM/révision/barème
+
+Il y a 12 opérations JSON, plus la page et deux assets. Les comportements exacts des chemins/méthodes non contractuels (casse, HEAD, échappement, query inconnue) ne doivent pas être inventés depuis le texte des attributs : relever leur comportement HTTP si une équivalence est revendiquée.
+
+DONNÉES ET IDENTITÉS
+Conserver les champs camelCase, les types, la distinction champ absent/null, les tableaux ordonnés et les règles de validation. IDs du compte, des QCM, questions, options et tentatives stables ; révisions de QCM, tentative et état ; requestId et RequestFingerprint de création ; dates ; archived ; quizHistory ; snapshot complet du questionnaire, du compte, du barème et de l’ordre tiré pour chaque partie. Les anciennes parties doivent garder leur correction après édition du QCM ou renommage du compte.
+Le fichier durable est studio-state.json, schéma mia-qcm-studio-state-1 ; sauvegarde .backup, fichiers .pending possibles, verrou studio.lock. Les backups/pending sont des pièces conservées avec statut, pas des états à adopter silencieusement. Capturer un état cohérent par lecture contrôlée ; ne pas écrire dans le répertoire vivant pendant la migration.
+Le score est calculé depuis les snapshots, jamais accepté du client. Porter fractions exactes, pénalité ramenée à zéro, comparaison du seuil AVANT arrondi et arrondi de présentation. Ne pas remplacer par un float approximatif. Conserver groupes de scores séparés par QCM/révision/barème, ordre de classement et absence de doublon lors du rejeu.
+Les nouveaux UUID, horaires, ports et mélanges aléatoires sont des effets non déterministes : enregistrer les valeurs existantes et définir des comparaisons contrôlées pour les nouvelles opérations. Une différence de port de lancement n’est pas une perte de données, mais une différence d’origine navigateur peut affecter son cache local.
+
+INTERFACE EXACTE, ÉTAT ET ACCESSIBILITÉ
+app.js et style.css peuvent être copiés octet pour octet si la cible conserve le contrat API. La vue Studio est statique en pratique (Layout=null et markup) ; préférer conserver le HTML réellement rendu et sa provenance, avec vérification DOM, plutôt que prétendre traduire Razor en général.
+Conserver les IDs DOM, noms accessibles, ordre de tabulation, boutons de navigation et menus ; carte SVG originale, pan/zoom libre et trois densités sémantiques ; disposition adaptative jusqu’à50questions ; navigation clavier équivalente ; panneau séparé de la carte ; mobile ; indications de chargement, erreurs et statut réellement confirmé.
+Conserver brouillons par QCM/révision, choix par tentative, UUID de création réutilisé tant que réponse incertaine, verrou des champs/POI pendant GET, sérialisation des sauvegardes et protection contre retours anciens, conflits409 sans effacement du brouillon, récupération explicite des choix non confirmés et fallback mémoire si localStorage indisponible. Aucun démarrage automatique de partie.
+Les caches navigateur utilisent mia-studio-draft:<id>:<revision>, mia-studio-answers:<attemptId> et mia-studio-start:<quizId>:<revision>, plus copie mémoire. Ils ne sont pas dans studio-state.json. Ils ne sont pas capturés par cet inventaire et ne traversent pas automatiquement un changement de port/origine. Garder le Studio source disponible et annoncer cette frontière ; aucune promesse « tous les brouillons migrés » sans capture explicite.
+
+FRONTIÈRES HTTP / SYSTÈME
+Conserver écoute loopback, restriction Host, règles même origine pour mutations, JSON requis, erreurs400/403/404/409/500, messages JSON sans stack, no-store sur API, champs inconnus refusés, casse des propriétés, nombres stricts, profondeur32 et corps1Mio. Contraintes métier : 1..50questions,2..8options, IDs uniques et limites de texte. La sémantique HTTP réellement fournie par ASP.NET doit être comparée pour les entrées hors contrat.
+Le stockage exige exclusion mutuelle, validation au chargement, temp+replace atomique et backup, pas de reset silencieux, historique conservé, contrôle de concurrence et reprise après arrêt. Ces effets devront avoir un adaptateur Rust qualifié ; une fonction pure extraite n’en constitue pas la traduction.
+
+CLASSIFICATION PROPOSÉE PAR PIÈCE
+COPIÉ EXACT : assets, HTML rendu vérifié, archives source, état JSON brut et documents de provenance lorsque la lecture est cohérente.
+TRADUIT DEPUIS MODÈLE : calcul rationnel de points/seuils, validations et transitions uniquement si leur modèle formel exprime réellement les règles et produit le code cible.
+ADAPTÉ EXPLICITEMENT : transport HTTP, sérialisation, stockage atomique/verrou, horloge/UUID/aléatoire, lancement et UI d’exploitation. Relier chaque adaptateur à ses obligations et tests.
+NON TRADUIT / NON CAPTURÉ : dépendances/framework ASP.NET et Razor généraux, C# inconnu, extensions de comptes futures, multiprofil/réseau, caches et mémoire navigateur non exportés, garanties de panne physique. Les fichiers exclus restent INVENTORIÉS_HORS_BUILD, jamais effacés ni confondus avec le Studio actif.
+
+SURFACE DE MIGRATION PROPOSÉE — NOUVELLE COPIE SEULEMENT
+Ajouter une zone « Migration » à une copie de la carte existante : quatre points Source → Modèle → Cible → Différences. Conserver pan/zoom et panneau contextuel. La carte du jeu garde son fonctionnement ; la comparaison de migration est un mode distinct, pas une nouvelle partie.
+Vue globale : nom/version source, identités source/modèle/cible, statut observé, compteurs couverts/non couverts, référence du dernier contrôle.
+Zoom intermédiaire : groupes UI/assets, routes, données, règles de score, transitions et adaptateurs ; liens vers les unités et preuves.
+Zoom rapproché / panneau : valeur avant/après, état différent attendu ou inattendu, route/étape témoin, source exact, hash, résultat de test et limites. Les données brutes sont accessibles dans un onglet séparé ; pas de mur JSON dans le résumé.
+Actions explicites : inventorier/capturer, produire le modèle, construire la cible isolée, comparer, ouvrir source/cible, proposer une révision avec intention. Le zoom et la sélection restent en lecture seule. Aucune substitution de la version livrée, de sa base ou de ses raccourcis.
+Badges distincts : inventorié, capturé, source produit, compilé, testé sur cas finis, différence attendue, écart inattendu, non couvert. Un badge vert global exige le périmètre et les preuves correspondants ; pas de « preuve universelle » déduite d’une campagne finie.
+
+CAS QUI DOIVENT INVALIDER UNE REVENDICATION TROP LARGE
+Changer une option correcte après une partie ne change pas son ancien score. Rejouer requestId après réponse perdue ne crée pas une seconde tentative. Un seuil17% avec1/6 ne passe pas à cause de l’arrondi. Une partie commencée conserve son ordre de questions/options. Un GET retardé ne remplace pas des choix récents. Un état corrompu est refusé sans réinitialisation. Une route ou un fichier inconnu est recensé et refusé, jamais omis silencieusement.
+
+PROCHAINE ACTION
+Lire le contrat V0.3, recevoir la possession de fichiers importeur/provenance et des revues, puis implémenter dans ce nouveau dossier seulement. Les 15 tests navigateur antérieurs concernent la source V0.2, pas une cible Rust encore absente.
