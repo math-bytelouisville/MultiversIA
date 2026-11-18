@@ -1,18 +1,44 @@
 @{ Layout = null; }
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>MultiversIA · QCM Studio</title><link rel="stylesheet" href="/style.css" /><script src="/app.js" defer></script></head>
+<html lang="fr"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>MultiversIA · QCM Studio</title><link rel="stylesheet" href="/style.css" /><link rel="stylesheet" href="@Url.Content("~/sigma-map.css")" /><script src="@Url.Content("~/sigma-map.js")" defer></script><script src="/app.js" defer></script></head>
 <body>
 <a class="skip" href="#panel">Aller au panneau</a>
 <header class="topbar"><a class="brand" href="#home"><span class="brand-mark">M</span><span>MultiversIA <small>QCM STUDIO</small></span></a><nav aria-label="Navigation principale"><button data-view="home">La carte</button><button data-view="editor">Game Editor</button><button data-view="quizzes">Mes QCM</button><button data-view="sessions">Mes parties</button><button data-view="results">Résultats</button><button data-view="scores">Classements</button></nav><button class="account" id="account">Joueur local</button></header>
 <main class="workspace">
-<section class="map-area" aria-label="Carte des points d’intérêt">
+<section class="map-area sigma-map-active" aria-label="Carte du Studio">
  <div class="map-caption"><span class="eyebrow">TON TERRAIN D’EXPLORATION</span><h1 id="map-title">Des idées aux découvertes.</h1><p id="map-subtitle">Choisis un point d’intérêt. Explore à ton rythme.</p></div>
  <svg id="world-map" viewBox="0 0 1000 800" tabindex="0" role="group" aria-label="Carte libre. Flèches pour déplacer, plus et moins pour zoomer, origine pour recentrer.">
   <defs><pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#71806b" opacity=".18" /></pattern><filter id="shadow"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-opacity=".10" /></filter></defs>
   <rect width="1000" height="800" fill="url(#dots)" />
-  <g id="map-world"><g id="terrain" aria-hidden="true"><path d="M-600 200Q-100-200 300 70T1200 120T1800 450"/><path d="M-600 230Q-100-170 300 100T1200 150T1800 480"/><path d="M-600 260Q-100-140 300 130T1200 180T1800 510"/><path d="M-300 680Q50 400 450 660T1250 600T1600 1000"/><path d="M-300 710Q50 430 450 690T1250 630T1600 1030"/><path d="M-300 740Q50 460 450 720T1250 660T1600 1060"/></g><g id="map-edges"></g><g id="map-nodes"></g></g>
+  <g id="map-world"><g id="terrain" aria-hidden="true"><path d="M-600 200Q-100-200 300 70T1200 120T1800 450"/><path d="M-600 230Q-100-170 300 100T1200 150T1800 480"/><path d="M-600 260Q-100-140 300 130T1200 180T1800 510"/><path d="M-300 680Q50 400 450 660T1250 600T1600 1000"/><path d="M-300 710Q50 430 450 690T1250 630T1600 1030"/><path d="M-300 740Q50 460 450 720T1250 660T1600 1060"/></g><g id="map-edges"></g><g id="map-nodes"></g>
+    @await Html.PartialAsync("_SigmaMap")
+  </g>
  </svg>
- <div class="map-controls"><button id="zoom-out" aria-label="Réduire le zoom">−</button><output id="zoom-value">100 %</output><button id="zoom-in" aria-label="Augmenter le zoom">+</button><button id="map-home">Vue globale</button><span id="zoom-level">Vue d’ensemble</span></div>
+ <div class="map-controls">
+  <button id="sigma-controls-toggle" type="button" aria-label="Afficher les commandes de la carte" aria-expanded="false" aria-controls="zoom-out zoom-in sigma-zoom-pointer map-home sigma-pause sigma-stop-follow" title="Afficher les commandes de la carte">
+   <svg class="sigma-controls-show-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M4 7h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="9" cy="7" r="2.5" fill="#fff9e9" stroke="currentColor" stroke-width="2"/>
+    <circle cx="15" cy="17" r="2.5" fill="#fff9e9" stroke="currentColor" stroke-width="2"/>
+   </svg>
+   <svg class="sigma-controls-hide-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="m15 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+   </svg>
+  </button>
+  <button id="zoom-out" aria-label="Réduire le zoom">−</button><output id="zoom-value">100 %</output><button id="zoom-in" aria-label="Augmenter le zoom">+</button>
+  <label class="sigma-zoom-option" title="Ancrer le zoom à la souris en vue libre">
+   <input id="sigma-zoom-pointer" type="checkbox" checked aria-label="Ancrer le zoom à la souris en vue libre" />
+   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="m13.5 13.5 3 3m-.5-3 5 5-2.5.3-1.4 2.2z" fill="currentColor"/>
+   </svg>
+  </label>
+  <button id="sigma-stop-follow" type="button" aria-label="Arrêter le suivi" title="Arrêter le suivi">
+   <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="m7 7 10 10m0-10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+   </svg>
+  </button>
+  <button id="map-home" aria-label="Recentrer la carte"><span class="map-home-label">Vue globale</span><svg class="sigma-recenter" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></button><span id="zoom-level">Vue d’ensemble</span><button id="sigma-pause" type="button" aria-label="Mettre la ville en pause"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path class="sigma-pause-icon" d="M8 5v14m8-14v14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path class="sigma-play-icon" d="m8 4 13 8-13 8z" fill="currentColor"/></svg></button></div>
  <p class="map-help">Molette : zoom · glisser : déplacer · Tab : points d’intérêt · Entrée : ouvrir</p>
 </section>
 <aside class="panel" id="panel" aria-label="Détails et actions"><div id="status" role="status" aria-live="polite">Lecture des données locales…</div><div id="notice" role="alert" hidden></div><div id="panel-content"></div></aside>
