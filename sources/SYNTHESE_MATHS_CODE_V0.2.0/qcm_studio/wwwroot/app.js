@@ -89,38 +89,141 @@
     if(S.view==='play' && S.attempt)S.attempt.questions.forEach((q,i)=>{const angle=2*Math.PI*i/S.attempt.questions.length,radius=Math.max(230,S.attempt.questions.length*27);nodes.push({id:'question:'+q.id,x:500+radius*Math.cos(angle),y:400+radius*Math.sin(angle),title:'Question '+(i+1),sub:S.answers.some(a=>a.questionId===q.id&&a.optionIds.length)?'Réponse choisie':'À découvrir',hint:q.text,icon:String(i+1),question:true});});
     return S.view==='play'&&S.attempt?nodes.filter(n=>n.question):nodes;
   }
+  const maximumMapZoom=2.6;
+  const mapControlsButton=$('sigma-controls-toggle'),mapControls=mapControlsButton.parentElement;
+  let followedActor=null,followFrame=null;
+  function setMapControlsExpanded(open) {
+    const action=open?'Masquer':'Afficher';
+    const label=action+' les commandes de la carte';
+    mapControlsButton.setAttribute('aria-expanded',String(open));
+    mapControlsButton.setAttribute('aria-label',label);
+    mapControlsButton.title=label;
+  }
+  function closeMapControls() {
+    if(mapControlsButton.getAttribute('aria-expanded')!=='true')return;
+    if(mapControls.contains(document.activeElement))mapControlsButton.focus();
+    setMapControlsExpanded(false);
+  }
+  function positionMap() {
+    $('map-world').setAttribute('transform',`translate(${S.x} ${S.y}) scale(${S.zoom})`);
+    mapControls.classList.toggle('sigma-camera-moved',Math.abs(S.x)>.01 || Math.abs(S.y)>.01 || Math.abs(S.zoom-1)>.001);
+  }
+  function stopFollowing() {
+    if(!followedActor)return;
+    followedActor.setAttribute('aria-pressed','false');
+    followedActor=null;
+    if(followFrame!==null){cancelAnimationFrame(followFrame);followFrame=null;}
+    closeMapControls();
+    mapControls.classList.remove('sigma-following');
+  }
+  function centerOnActor() {
+    const position=followedActor.transform.baseVal.getItem(0).matrix;
+    const x=500-position.e*S.zoom,y=400-position.f*S.zoom;
+    if(S.x===x && S.y===y)return;
+    S.x=x;S.y=y;positionMap();
+  }
+  function followActorFrame() {
+    followFrame=null;
+    if(followedActor.style.display==='none'){stopFollowing();return;}
+    if(!S.mapDrag)centerOnActor();
+    followFrame=requestAnimationFrame(followActorFrame);
+  }
+  function followActor(actor) {
+    if(followedActor===actor)return;
+    if(followedActor)followedActor.setAttribute('aria-pressed','false');
+    else mapControls.classList.add('sigma-following');
+    followedActor=actor;
+    actor.setAttribute('aria-pressed','true');
+    const matrix=$('world-map').getScreenCTM();
+    const targetHeight=actor.querySelector('.sigma-actor-target').height.baseVal.value;
+    if(matrix && matrix.a>0)S.zoom=Math.max(S.zoom,Math.min(maximumMapZoom,42/(targetHeight*matrix.a)));
+    centerOnActor();
+    drawMap();
+    if(followFrame===null)followFrame=requestAnimationFrame(followActorFrame);
+  }
   function drawMap() {
-    const matrix=$('world-map').getScreenCTM(),effective=S.zoom*(matrix?Math.abs(matrix.a):1),level=semanticLevel(effective);$('map-world').setAttribute('transform',`translate(${S.x} ${S.y}) scale(${S.zoom})`);
+    const mapArea=$('world-map').closest('.map-area'),cityVisible=S.view==='home';
+    if(mapArea.classList.contains('sigma-map-active')!==cityVisible){
+      mapArea.classList.toggle('sigma-map-active',cityVisible);
+      if(!cityVisible){closeMapControls();stopFollowing();}
+      if(S.view!=='play'){S.x=0;S.y=0;S.zoom=1;}
+    }
+    const matrix=$('world-map').getScreenCTM(),effective=S.zoom*(matrix?Math.abs(matrix.a):1),level=semanticLevel(effective);positionMap();
     $('zoom-value').textContent=Math.round(S.zoom*100)+' %';$('zoom-level').textContent=['Vue d’ensemble','Points d’intérêt','Détails du parcours'][level];
-    const nodes=mapNodes();$('map-edges').replaceChildren();$('map-nodes').replaceChildren();
+    if(cityVisible)return;
+    const nodes=mapNodes(),nodeLayer=$('map-nodes');
+    const focusedId=nodeLayer.contains(document.activeElement)?document.activeElement.dataset.mapNode:undefined;
+    $('map-edges').replaceChildren();nodeLayer.replaceChildren();
     nodes.forEach((node,i)=>{
       if(i){const a=nodes[i-1];$('map-edges').append(svg('path',{d:`M${a.x},${a.y} Q${(a.x+node.x)/2+35},${(a.y+node.y)/2-35} ${node.x},${node.y}`,class:'trail'}));}
       const selected=node.id===S.view || node.id==='question:'+S.questionId;
-      const group=svg('g',{transform:`translate(${node.x} ${node.y})`,class:'poi'+(selected?' selected':''),tabindex:'0',role:'button','aria-disabled':String(S.loading||S.busy),'aria-label':node.title+' : '+node.sub});
+      const group=svg('g',{transform:`translate(${node.x} ${node.y})`,class:'poi'+(selected?' selected':''),tabindex:'0',role:'button','data-map-node':node.id,'aria-disabled':String(S.loading||S.busy),'aria-label':node.title+' : '+node.sub});
       const enlargement=nodes.length<=12?Math.min(1.8,Math.max(1,.7/effective)):1;
       group.append(svg('circle',{r:39*enlargement,class:'poi-halo'}),svg('circle',{r:28*enlargement,class:'poi-core'}),svg('text',{'text-anchor':'middle',y:8*enlargement,class:'poi-icon',style:`font-size:${25*enlargement}px`},node.icon),svg('text',{'text-anchor':'middle',y:63*enlargement,class:'poi-title',style:`font-size:${16*enlargement}px`},node.title));
       if(level>=1)group.append(svg('text',{'text-anchor':'middle',y:83,class:'poi-sub'},node.sub));
       if(level>=2)group.append(svg('text',{'text-anchor':'middle',y:102,class:'poi-hint'},node.hint.length>35?node.hint.slice(0,33)+'…':node.hint));
       const activate=()=>guard(async()=>{if(S.loading||S.busy)return;if(node.question){S.questionId=node.id.slice(9);render();drawMap();}else await navigate(node.id);});
       group.addEventListener('click',event=>{event.stopPropagation();if(!S.mapMoved)activate();});
-      group.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});$('map-nodes').append(group);
+      group.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();activate();}});nodeLayer.append(group);
+      if(node.id===focusedId)group.focus({preventScroll:true});
     });
   }
   function mapPoint(event) {return new DOMPoint(event.clientX,event.clientY).matrixTransform($('world-map').getScreenCTM().inverse());}
-  function zoom(factor,point={x:500,y:400}) {const next=Math.max(.12,Math.min(2.6,S.zoom*factor)),ratio=next/S.zoom;S.x=point.x-(point.x-S.x)*ratio;S.y=point.y-(point.y-S.y)*ratio;S.zoom=next;drawMap();}
-  function fitMap() {const nodes=mapNodes(),xs=nodes.map(n=>n.x),ys=nodes.map(n=>n.y),left=Math.min(...xs)-130,right=Math.max(...xs)+130,top=Math.min(...ys)-130,bottom=Math.max(...ys)+130;S.zoom=Math.max(.12,Math.min(1,920/(right-left),620/(bottom-top)));S.x=500-(left+right)/2*S.zoom;S.y=430-(top+bottom)/2*S.zoom;drawMap();}
-  $('world-map').addEventListener('wheel',event=>{event.preventDefault();zoom(event.deltaY<0?1.12:1/1.12,mapPoint(event));},{passive:false});
-  $('world-map').addEventListener('pointerdown',event=>{if(event.button!==0)return;const p=mapPoint(event);S.mapDrag={...p,ox:S.x,oy:S.y};S.mapMoved=false;});
-  $('world-map').addEventListener('pointermove',event=>{if(!S.mapDrag)return;const p=mapPoint(event),d=S.mapDrag;if(Math.abs(p.x-d.x)+Math.abs(p.y-d.y)>4){S.mapMoved=true;$('world-map').setPointerCapture(event.pointerId);}if(!S.mapMoved)return;S.x=d.ox+p.x-d.x;S.y=d.oy+p.y-d.y;drawMap();});
-  $('world-map').addEventListener('pointerup',()=>{S.mapDrag=null;setTimeout(()=>{S.mapMoved=false;},0);});
+  function zoom(factor,point={x:500,y:400}) {
+    const next=Math.max(.12,Math.min(maximumMapZoom,S.zoom*factor));
+    if(next===S.zoom)return;
+    if(followedActor){
+      S.zoom=next;
+      centerOnActor();
+    }else{
+      const ratio=next/S.zoom;
+      S.x=point.x-(point.x-S.x)*ratio;
+      S.y=point.y-(point.y-S.y)*ratio;
+      S.zoom=next;
+    }
+    drawMap();
+  }
+  function fitMap() {
+    if(S.view==='home'){stopFollowing();S.zoom=1;S.x=0;S.y=0;drawMap();return;}
+    const nodes=mapNodes(),xs=nodes.map(n=>n.x),ys=nodes.map(n=>n.y),left=Math.min(...xs)-130,right=Math.max(...xs)+130,top=Math.min(...ys)-130,bottom=Math.max(...ys)+130;S.zoom=Math.max(.12,Math.min(1,920/(right-left),620/(bottom-top)));S.x=500-(left+right)/2*S.zoom;S.y=430-(top+bottom)/2*S.zoom;drawMap();
+  }
+  $('world-map').addEventListener('wheel',event=>{
+    if(event.deltaY===0)return;
+    event.preventDefault();
+    const anchorAtPointer=!followedActor && (S.view!=='home' || $('sigma-zoom-pointer').checked);
+    zoom(event.deltaY<0?1.12:1/1.12,anchorAtPointer?mapPoint(event):undefined);
+  },{passive:false});
+  $('world-map').addEventListener('pointerdown',event=>{if(event.button!==0)return;closeMapControls();const p=mapPoint(event);S.mapDrag={x:p.x,y:p.y,ox:S.x,oy:S.y};S.mapMoved=false;});
+  $('world-map').addEventListener('pointermove',event=>{if(!S.mapDrag)return;const p=mapPoint(event),d=S.mapDrag;if(!S.mapMoved && Math.abs(p.x-d.x)+Math.abs(p.y-d.y)>4){stopFollowing();S.mapMoved=true;$('world-map').setPointerCapture(event.pointerId);}if(!S.mapMoved)return;S.x=d.ox+p.x-d.x;S.y=d.oy+p.y-d.y;drawMap();});
+  window.addEventListener('pointerup',()=>{if(S.mapDrag){S.mapDrag=null;setTimeout(()=>{S.mapMoved=false;},0);}});
   $('world-map').addEventListener('pointercancel',()=>{S.mapDrag=null;});
+  $('world-map').addEventListener('click',event=>{
+    if(S.view!=='home' || event.button!==0 || S.mapMoved)return;
+    const actor=event.target.closest('[data-sigma-track]');
+    if(actor)followActor(actor);
+    else stopFollowing();
+  });
+  window.addEventListener('keydown',event=>{
+    if(event.key!=='Escape')return;
+    if(followedActor || mapControlsButton.getAttribute('aria-expanded')==='true'){
+      event.preventDefault();closeMapControls();stopFollowing();
+    }
+  });
   $('world-map').addEventListener('keydown',event=>{
-    if(event.key==='+'||event.key==='='){event.preventDefault();zoom(1.2);}
+    const actor=event.target.closest('[data-sigma-track]');
+    if(S.view==='home' && actor && (event.key==='Enter'||event.key===' ')){event.preventDefault();if(!event.repeat)followActor(actor);}
+    else if(event.key==='+'||event.key==='='){event.preventDefault();zoom(1.2);}
     else if(event.key==='-'){event.preventDefault();zoom(1/1.2);}
     else if(event.key==='Home'){event.preventDefault();fitMap();}
-    else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();S.x+=event.key==='ArrowLeft'?35:event.key==='ArrowRight'?-35:0;S.y+=event.key==='ArrowUp'?35:event.key==='ArrowDown'?-35:0;drawMap();}
+    else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();stopFollowing();S.x+=event.key==='ArrowLeft'?35:event.key==='ArrowRight'?-35:0;S.y+=event.key==='ArrowUp'?35:event.key==='ArrowDown'?-35:0;drawMap();}
   });
-  $('zoom-in').onclick=()=>zoom(1.2);$('zoom-out').onclick=()=>zoom(1/1.2);$('map-home').onclick=fitMap;
+  $('zoom-in').onclick=()=>zoom(1.2);$('zoom-out').onclick=()=>zoom(1/1.2);
+  $('map-home').onclick=()=>{if(S.view==='home')closeMapControls();fitMap();};
+  mapControlsButton.onclick=()=>{
+    if(mapControlsButton.getAttribute('aria-expanded')==='true')closeMapControls();
+    else setMapControlsExpanded(true);
+  };
+  $('sigma-stop-follow').onclick=stopFollowing;
   document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>guard(()=>navigate(b.dataset.view)));$('account').onclick=()=>guard(()=>navigate('account'));
   document.querySelector('.brand').onclick=event=>{event.preventDefault();guard(()=>navigate('home'));};
   function render() {
@@ -130,7 +233,7 @@
     $('map-nodes').querySelectorAll('.poi').forEach(node=>node.setAttribute('aria-disabled',String(S.loading||S.busy)));
   }
   function renderHome(panel) {
-    panel.append(...heading('BIENVENUE DANS TON STUDIO','À toi de tracer la suite.','Crée un QCM, fais une partie, puis explore tes résultats. Chaque étape a son point sur la carte.'));
+    panel.append(...heading('BIENVENUE DANS TON STUDIO','À toi de tracer la suite.','Crée un QCM, fais une partie, puis explore tes résultats.'));
     panel.append(el('div',{class:'stats'},el('div',{},el('strong',{},S.studio.quizzes.filter(q=>!q.archived).length),el('span',{},'QCM disponibles')),el('div',{},el('strong',{},S.studio.attempts.filter(a=>a.status==='in-progress').length),el('span',{},'parties en cours'))));
     panel.append(button('Ouvrir Game Editor',()=>navigate('editor'),'primary'),button('Choisir un QCM',()=>navigate('quizzes')));
     panel.append(paragraph('Le Studio conserve tes parties sur le serveur local. Le zoom change la vue, jamais tes données.','note'));
