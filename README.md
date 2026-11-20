@@ -4,6 +4,8 @@ Outils locaux pour explorer une représentation commune entre les langages infor
 
 ## Téléchargements
 
+**Mise à jour du 20 novembre 2026 :** les sources du QCM incluent désormais la personnalisation des questions, des images, de la disposition et des règles, ainsi que les corrections des audits fonctionnel et sécurité. Voir le [guide de lancement et le bilan](sources/SYNTHESE_MATHS_CODE_V0.2.0/QCM_2026-11-20.md). Les archives ci-dessous restent celles du 15 novembre ; elles ne contiennent pas ces correctifs.
+
 | Je veux… | Télécharger | Prérequis et portée |
 | --- | --- | --- |
 | Essayer le **Game Editor QCM V0.2.0** | [Game Editor pour Windows](https://github.com/math-bytelouisville/MultiversIA/releases/download/suite-2026-11-15/Game-Editor-V0.2.0-Windows.zip) | Windows, PowerShell, .NET Runtime 10 et ASP.NET Core Runtime 10. Application compilée, sources et guide inclus. |
@@ -42,7 +44,7 @@ La version locale V0.5.0 possède deux revues PASS par composant, 20 tests de r�
 
 Les parcours Roslyn, Lean et Rust de l'archive de sources dépendent de manifestes et reçus locaux qui ne sont pas distribués. Lire [les dépendances et limites de l'archive](sources/LIRE_AVANT_SOURCES.txt) avant de tenter ces parcours. Le paquet Game Editor possède son propre lanceur de distribution.
 
-Les sources logicielles sont conservées à l'identique. Trois manifestes documentaires sont des exports publics dont seuls des chemins locaux ont été masqués ; [le manifeste de distribution](sources/MANIFEST_SOURCES.json) trace les empreintes originales et publiques. Les données d'utilisation, secrets, SDK et journaux locaux ne sont pas publiés.
+Le [manifeste du 15 novembre](sources/MANIFEST_SOURCES.json) décrit la distribution historique de cette date, pas les sources mises à jour depuis. Le [manifeste QCM du 20 novembre](sources/SYNTHESE_MATHS_CODE_V0.2.0/QCM_SHA256_2026-11-20.json) trace les fichiers de cette mise à jour. Les données d'utilisation, secrets, SDK et journaux locaux ne sont pas publiés.
 
 ## Accès
 

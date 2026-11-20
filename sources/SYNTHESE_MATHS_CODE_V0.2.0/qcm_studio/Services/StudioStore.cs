@@ -7,7 +7,7 @@ using QcmStudio.Models;
 
 namespace QcmStudio.Services;
 
-public sealed class StudioStore : IDisposable {
+public sealed partial class StudioStore : IDisposable {
     public const int MaximumStateBytes = 32 * 1024 * 1024;
     public static JsonSerializerOptions JsonOptions { get; } = new(JsonSerializerDefaults.Web) {
         PropertyNameCaseInsensitive = false, UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
@@ -37,6 +37,7 @@ public sealed class StudioStore : IDisposable {
                 if (File.Exists(statePath + ".backup")) throw new InvalidDataException("Primary state missing while backup exists; explicit recovery required.");
                 state = Seed(); Persist(state);
             }
+            drafts = LoadDrafts();
         } catch (Exception ex) {
             ownership.Dispose(); throw new InvalidOperationException("STORAGE_INVALID: no automatic reset or backup replacement. " + ex.Message, ex);
         }
@@ -47,10 +48,27 @@ public sealed class StudioStore : IDisposable {
     private static void Conflict(bool condition, string code, string message) { if (condition) throw new StudioException(409, code, message); }
     private static bool Text(string? value, int maximum) => !string.IsNullOrWhiteSpace(value) && value.Length <= maximum;
     private static bool Id(string? value) => value != null && Regex.IsMatch(value, "\\A[A-Za-z0-9-]{1,80}\\z", RegexOptions.CultureInvariant);
-    private static void ValidateQuiz(Quiz quiz) {
+    private static string? CreationId(string? value) {
+        if (value == null) return null;
+        Need(Guid.TryParseExact(value, "D", out var parsed), "requestId doit être un UUID.");
+        return parsed.ToString("D");
+    }
+    private static string CreationHash<T>(T value) => Convert.ToHexStringLower(SHA256.HashData(JsonSerializer.SerializeToUtf8Bytes(value, JsonOptions)));
+    private static bool ValidCreationReceipt(string? id, string? fingerprint) => (id == null && fingerprint == null)
+        || (id != null && Guid.TryParseExact(id, "D", out var parsed) && parsed.ToString("D") == id && fingerprint != null && Regex.IsMatch(fingerprint, "\\A[a-f0-9]{64}\\z", RegexOptions.CultureInvariant));
+    private static void ValidateConfig(QuizConfig? config) {
+        Need(config != null, "Configuration requise.");
+        Need(config!.Grading is "all-or-nothing" or "partial" && config.PassingPercent is >= 0 and <= 100, "Barème ou seuil invalide.");
+        Need(config.Instructions is { Length: <= 2000 }, "Consignes requises, limitées à 2 000 caractères (texte vide autorisé).");
+        Need(config.Conclusion is { Length: <= 2000 }, "Conclusion requise, limitée à 2 000 caractères (texte vide autorisé).");
+        Need(config.AccentColor != null && Regex.IsMatch(config.AccentColor, "\\A#[0-9A-Fa-f]{6}\\z", RegexOptions.CultureInvariant), "Couleur invalide : utilise #RRGGBB.");
+        Need(config.AnswerLayout is "list" or "grid" && config.ContentWidth is "standard" or "wide" && config.TextAlign is "left" or "center", "Disposition du QCM invalide.");
+    }
+    private void ValidateQuiz(Quiz quiz) => MediaValidationScope(() => ValidateQuizCore(quiz));
+    private void ValidateQuizCore(Quiz quiz) {
         Need(Id(quiz.Id) && Text(quiz.Title, 120) && quiz.Revision >= 1, "Identité, titre ou révision du QCM invalide.");
-        Need(quiz.Config != null, "Configuration requise."); var config = quiz.Config!;
-        Need(config.Grading is "all-or-nothing" or "partial" && config.PassingPercent is >= 0 and <= 100, "Barème ou seuil invalide.");
+        Need(ValidCreationReceipt(quiz.CreationRequestId, quiz.CreationFingerprint), "Reçu de création du QCM invalide.");
+        ValidateConfig(quiz.Config);
         Need(quiz.Questions is { Count: >= 1 and <= 50 }, "Le QCM doit avoir de 1 à 50 questions.");
         var ids = new HashSet<string>(StringComparer.Ordinal);
         foreach (var question in quiz.Questions!) {
@@ -58,7 +76,11 @@ public sealed class StudioStore : IDisposable {
             Need(Id(q.Id) && ids.Add(q.Id) && Text(q.Text, 500) && q.Mode is "single" or "multiple", "Question invalide ou identifiant dupliqué.");
             Need(q.Explanation != null && q.Explanation.Length <= 1000, "Explication trop longue ou absente.");
             Need(q.Options is { Count: >= 2 and <= 8 }, "Chaque question doit proposer de 2 à 8 options.");
-            foreach (var option in q.Options!) Need(option != null && Id(option.Id) && ids.Add(option.Id) && Text(option.Text, 200), "Option invalide ou identifiant dupliqué.");
+            ValidateImage(q.Image);
+            foreach (var option in q.Options!) {
+                Need(option != null && Id(option.Id) && ids.Add(option.Id) && option.Text is { Length: <= 200 } && (Text(option.Text, 200) || option.Image != null), "Une réponse nécessite un texte ou une image décrite, avec un identifiant unique.");
+                ValidateImage(option!.Image);
+            }
             var correct = q.Options.Count(o => o.Correct);
             Need(q.Mode == "single" ? correct == 1 : correct >= 1, "Choisis exactement une bonne option en réponse unique, au moins une en réponse multiple.");
         }
@@ -72,15 +94,19 @@ public sealed class StudioStore : IDisposable {
             Need(a.OptionIds!.All(id => question!.Options.Any(o => o.Id == id)), "Option inconnue dans cette tentative.");
             Need(question!.Mode != "single" || a.OptionIds.Count == 1, "Une seule réponse autorisée pour cette question.");
         }
-        Need(!complete || answers!.Count == quiz.Questions.Count, "Réponds à toutes les questions avant de terminer.");
+        Need(!complete || quiz.Config.AllowUnanswered || answers!.Count == quiz.Questions.Count, "Réponds à toutes les questions avant de terminer.");
     }
     private static string Fingerprint(string quizId, long revision) => Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(quizId + "\n" + revision.ToString(System.Globalization.CultureInfo.InvariantCulture))));
-    private static void ValidateState(StudioState value) {
+    // Historical media can disappear without invalidating scores or blocking unrelated commits.
+    // New quiz/draft content is validated strictly at its input boundary.
+    private void ValidateState(StudioState value) => MediaValidationScope(() => ValidateStateCore(value), false);
+    private void ValidateStateCore(StudioState value) {
         Need(value.SchemaVersion == "mia-qcm-studio-state-1" && value.Revision >= 1, "Version du fichier d’état invalide.");
         Need(value.Account != null && Id(value.Account.Id) && Text(value.Account.DisplayName, 60), "Compte local invalide.");
         Need(value.Quizzes != null && value.QuizHistory != null && value.Attempts != null, "Collections de l’état absentes.");
         Need(value.Quizzes!.Count <= 200 && value.QuizHistory!.Count <= 2000 && value.Attempts!.Count <= 2000, "Limite de stockage atteinte.");
         Need(value.Quizzes.Select(q => q.Id).Distinct().Count() == value.Quizzes.Count, "QCM dupliqué.");
+        Need(value.Quizzes.Where(q => q.CreationRequestId != null).Select(q => q.CreationRequestId).Distinct().Count() == value.Quizzes.Count(q => q.CreationRequestId != null), "Reçu de création QCM dupliqué.");
         foreach (var quiz in value.Quizzes.Concat(value.QuizHistory!)) ValidateQuiz(quiz);
         var requests = new HashSet<string>(StringComparer.Ordinal); var attempts = new HashSet<string>(StringComparer.Ordinal);
         foreach (var attempt in value.Attempts!) {
@@ -96,9 +122,12 @@ public sealed class StudioStore : IDisposable {
     private void Persist(StudioState next) {
         var bytes = JsonSerializer.SerializeToUtf8Bytes(next, JsonOptions);
         Conflict(bytes.Length > MaximumStateBytes, "STORAGE_LIMIT", "Stockage maximal atteint ; aucun historique n’a été effacé.");
-        var temporary = statePath + "." + Guid.NewGuid().ToString("N") + ".pending";
+        WriteWithBackup(statePath, bytes);
+    }
+    private static void WriteWithBackup(string path, byte[] bytes) {
+        var temporary = path + "." + Guid.NewGuid().ToString("N") + ".pending";
         using (var file = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { file.Write(bytes); file.Flush(true); }
-        if (File.Exists(statePath)) File.Replace(temporary, statePath, statePath + ".backup"); else File.Move(temporary, statePath);
+        if (File.Exists(path)) File.Replace(temporary, path, path + ".backup"); else File.Move(temporary, path);
     }
     private void Commit(StudioState next) { next.Revision = checked(state.Revision + 1); ValidateState(next); Persist(next); state = next; }
     private static Quiz FindQuiz(StudioState s, string id) => s.Quizzes.Find(q => q.Id == id) ?? throw new StudioException(404, "QUIZ_NOT_FOUND", "QCM introuvable.");
@@ -110,14 +139,18 @@ public sealed class StudioStore : IDisposable {
     }
     public object Studio() {
         lock (gate) return new { account = players.Current(state), games = games.Entries(),
+            drafts = drafts.Select(d => new { d.Id, d.Name, d.Revision }).ToArray(),
             quizzes = state.Quizzes.Select(q => new { q.Id, q.Title, q.Revision, questionCount = q.Questions.Count, q.Config, q.Archived, q.UpdatedAt }).ToArray(),
             attempts = state.Attempts.OrderByDescending(a => a.StartedAt).Select(Summary).ToArray() };
     }
     public object Quiz(string id) { lock (gate) return FindQuiz(state, id); }
-    public object CreateQuiz(QuizInput input) {
+    public object CreateQuiz(QuizInput input, string? requestId = null) {
         lock (gate) {
+            var request = CreationId(requestId); var fingerprint = request == null ? null : CreationHash<QuizInput>(input);
+            var replay = request == null ? null : state.Quizzes.Find(q => q.CreationRequestId == request);
+            if (replay != null) { Conflict(replay.CreationFingerprint != fingerprint, "REQUEST_CONFLICT", "Cette clé de création appartient à un autre contenu."); return replay; }
             Conflict(state.Quizzes.Count >= 200, "STORAGE_LIMIT", "Nombre maximal de QCM atteint ; historique préservé.");
-            var quiz = new Quiz { Id = Guid.NewGuid().ToString("D"), Title = input.Title, Questions = input.Questions, Config = input.Config, Revision = 1, Archived = false, UpdatedAt = DateTimeOffset.UtcNow };
+            var quiz = new Quiz { Id = Guid.NewGuid().ToString("D"), Title = input.Title, Questions = input.Questions, Config = input.Config, Revision = 1, Archived = false, UpdatedAt = DateTimeOffset.UtcNow, CreationRequestId = request, CreationFingerprint = fingerprint };
             ValidateQuiz(quiz); var next = Clone(state); next.Quizzes.Add(Clone(quiz)); Commit(next); return quiz;
         }
     }
@@ -125,7 +158,7 @@ public sealed class StudioStore : IDisposable {
         lock (gate) {
             var old = FindQuiz(state, id); Revision(input.Revision, old.Revision); Conflict(old.Archived, "QUIZ_ARCHIVED", "Un QCM archivé ne peut plus être modifié.");
             Conflict(state.QuizHistory.Count >= 2000, "STORAGE_LIMIT", "Nombre maximal de versions atteint ; historique préservé.");
-            var quiz = new Quiz { Id = id, Title = input.Title, Questions = input.Questions, Config = input.Config, Revision = checked(old.Revision + 1), Archived = false, UpdatedAt = DateTimeOffset.UtcNow };
+            var quiz = new Quiz { Id = id, Title = input.Title, Questions = input.Questions, Config = input.Config, Revision = checked(old.Revision + 1), Archived = false, UpdatedAt = DateTimeOffset.UtcNow, CreationRequestId = old.CreationRequestId, CreationFingerprint = old.CreationFingerprint };
             ValidateQuiz(quiz); var next = Clone(state); next.QuizHistory.Add(Clone(old)); next.Quizzes[next.Quizzes.FindIndex(q => q.Id == id)] = Clone(quiz); Commit(next); return quiz;
         }
     }
@@ -174,7 +207,7 @@ public sealed class StudioStore : IDisposable {
     }
     private static (Fraction Score, Fraction Percent, int Correct) Calculate(Attempt a) {
         var sum = Fraction.Zero; var correct = 0;
-        foreach (var q in a.Snapshot.Questions) { var answer = a.Answers.Single(x => x.QuestionId == q.Id); sum += Points(q, answer, a.Snapshot.Config.Grading); if (q.Options.Where(o => o.Correct).Select(o => o.Id).ToHashSet().SetEquals(answer.OptionIds)) correct++; }
+        foreach (var q in a.Snapshot.Questions) { var answer = a.Answers.SingleOrDefault(x => x.QuestionId == q.Id); if (answer == null) continue; sum += Points(q, answer, a.Snapshot.Config.Grading); if (q.Options.Where(o => o.Correct).Select(o => o.Id).ToHashSet().SetEquals(answer.OptionIds)) correct++; }
         return (sum, sum.Times(100, a.Snapshot.Questions.Count), correct);
     }
     private static object Result(Attempt a) {
@@ -182,7 +215,7 @@ public sealed class StudioStore : IDisposable {
         return new { score = score.Score.Rounded(), maxScore = a.Snapshot.Questions.Count, percent = score.Percent.Rounded(),
             passed = score.Percent.CompareTo(Fraction.OfDecimal(a.Snapshot.Config.PassingPercent)) >= 0, correctCount = score.Correct,
             details = a.Snapshot.Config.ShowCorrection ? a.Snapshot.Questions.Select(q => {
-                var answer = a.Answers.Single(x => x.QuestionId == q.Id); var correct = q.Options.Where(o => o.Correct).Select(o => o.Id).ToArray();
+                var answer = a.Answers.SingleOrDefault(x => x.QuestionId == q.Id) ?? new Answer { QuestionId = q.Id, OptionIds = [] }; var correct = q.Options.Where(o => o.Correct).Select(o => o.Id).ToArray();
                 return (object)new { questionId = q.Id, points = Points(q, answer, a.Snapshot.Config.Grading).Rounded(), maxPoints = 1,
                     isCorrect = correct.ToHashSet().SetEquals(answer.OptionIds), selectedOptionIds = answer.OptionIds, correctOptionIds = correct, explanation = q.Explanation };
             }).ToArray() : Array.Empty<object>() };
@@ -191,7 +224,7 @@ public sealed class StudioStore : IDisposable {
         a.Status, a.Revision, answeredCount = a.Answers.Count, questionCount = a.Snapshot.Questions.Count, a.StartedAt, a.CompletedAt, result = a.Status == "completed" ? Result(a) : null };
     private static object AttemptView(Attempt a) => new { a.Id, quizId = a.Snapshot.Id, quizTitle = a.Snapshot.Title, quizRevision = a.Snapshot.Revision,
         a.Status, a.Revision, player = a.Player, a.Snapshot.Config, a.Answers, a.StartedAt, a.CompletedAt,
-        questions = a.Snapshot.Questions.Select(q => new { q.Id, q.Text, q.Mode, options = q.Options.Select(o => new { o.Id, o.Text }).ToArray() }).ToArray(), result = a.Status == "completed" ? Result(a) : null };
+        questions = a.Snapshot.Questions.Select(q => new { q.Id, q.Text, q.Mode, q.Image, options = q.Options.Select(o => new { o.Id, o.Text, o.Image }).ToArray() }).ToArray(), result = a.Status == "completed" ? Result(a) : null };
     public object Scores() {
         lock (gate) return new { groups = state.Attempts.Where(a => a.Status == "completed")
             .GroupBy(a => (a.Snapshot.Id, a.Snapshot.Revision, a.Snapshot.Config.Grading)).Select(group => new {

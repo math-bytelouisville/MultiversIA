@@ -12,11 +12,21 @@ public sealed class StudioController : Controller {
 [ApiController]
 [Route("api")]
 public sealed class StudioApiController(StudioStore store) : ControllerBase {
+    [HttpPost("media")] public IActionResult UploadMedia(MediaInput input) => StatusCode(201, store.UploadMedia(input));
+    [HttpGet("media/{id}")] public IActionResult Media(string id) {
+        var media = store.Media(id);
+        Response.Headers.XContentTypeOptions = "nosniff";
+        return File(media.Bytes, media.ContentType);
+    }
     [HttpGet("studio")] public object Studio() => store.Studio();
     [HttpGet("account")] public object Account() => store.Account();
     [HttpPut("account")] public object Account(AccountInput input) => store.Rename(input);
+    [HttpGet("drafts/{id}")] public object Draft(string id) => store.Draft(id);
+    [HttpPost("drafts")] public IActionResult CreateDraft(DraftCreate input) => StatusCode(201, store.CreateDraft(input, input.RequestId));
+    [HttpPut("drafts/{id}")] public object UpdateDraft(string id, DraftUpdate input) => store.UpdateDraft(id, input);
+    [HttpDelete("drafts/{id}")] public object DeleteDraft(string id, DraftDelete input) => store.DeleteDraft(id, input);
     [HttpGet("quizzes/{id}")] public object Quiz(string id) => store.Quiz(id);
-    [HttpPost("quizzes")] public IActionResult Create(QuizInput input) => StatusCode(201, store.CreateQuiz(input));
+    [HttpPost("quizzes")] public IActionResult Create(QuizCreate input) => StatusCode(201, store.CreateQuiz(input, input.RequestId));
     [HttpPut("quizzes/{id}")] public object Update(string id, QuizUpdate input) => store.UpdateQuiz(id, input);
     [HttpPost("quizzes/{id}/archive")] public object Archive(string id, RevisionInput input) => store.ArchiveQuiz(id, input);
     [HttpPost("attempts")] public IActionResult Start(StartInput input) { var result = store.Start(input); return StatusCode(result.Created ? 201 : 200, result.Value); }

@@ -22,6 +22,7 @@ def main():
     def worker():
         try:
             build=mvc_runtime.load_or_build();server=mvc_runtime.StudioProcess(build).start();messages.put(('ready',server))
+        except mvc_runtime.StudioStorageBusy as exc:messages.put(('busy',str(exc)))
         except Exception as exc:messages.put(('error',str(exc)))
         finally:messages.put(('done',None))
     def close():
@@ -37,6 +38,9 @@ def main():
                     if state['closing']:value.stop();state['server']=None
                     else:
                         status.set('Prêt — '+value.url);button.config(state='normal');data.config(state='normal');open_site()
+                elif kind=='busy':
+                    status.set(value)
+                    if not state['closing']:messagebox.showwarning('Game Editor déjà ouvert',value,parent=root)
                 elif kind=='error':
                     status.set('Ouverture impossible : '+value)
                     if not state['closing']:messagebox.showerror('Game Editor',value,parent=root)

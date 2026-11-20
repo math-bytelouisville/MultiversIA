@@ -1,0 +1,851 @@
+<g id="sigma-city" role="group" aria-label="Le site SIGMA de Brillon et la rue des Neuf Bonniers" aria-description="Le tracé des rues et les emprises des bâtiments proviennent d’OpenStreetMap. Les interventions sont fictives.">
+  <defs>
+    <pattern id="sigma-road-surface" width="34" height="23" patternUnits="userSpaceOnUse">
+      <rect id="sigma-asphalt-color" width="34" height="23" fill="#554f4d"/>
+      <path d="M0 17l9-3 7 1 12-4 6-1M13 0l2 3-3 2" stroke="#292b2e" stroke-width=".55" opacity=".48" fill="none"/>
+      <path d="M4 6h1m18 11h1.6M30 5h.9M12 20h.6" stroke="#ceb79c" stroke-width=".5" opacity=".33"/>
+    </pattern>
+    <pattern id="sigma-concrete-pavers" width="22" height="17" patternUnits="userSpaceOnUse" patternTransform="rotate(-13)">
+      <rect width="22" height="17" fill="#cbb697"/>
+      <path d="M0 .5h22M0 8.6h22M7 .5v8.1m9 0v8.4" fill="none" stroke="#a28e73" stroke-width=".7" opacity=".65"/>
+      <path d="M0 1.7h22M0 9.8h22" stroke="#eddbb8" stroke-width=".55" opacity=".56"/>
+    </pattern>
+    <radialGradient id="sigma-warm-light">
+      <stop stop-color="#ffe2a0" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#ffc878" stop-opacity="0"/>
+    </radialGradient>
+    <g id="sigma-animal-cat" stroke="#54463c" stroke-width="1" stroke-linejoin="round">
+      <path d="M-6-4q-8-1-7-7 1-4 4-2" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="-2" cy="-5" rx="7" ry="4" fill="currentColor"/>
+      <path d="M-6-3v4m8-4v4" fill="none" stroke-linecap="round"/>
+      <path d="M1-9l.5-6 4 3 4-3 1 6a5 5 0 1 1-9 0Z" fill="currentColor"/>
+      <path d="M7-5q2 1 3-1" fill="none" stroke="#fff4dc" stroke-width="1.5"/>
+      <circle cx="8" cy="-8" r="1" fill="#312e30" stroke="none"/>
+    </g>
+    <g id="sigma-animal-sparrow" stroke="#5c493c" stroke-width=".85" stroke-linejoin="round">
+      <path d="M-4-4l-5-4 2 5 5 2" fill="currentColor"/>
+      <ellipse cy="-4" rx="5" ry="3.7" fill="currentColor"/>
+      <circle cx="4" cy="-7" r="3" fill="currentColor"/>
+      <path d="M6-7h3L6-5m-8 4-.5 2m3-2v2" fill="#e9bc6b"/>
+      <path d="M-3-5q3 0 3 2" fill="none" stroke="#fff2d4" stroke-width="1"/>
+      <circle cx="5" cy="-7.5" r=".8" fill="#302a2b" stroke="none"/>
+    </g>
+    <g id="sigma-animal-squirrel" stroke="#633e30" stroke-width="1" stroke-linejoin="round">
+      <path d="M-5-3Q-15-5-12-12q2-6 7-5 5 1 3 5-1 2-4 1-3 2 1 6Z" fill="currentColor"/>
+      <ellipse cy="-5" rx="5" ry="4.8" fill="currentColor"/>
+      <path d="M1-11l1-5 3 3q5 1 5 5-5 4-9-1Z" fill="currentColor"/>
+      <path d="M2-5q2 1 4-1M-1-1h4" fill="none" stroke="#f5dcc1" stroke-width="1.3" stroke-linecap="round"/>
+      <circle cx="7" cy="-10" r="1" fill="#332d2c" stroke="none"/>
+    </g>
+    <g id="sigma-animal-deer" stroke="#65483a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-7-8l-1 8m5-8 1 8m6-8-1 8m5-9 1 9" fill="none" stroke-width="1.65"/>
+      <path d="M-10-10l-3-3m20 2 4-9" fill="none" stroke="currentColor" stroke-width="2.7"/>
+      <ellipse cy="-10" rx="10" ry="5" fill="currentColor"/>
+      <path d="M8-19l-2-6 6 3 4-4v6l3 2-3 3-8-1Z" fill="currentColor"/>
+      <path d="M-6-12h.4m3-.9h.4m3 .8h.4" stroke="#fff1da" stroke-width="1.45"/>
+      <circle cx="14" cy="-20" r="1" fill="#2e292a" stroke="none"/>
+    </g>
+    <g id="sigma-animal-hare" stroke="#605045" stroke-width="1" stroke-linejoin="round">
+      <circle cx="-8" cy="-6" r="2.8" fill="#ede1cb"/>
+      <ellipse cx="-2" cy="-6" rx="7" ry="5" fill="currentColor"/>
+      <path d="M2-10Q-1-22 2-22q3 1 5 10M6-10q1-12 4-11 2 2 0 11" fill="currentColor"/>
+      <path d="M2-15l1-2m6 2 .5-2" stroke="#e99d99" fill="none" stroke-linecap="round"/>
+      <ellipse cx="6" cy="-8" rx="5" ry="4.6" fill="currentColor"/>
+      <path d="M-4-1h4m5 0h4" fill="none" stroke-linecap="round"/>
+      <circle cx="8" cy="-9" r="1" fill="#312b2a" stroke="none"/>
+    </g>
+    <g id="sigma-animal-pheasant" stroke="#594c3b" stroke-width="1" stroke-linejoin="round">
+      <path d="M-5-8l-13-7 9 10 6 2" fill="currentColor"/>
+      <ellipse cx="-1" cy="-6" rx="7" ry="4.3" fill="currentColor"/>
+      <path d="M3-7q1-10 6-8 4 1 2 6L7-5Z" fill="#547c72"/>
+      <path d="M8-11h3l3-1-3 3m-12 7v3m3-3 1 3" fill="#e7a96d"/>
+      <path d="M4-7l4 1" stroke="#fff4da" stroke-width="1.4"/>
+      <circle cx="10" cy="-12" r=".8" fill="#302a2b" stroke="none"/>
+    </g>
+    <linearGradient id="sigma-storm-night" gradientUnits="userSpaceOnUse" x1="80" y1="700" x2="850" y2="160">
+      <stop stop-color="#271734"/><stop offset=".55" stop-color="#111f45"/><stop offset="1" stop-color="#293667"/>
+    </linearGradient>
+    <linearGradient id="sigma-storm-neon" gradientUnits="userSpaceOnUse" x1="185" y1="640" x2="750" y2="190">
+      <stop stop-color="#ff58bb"/><stop offset=".38" stop-color="#a577ff"/><stop offset=".73" stop-color="#57e9ff"/><stop offset="1" stop-color="#bdfaff"/>
+    </linearGradient>
+    <pattern id="sigma-rain-near" width="88" height="72" patternUnits="userSpaceOnUse">
+      <path d="M7 5l-6 15m26 13-5 13m53-31-7 18m-18 12-6 16m36-9-5 13"
+            fill="none" stroke="#e3f3f8" stroke-width="1.05" stroke-linecap="round"/>
+    </pattern>
+    <pattern id="sigma-rain-far" width="104" height="89" patternUnits="userSpaceOnUse">
+      <path d="M21 8l-4 10m80-2-4 9m-55 7-4 12m28-2-5 12m26 12-5 12m-67-9-4 10m31-9-3 9"
+            fill="none" stroke="#cfedf2" stroke-width=".75" stroke-linecap="round"/>
+    </pattern>
+    <linearGradient id="sigma-plaster" x2="0" y2="1">
+      <stop stop-color="#4d3e36" stop-opacity=".19"/>
+      <stop offset=".35" stop-color="#fff0cf" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#fff0cf" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="sigma-roof-seams" width="10" height="5" patternUnits="userSpaceOnUse">
+      <path d="M0 .7H10" stroke="#26313b" stroke-width="1" opacity=".72"/>
+      <path d="M0 1.8H10" stroke="#e9c9a8" stroke-width=".6" opacity=".55"/>
+    </pattern>
+    <pattern id="sigma-brickwork" width="10" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 .5H10M0 3.5H10M3 .5v3m5 0v3" fill="none" stroke="#5e362d" stroke-opacity=".6" stroke-width=".7"/>
+      <path d="M.6 2h2m1.5 3h3.5M6 2h3" stroke="#f3aa76" stroke-width=".65" opacity=".7"/>
+    </pattern>
+    <pattern id="sigma-cladding" width="4" height="12" patternUnits="userSpaceOnUse">
+      <path d="M.5 0v12" stroke="#40545a" stroke-width=".8"/>
+      <path d="M2 0v12" stroke="#e3c3a0" stroke-width=".65" opacity=".6"/>
+    </pattern>
+    <pattern id="sigma-roof-panels" width="13" height="7" patternUnits="userSpaceOnUse">
+      <path d="M0 0H13V3H0Z" fill="#d5af90" opacity=".12"/>
+      <path d="M0 .6H13" stroke="#262f38" stroke-width="1.2" opacity=".7"/>
+      <path d="M0 2H13" stroke="#e7c4a0" stroke-width=".6" opacity=".55"/>
+      <path d="M4 2.8V7M10 0V1" stroke="#343d45" stroke-width=".6" opacity=".55"/>
+    </pattern>
+    <pattern id="sigma-roof-tiles" width="14" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 0H14V4H0Z" fill="#da9574" opacity=".24"/>
+      <path d="M0 .5H14M0 4.5H14M3 .5V4.5M10 4.5V8" fill="none" stroke="#4a2e35" stroke-width=".85"/>
+      <path d="M0 2H14M0 6H14" stroke="#e3a780" stroke-width=".55" opacity=".55"/>
+    </pattern>
+    <linearGradient id="sigma-grass" x2="0" y2="1">
+      <stop stop-color="#ddcaa8"/><stop offset="1" stop-color="#a99977"/>
+    </linearGradient>
+    <linearGradient id="sigma-concrete" x2="0" y2="1">
+      <stop stop-color="#ead3ae"/><stop offset="1" stop-color="#b89a76"/>
+    </linearGradient>
+    <linearGradient id="sigma-glass" x2="0" y2="1">
+      <stop stop-color="#a3aba0"/><stop offset=".45" stop-color="#587477"/><stop offset="1" stop-color="#3d4c51"/>
+    </linearGradient>
+    <linearGradient id="sigma-asphalt" x2="1" y2="1">
+      <stop stop-color="#695d55"/><stop offset="1" stop-color="#423c3b"/>
+    </linearGradient>
+    <linearGradient id="sigma-metal-roof" x2=".4" y2="1">
+      <stop stop-color="#8c9ba0"/><stop offset=".48" stop-color="#5b6d75"/><stop offset="1" stop-color="#405259"/>
+    </linearGradient>
+    <linearGradient id="sigma-tiles" x2=".1" y2="1">
+      <stop stop-color="#d58a62"/><stop offset="1" stop-color="#8c463c"/>
+    </linearGradient>
+    <linearGradient id="sigma-house-side" x2="1" y2="1">
+      <stop stop-color="#b78f68"/><stop offset="1" stop-color="#79594c"/>
+    </linearGradient>
+    <linearGradient id="sigma-pond" x2=".4" y2="1">
+      <stop stop-color="#8ca59a"/><stop offset=".58" stop-color="#4e797a"/><stop offset="1" stop-color="#3a585d"/>
+    </linearGradient>
+    <radialGradient id="sigma-leaves" cx=".28" cy=".23" r=".8">
+      <stop stop-color="#d5af59"/><stop offset=".42" stop-color="#a18f42"/><stop offset=".8" stop-color="#666b3b"/><stop offset="1" stop-color="#48533a"/>
+    </radialGradient>
+    <radialGradient id="sigma-leaf-shadow">
+      <stop stop-color="#3e3c25" stop-opacity=".42"/><stop offset="1" stop-color="#3e3c25" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="sigma-brick" width="22" height="9" patternUnits="userSpaceOnUse">
+      <rect width="22" height="9" fill="#ad7358"/>
+      <path d="M0 .4h22M0 4.8h22M.5 0v4.8m10.5 0V9" stroke="#775247" stroke-width=".65"/>
+      <path d="M1.4 1.4h8m3 5h8" stroke="#d5a384" stroke-width=".9" opacity=".7"/>
+    </pattern>
+    <pattern id="sigma-shutter" width="4" height="6" patternUnits="userSpaceOnUse">
+      <rect width="4" height="6" fill="#696760"/>
+      <path d="M0 1h4" stroke="#a39b89" stroke-width="1"/>
+      <path d="M0 5h4" stroke="#484641" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="sigma-lamp-glow">
+      <stop stop-color="#fff5b0" stop-opacity=".85"/><stop offset="1" stop-color="#ffd78b" stop-opacity="0"/>
+    </radialGradient>
+    <g id="sigma-light-pole">
+      <path d="m0 0 26 8" stroke="#2e4749" opacity=".26" stroke-width="4" stroke-linecap="round"/>
+      <path d="M0 0v-31q0-7 10-7" fill="none" stroke="#5b6b6a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M8-39h10v5H8z" fill="#f3dfa6" stroke="#62716c" stroke-width="1.5"/>
+    </g>
+    <g id="sigma-city-building">
+      <path d="M0 0h92l37-23 12 9-38 25H13z" fill="#375a52" opacity=".22"/>
+      <path d="M0-51h92V0H0z" fill="url(#sigma-concrete)"/>
+      <path d="M0-8h92V0H0z" fill="#9c8064"/>
+      <path d="m92-51 34-22v51L92 0z" fill="url(#sigma-house-side)"/>
+      <path d="m0-51 34-22h92l-34 22z" fill="var(--roof,#588a8a)" stroke="#bdac8d" stroke-width="1.5"/>
+      <path d="m0-51 34-22h92l-34 22z" fill="url(#sigma-roof-seams)"/>
+      <path d="M0-51h92v5H0z" fill="#594c41" opacity=".45"/>
+      <path d="M12-37h20v18H12zm28 0h20v18H40z" fill="url(#sigma-glass)" stroke="#4f727a" stroke-width="2"/>
+      <path d="M22-37v18m28-18v18m20-15h13V0H70z" fill="#587c81" stroke="#587c81" stroke-width="1"/>
+      <path d="m100-43 16-10v16l-16 10z" fill="#b1ccbf" stroke="#54767a" stroke-width="1.5"/>
+    </g>
+    <g id="sigma-phone-icon">
+      <circle r="16" fill="#1b5570" stroke="#f2f9ec" stroke-width="2"/>
+      <path d="M-8-7q1-4 4-3l3 5-3 3q2 4 6 6l3-3 5 3q1 3-3 4C1 10-10-1-8-7z" fill="#fff8e3"/>
+    </g>
+    <g id="sigma-mail-icon">
+      <rect x="-16" y="-12" width="32" height="24" rx="5" fill="#754784" stroke="#f2f9ec" stroke-width="2"/>
+      <path d="M-10-5 0 2l10-7M-10 6V-5h20V6z" fill="none" stroke="#fff8e3" stroke-width="1.8" stroke-linejoin="round"/>
+    </g>
+    <g id="sigma-tree">
+      <ellipse cx="14" cy="4" rx="34" ry="13" fill="url(#sigma-leaf-shadow)"/>
+      <path d="M-2 4 0-27m1 14 11-15m-12 11-9-12" stroke="#785945" stroke-width="5" stroke-linecap="round"/>
+      <path d="M-2 1 0-20" stroke="#b39365" stroke-width="1.5"/>
+      <circle cx="-15" cy="-26" r="15" fill="url(#sigma-leaves)"/>
+      <circle cx="15" cy="-26" r="18" fill="url(#sigma-leaves)"/>
+      <circle cx="4" cy="-40" r="20" fill="url(#sigma-leaves)"/>
+      <circle cx="-15" cy="-39" r="12" fill="url(#sigma-leaves)"/>
+      <circle cx="22" cy="-37" r="11" fill="url(#sigma-leaves)"/>
+      <circle cx="-1" cy="-49" r="10" fill="url(#sigma-leaves)"/>
+      <path d="m-21-44 4-3m8 1 5-3m10 1 5 3m6 2 3 2m-36 7 4-2m31 2 4 1" stroke="#e0bf72" opacity=".6" stroke-width="1.1" stroke-linecap="round"/>
+    </g>
+    <g id="sigma-house">
+      <path d="M-10 8h98l28-19H22Z" fill="#568459" opacity=".35"/>
+      <path d="m80 0 28-19v-54L80-55Z" fill="url(#sigma-house-side)"/>
+      <path d="M0-52h80V0H0Z" fill="url(#sigma-concrete)"/>
+      <path d="M0-5h80v5H0Z" fill="#a28467"/>
+      <path d="m-8-48 47-43 48 43H-8Z" fill="url(#sigma-tiles)"/>
+      <path d="m39-91 28-18 47 43-27 18Z" fill="url(#sigma-tiles)"/>
+      <path d="m-8-48h95l-2 4H-5z" fill="#623d39"/>
+      <path d="m48-84 28-18m-19 26 28-18M66-68l28-18m-19 26 28-18M9-58h61m-49-11h38m-28-10h16" fill="none" stroke="#f68c6d" opacity=".6" stroke-width="2"/>
+      <path d="m67-86 10-6v-15l-10 6z" fill="#815452"/><path d="M59-101h8v15h-8z" fill="#c78165"/>
+      <path d="M31 0v-27h19V0Z" fill="#88534c"/>
+      <path d="M8-32h16v14H8Zm48 0h16v14H56Z" fill="url(#sigma-glass)" stroke="#967459" stroke-width="2"/>
+      <path d="M16-32v14m48-14v14M8-25h16m32 0h16" stroke="#b07864" stroke-width="1.2"/>
+      <path d="M28 0h25v4H28z" fill="#cda98b"/>
+    </g>
+    <g id="sigma-car">
+      <ellipse cx="1" cy="3" rx="13" ry="7" fill="#332c27" opacity=".36"/>
+      <rect x="-12" y="-5" width="24" height="11" rx="4" fill="currentColor" stroke="#37383b" stroke-width="1"/>
+      <path d="M-7-4h10l4 2v4L3 4H-7l-2-2v-4Z" fill="#3e535a"/>
+      <path d="M-5-3h7v6h-7Z" fill="currentColor"/>
+      <path d="M10-3v2m0 2v2" stroke="#fff4cd" stroke-width="1.4"/>
+      <path d="M-11-3v2m0 2v2" stroke="#c44e45" stroke-width="1.2"/>
+    </g>
+    <g id="sigma-van">
+      <ellipse cx="0" cy="9" rx="29" ry="13" fill="#253e47" opacity=".34"/>
+      <rect x="-16" y="-12" width="10" height="5" rx="2" fill="#283a46"/>
+      <rect x="9" y="-12" width="10" height="5" rx="2" fill="#283a46"/>
+      <rect x="-16" y="8" width="10" height="5" rx="2" fill="#283a46"/>
+      <rect x="9" y="8" width="10" height="5" rx="2" fill="#283a46"/>
+      <path d="M-26 1h50v9l-7 7h-38l-5-5z" fill="#537b83" stroke="#284d59" stroke-width="1.5"/>
+      <circle cx="-16" cy="14" r="5" fill="#253943"/><circle cx="13" cy="14" r="5" fill="#253943"/>
+      <path d="M-26-10q0-5 5-5H8q9 0 17 7V7q-5 5-16 5h-30q-5 0-5-5Z" fill="#f9fcf8" stroke="#416c75" stroke-width="1.5"/>
+      <path d="M-24 9H9l14-4v3l-8 6h-36l-3-2z" fill="#52878c"/>
+      <path d="M11-11q8 1 11 6V4q-6 4-11 4Z" fill="#335c6a"/>
+      <path d="m13-8 6 3m-6-1 6 3m-22 13h6" stroke="#c5e5df" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M-27-7v3m0 10v3" stroke="#d55b45" stroke-width="2"/>
+      <image href="@Url.Content("~/sigma-logo.png")" x="-24" y="-10" width="34" height="15"/>
+      <path d="M21-6v3m0 6v3" stroke="#ffe0a0" stroke-width="2"/>
+    </g>
+  </defs>
+
+  <defs><clipPath id="sigma-brillon-frame"><rect x="14" y="26" width="972" height="730" rx="34"/></clipPath></defs>
+  <rect x="-1500" y="-1500" width="4000" height="3800" fill="#a19078"/>
+  <rect x="14" y="37" width="972" height="730" rx="34" fill="#725542"/>
+  <g clip-path="url(#sigma-brillon-frame)">
+  <rect width="1000" height="800" fill="#c3af8a"/>
+  <polygon points="0,0 552,0 596,115 561,145 190,180 0,183" fill="#b5a175" stroke="#98845f" stroke-width="1.4"/>
+  <polygon points="593,0 1000,0 1000,226 748,256" fill="#ac9a6e" stroke="#98845f" stroke-width="1.4"/>
+  <polygon points="303,316 658,309 724,371 768,451 620,505 559,490 256,553 195,444" fill="#bba581" stroke="#98845f" stroke-width="1.4"/>
+  <polygon points="0,609 200,550 315,588 351,800 0,800" fill="#aa9468" stroke="#98845f" stroke-width="1.4"/>
+  <polygon points="589,567 815,513 998,765 998,800 584,800" fill="#b19a6e" stroke="#98845f" stroke-width="1.4"/>
+  <polygon points="0,298 71,280 100,318 181,495 0,535" fill="#ae9f73" stroke="#98845f" stroke-width="1.4"/>
+  <path d="M0 731 255 663M0 754 265 687M0 779 278 711M679 633 875 585m-178 70 195-47m-182 71 201-48m-187 72 204-48m-192 70 202-47M253 140 553 100m-306 21 297-40m-305 22 300-41" fill="none" stroke="#927d54" stroke-width="2" opacity=".23"/>
+  <ellipse cx="711" cy="652" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="970" cy="662" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="875" cy="679" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="49" cy="676" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="461" cy="570" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="712" cy="497" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="827" cy="318" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="766" cy="463" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="160" cy="80" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="436" cy="106" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="308" cy="399" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="734" cy="472" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="589" cy="404" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="735" cy="616" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="839" cy="569" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="231" cy="547" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="77" cy="38" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="684" cy="552" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="83" cy="754" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="243" cy="54" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="373" cy="570" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="853" cy="52" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="26" cy="253" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="749" cy="349" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="245" cy="552" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="951" cy="338" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="56" cy="319" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="747" cy="238" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="159" cy="248" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="645" cy="679" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="462" cy="489" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="583" cy="694" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="286" cy="694" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="103" cy="483" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="146" cy="379" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="43" cy="130" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="78" cy="621" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="656" cy="547" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="263" cy="573" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="498" cy="56" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="197" cy="586" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="152" cy="246" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="724" cy="199" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="606" cy="563" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="950" cy="731" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="378" cy="313" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="589" cy="85" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="785" cy="205" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="470" cy="353" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="212" cy="123" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="60" cy="252" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="734" cy="479" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="731" cy="538" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="786" cy="593" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="956" cy="642" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="879" cy="586" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="839" cy="231" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="877" cy="336" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="17" cy="303" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="540" cy="58" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="618" cy="485" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="353" cy="663" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="222" cy="681" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="968" cy="146" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="511" cy="100" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="630" cy="664" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="183" cy="699" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="746" cy="118" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="679" cy="356" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="515" cy="176" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="764" cy="351" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="621" cy="619" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="513" cy="208" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="739" cy="408" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="963" cy="232" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="175" cy="268" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="869" cy="108" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="981" cy="667" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="293" cy="519" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="114" cy="48" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="381" cy="592" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="983" cy="190" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="909" cy="695" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="814" cy="583" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="695" cy="589" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="985" cy="332" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="415" cy="285" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="703" cy="611" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="440" cy="538" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="982" cy="198" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="607" cy="60" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="849" cy="578" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="221" cy="95" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="267" cy="536" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="473" cy="409" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="822" cy="197" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="815" cy="188" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="858" cy="735" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="276" cy="743" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="356" cy="192" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="168" cy="168" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="958" cy="615" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="811" cy="68" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="42" cy="560" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="155" cy="76" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="661" cy="284" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="272" cy="289" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="838" cy="279" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="514" cy="321" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="827" cy="437" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="875" cy="638" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="680" cy="438" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="535" cy="630" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="77" cy="606" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="641" cy="544" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="346" cy="538" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="682" cy="595" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="556" cy="464" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="185" cy="538" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="897" cy="688" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="383" cy="326" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="483" cy="284" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="243" cy="475" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="979" cy="485" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="778" cy="174" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="110" cy="414" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="751" cy="93" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="886" cy="146" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="897" cy="345" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="65" cy="70" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="294" cy="272" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="630" cy="540" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="397" cy="385" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="663" cy="595" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="793" cy="186" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="822" cy="683" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="428" cy="194" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="488" cy="235" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="479" cy="390" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="756" cy="569" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="891" cy="288" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="217" cy="580" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="444" cy="397" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="923" cy="561" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="377" cy="96" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="951" cy="174" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="571" cy="572" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="833" cy="572" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="185" cy="630" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="19" cy="213" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="755" cy="207" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="26" cy="267" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="500" cy="604" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="306" cy="187" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="519" cy="207" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="669" cy="202" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="686" cy="560" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="473" cy="338" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="894" cy="151" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="628" cy="565" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="582" cy="426" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="591" cy="718" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="399" cy="417" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="129" cy="274" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="66" cy="99" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="747" cy="373" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="135" cy="256" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="307" cy="254" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="357" cy="643" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="335" cy="190" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="875" cy="618" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="492" cy="118" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="263" cy="84" rx="1" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="451" cy="322" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="526" cy="76" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="390" cy="325" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="594" cy="709" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="278" cy="447" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="776" cy="379" rx="3" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <ellipse cx="371" cy="486" rx="2" ry=".7" fill="#f3dfb1" opacity=".27"/>
+  <polygon points="402,747 396,732 512,705 468,605 342,634 341,630 327,633 334,648 337,648 381,751" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <polygon points="459,415 290,456 297,469 263,478 281,520 286,518 288,524 283,526 302,567 336,560 342,573 509,533" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <polygon points="239,301 154,322 199,425 284,404" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <polygon points="529,590 493,599 533,690 596,674 566,606 564,608 554,587 530,593" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <polygon points="173,556 138,565 157,609 190,600 190,600 200,599 189,584 185,585" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <polygon points="441,394 542,370 578,455 478,480" fill="url(#sigma-concrete-pavers)" stroke="#a8977d" stroke-width="2"/>
+  <path d="M505 518 484 468 564 449 586 519M411 551l-12-27m66 25 25 54m31-71 22 52" fill="none" stroke="#b49d81" stroke-width="19" stroke-linejoin="round"/>
+  <path d="M326 565Q320 572 323 587L323 647H340L340 628L333 583Z" fill="#b49d81" stroke="#9f896d" stroke-width="1.2"/>
+  <path d="M580 524L609 530L603 602L595 615L580 611L584 581L588 540Z" fill="#b49d81" stroke="#9f896d" stroke-width="1.2"/>
+  <polyline points="808,456 731,340 707,331 666,328 567,328 489,328 401,328 359,324 337,311 325,298 322,285 327,271" fill="none" stroke="#9b8a6d" stroke-width="7" stroke-linecap="round" />
+  <g stroke-linejoin="round">
+  <polyline data-sigma-road-edge="" points="127,321 128,331 129,339 131,348 135,359 139,367 203,503 207,511 212,518 218,526 226,533 234,540 245,546 257,553 269,558 281,562 293,564 305,566 317,567 330,567 345,566 359,564 560,520 569,519 577,519 586,520 632,528 641,529 651,529 661,528 834,491" fill="none" stroke="#ddcbb1" stroke-width="23" stroke-linecap="round"/>
+  <polyline data-sigma-road-edge="" points="101,216 86,219 78,220 69,220 56,220 45,220 25,221" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="156,257 169,254 177,253 187,252 194,252 206,253 220,254 247,257" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="247,257 219,248 206,244 194,239 184,235 176,231 165,224" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="25,221 40,225 48,228 63,232 70,234 76,237 80,239 90,245" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="247,257 292,264 327,271 370,277 394,281 415,284 431,285 452,287 474,289 492,290 512,291 535,291 564,291 588,290 611,289 631,287 652,286 697,280" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="154,215 145,205 141,200 138,195 136,188 134,182 132,173 129,161" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="129,161 127,129 126,117 124,107 122,95 118,83 114,69 109,57 103,46 97,34 91,25 84,13 81,9 76,2 65,-11 57,-21 46,-33 37,-43 26,-52 15,-62 3,-70 -8,-78 -23,-88 -38,-97 -56,-107 -71,-114 -76,-117 -168,-162" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="129,161 126,171 123,182 121,191 118,197 115,204 111,212" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="90,245 92,249 95,252 99,255 103,258 108,260 113,262 118,263 124,264 130,264 135,264 141,263 146,261 151,259 154,258 156,257" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="108,260 113,265 115,269 118,274 120,280 121,288 123,297 124,307 127,321" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="127,321 131,298 135,285 137,279 140,273 143,268 151,259" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="165,224 162,221 158,218 154,215 149,213 144,211 139,210 133,209 127,209 122,210 116,211 111,212 106,214 101,216" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="156,257 160,254 163,251 166,247 167,243 169,240 169,236 168,232 167,228 165,224" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="101,216 97,219 94,222 91,226 89,230 88,234 88,237 89,241 90,245" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="-268,228 -178,221 -161,219 -109,216 -90,216 -76,216 -59,216 -43,216 -24,217 -5,218 10,220 25,221" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="697,280 752,274 809,267 843,263" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="843,263 880,258 933,250" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline data-sigma-road-edge="" points="933,250 964,245 987,241 1016,236 1048,230 1072,225 1102,218 1130,212 1153,206 1182,199 1223,189" fill="none" stroke="#ddcbb1" stroke-width="23" />
+  <polyline points="127,321 128,331 129,339 131,348 135,359 139,367 203,503 207,511 212,518 218,526 226,533 234,540 245,546 257,553 269,558 281,562 293,564 305,566 317,567 330,567 345,566 359,564 560,520 569,519 577,519 586,520 632,528 641,529 651,529 661,528 834,491" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" stroke-linecap="round"/>
+  <polyline points="101,216 86,219 78,220 69,220 56,220 45,220 25,221" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="156,257 169,254 177,253 187,252 194,252 206,253 220,254 247,257" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="247,257 219,248 206,244 194,239 184,235 176,231 165,224" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="25,221 40,225 48,228 63,232 70,234 76,237 80,239 90,245" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="247,257 292,264 327,271 370,277 394,281 415,284 431,285 452,287 474,289 492,290 512,291 535,291 564,291 588,290 611,289 631,287 652,286 697,280" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="154,215 145,205 141,200 138,195 136,188 134,182 132,173 129,161" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="129,161 127,129 126,117 124,107 122,95 118,83 114,69 109,57 103,46 97,34 91,25 84,13 81,9 76,2 65,-11 57,-21 46,-33 37,-43 26,-52 15,-62 3,-70 -8,-78 -23,-88 -38,-97 -56,-107 -71,-114 -76,-117 -168,-162" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="129,161 126,171 123,182 121,191 118,197 115,204 111,212" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="90,245 92,249 95,252 99,255 103,258 108,260 113,262 118,263 124,264 130,264 135,264 141,263 146,261 151,259 154,258 156,257" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="108,260 113,265 115,269 118,274 120,280 121,288 123,297 124,307 127,321" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="127,321 131,298 135,285 137,279 140,273 143,268 151,259" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="165,224 162,221 158,218 154,215 149,213 144,211 139,210 133,209 127,209 122,210 116,211 111,212 106,214 101,216" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="156,257 160,254 163,251 166,247 167,243 169,240 169,236 168,232 167,228 165,224" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="101,216 97,219 94,222 91,226 89,230 88,234 88,237 89,241 90,245" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="-268,228 -178,221 -161,219 -109,216 -90,216 -76,216 -59,216 -43,216 -24,217 -5,218 10,220 25,221" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="697,280 752,274 809,267 843,263" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="843,263 880,258 933,250" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="933,250 964,245 987,241 1016,236 1048,230 1072,225 1102,218 1130,212 1153,206 1182,199 1223,189" fill="none" stroke="url(#sigma-road-surface)" stroke-width="17" />
+  <polyline points="127,321 128,331 129,339 131,348 135,359 139,367 203,503 207,511 212,518 218,526 226,533 234,540 245,546 257,553 269,558 281,562 293,564 305,566 317,567 330,567 345,566 359,564 560,520 569,519 577,519 586,520 632,528 641,529 651,529 661,528 807,497" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="101,216 86,219 78,220 69,220 56,220 45,220 25,221" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="156,257 169,254 177,253 187,252 194,252 206,253 220,254 247,257" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="247,257 219,248 206,244 194,239 184,235 176,231 165,224" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="25,221 40,225 48,228 63,232 70,234 76,237 80,239 90,245" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="247,257 292,264 327,271 370,277 394,281 415,284 431,285 452,287 474,289 492,290 512,291 535,291 564,291 588,290 611,289 631,287 652,286 697,280" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="154,215 145,205 141,200 138,195 136,188 134,182 132,173 129,161" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="129,161 127,129 126,117 124,107 122,95 118,83 114,69 109,57 103,46 97,34 91,25 84,13 81,9 76,2 65,-11 57,-21 46,-33 37,-43 26,-52 15,-62 3,-70 -8,-78 -23,-88 -38,-97 -56,-107 -71,-114 -76,-117 -168,-162" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="129,161 126,171 123,182 121,191 118,197 115,204 111,212" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="90,245 92,249 95,252 99,255 103,258 108,260 113,262 118,263 124,264 130,264 135,264 141,263 146,261 151,259 154,258 156,257" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="108,260 113,265 115,269 118,274 120,280 121,288 123,297 124,307 127,321" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="127,321 131,298 135,285 137,279 140,273 143,268 151,259" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="165,224 162,221 158,218 154,215 149,213 144,211 139,210 133,209 127,209 122,210 116,211 111,212 106,214 101,216" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="156,257 160,254 163,251 166,247 167,243 169,240 169,236 168,232 167,228 165,224" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="101,216 97,219 94,222 91,226 89,230 88,234 88,237 89,241 90,245" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="-268,228 -178,221 -161,219 -109,216 -90,216 -76,216 -59,216 -43,216 -24,217 -5,218 10,220 25,221" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="697,280 752,274 809,267 843,263" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="843,263 880,258 933,250" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline points="933,250 964,245 987,241 1016,236 1048,230 1072,225 1102,218 1130,212 1153,206 1182,199 1223,189" fill="none" stroke="#e1cfa9" stroke-width="1.2" stroke-dasharray="9 11" opacity=".65"/>
+  <polyline data-sigma-road-edge="" points="1238,879 1164,787 1092,695 1049,638 1007,583 938,487 912,451 885,412 872,394 859,375 846,356 832,336 805,294 765,234 731,183 689,118 639,39 602,-21" fill="none" stroke="#5c554f" stroke-width="15" />
+  <polyline data-sigma-road-edge="" points="-3801,-3423 -3776,-3411 -3749,-3399 -3724,-3387 -3699,-3375 -3671,-3361 -3646,-3349 -3620,-3337 -3594,-3325 -3567,-3311 -3543,-3300 -3518,-3288 -3493,-3276 -3469,-3263 -3441,-3249 -3415,-3236 -3389,-3223 -3365,-3211 -3339,-3198 -3314,-3185 -3290,-3173 -3265,-3160 -3239,-3147 -3213,-3133 -3190,-3121 -3164,-3108 -3140,-3096 -3114,-3082 -3090,-3069 -3065,-3057 -3039,-3042 -3017,-3030 -2990,-3016 -2965,-3003 -2941,-2989 -2916,-2976 -2891,-2962 -2867,-2949 -2845,-2937 -2818,-2923 -2793,-2908 -2767,-2894 -2745,-2882 -2721,-2869 -2695,-2854 -2672,-2841 -2647,-2827 -2626,-2816 -2598,-2800 -2574,-2787 -2550,-2773 -2527,-2760 -2503,-2746 -2479,-2733 -2453,-2718 -2429,-2704 -2406,-2691 -2382,-2677 -2357,-2663 -2333,-2649 -2309,-2635 -2285,-2621 -2260,-2607 -2237,-2594 -2212,-2579 -2190,-2566 -2165,-2552 -2141,-2538 -2117,-2523 -2093,-2510 -2071,-2497 -2045,-2482 -2021,-2468 -1997,-2454 -1973,-2440 -1950,-2426 -1927,-2413 -1902,-2398 -1878,-2384 -1855,-2370 -1830,-2355 -1807,-2342 -1783,-2328 -1760,-2314 -1736,-2301 -1712,-2286 -1689,-2273 -1665,-2259 -1642,-2245 -1615,-2229 -1593,-2216 -1569,-2203 -1545,-2188 -1522,-2175 -1499,-2160 -1476,-2147 -1453,-2133 -1429,-2119 -1406,-2105 -1383,-2091 -1360,-2077 -1336,-2062 -1314,-2050 -1290,-2035 -1268,-2021 -1246,-2007 -1222,-1992 -1201,-1979 -1176,-1963 -1153,-1949 -1130,-1935 -1108,-1920 -1084,-1905 -1063,-1891 -1041,-1876 -1011,-1856 -992,-1844 -977,-1833 -963,-1824 -942,-1809 -925,-1797 -909,-1786 -895,-1775 -877,-1763 -849,-1742 -831,-1729 -815,-1717 -796,-1703 -778,-1689 -763,-1678 -747,-1665 -724,-1647 -705,-1633 -687,-1618 -671,-1605 -656,-1593 -642,-1581 -627,-1568 -601,-1546 -571,-1520 -542,-1494 -518,-1473 -495,-1452 -470,-1429 -451,-1411 -434,-1395 -416,-1378 -398,-1360 -380,-1342 -363,-1325 -345,-1306 -328,-1289 -311,-1271 -295,-1254 -278,-1236 -262,-1218 -246,-1200 -230,-1181 -215,-1163 -199,-1145 -184,-1127 -168,-1108 -153,-1089 -139,-1071 -123,-1052 -108,-1033 -97,-1018 -79,-996 -65,-977 -50,-957 -38,-940 -24,-921 -9,-900 4,-883 16,-865 71,-786 83,-768 96,-749 109,-729 122,-709 135,-690 147,-671 159,-652 172,-632 185,-612 197,-592 210,-573 222,-553 234,-534 246,-515 258,-496 270,-477 284,-455 296,-435 309,-414 322,-394 334,-373 347,-353 362,-330 373,-310 386,-290 398,-269 424,-228 448,-188 512,-85 537,-45 576,18 656,145 696,207 723,248 750,288 763,309 778,330 792,351 805,370 818,390 832,410 847,432 860,451 875,472 888,490 903,511 917,531 932,551 946,570 961,591 975,610 991,631 1007,652 1021,671 1037,691 1052,712 1067,731 1082,750 1098,770 1114,790 1129,810 1145,829 1196,893" fill="none" stroke="#5c554f" stroke-width="15" />
+  <polyline points="1238,879 1164,787 1092,695 1049,638 1007,583 938,487 912,451 885,412 872,394 859,375 846,356 832,336 805,294 765,234 731,183 689,118 639,39 602,-21" fill="none" stroke="#decaab" stroke-width="1.4" stroke-dasharray="9 10"/>
+  <polyline points="-3801,-3423 -3776,-3411 -3749,-3399 -3724,-3387 -3699,-3375 -3671,-3361 -3646,-3349 -3620,-3337 -3594,-3325 -3567,-3311 -3543,-3300 -3518,-3288 -3493,-3276 -3469,-3263 -3441,-3249 -3415,-3236 -3389,-3223 -3365,-3211 -3339,-3198 -3314,-3185 -3290,-3173 -3265,-3160 -3239,-3147 -3213,-3133 -3190,-3121 -3164,-3108 -3140,-3096 -3114,-3082 -3090,-3069 -3065,-3057 -3039,-3042 -3017,-3030 -2990,-3016 -2965,-3003 -2941,-2989 -2916,-2976 -2891,-2962 -2867,-2949 -2845,-2937 -2818,-2923 -2793,-2908 -2767,-2894 -2745,-2882 -2721,-2869 -2695,-2854 -2672,-2841 -2647,-2827 -2626,-2816 -2598,-2800 -2574,-2787 -2550,-2773 -2527,-2760 -2503,-2746 -2479,-2733 -2453,-2718 -2429,-2704 -2406,-2691 -2382,-2677 -2357,-2663 -2333,-2649 -2309,-2635 -2285,-2621 -2260,-2607 -2237,-2594 -2212,-2579 -2190,-2566 -2165,-2552 -2141,-2538 -2117,-2523 -2093,-2510 -2071,-2497 -2045,-2482 -2021,-2468 -1997,-2454 -1973,-2440 -1950,-2426 -1927,-2413 -1902,-2398 -1878,-2384 -1855,-2370 -1830,-2355 -1807,-2342 -1783,-2328 -1760,-2314 -1736,-2301 -1712,-2286 -1689,-2273 -1665,-2259 -1642,-2245 -1615,-2229 -1593,-2216 -1569,-2203 -1545,-2188 -1522,-2175 -1499,-2160 -1476,-2147 -1453,-2133 -1429,-2119 -1406,-2105 -1383,-2091 -1360,-2077 -1336,-2062 -1314,-2050 -1290,-2035 -1268,-2021 -1246,-2007 -1222,-1992 -1201,-1979 -1176,-1963 -1153,-1949 -1130,-1935 -1108,-1920 -1084,-1905 -1063,-1891 -1041,-1876 -1011,-1856 -992,-1844 -977,-1833 -963,-1824 -942,-1809 -925,-1797 -909,-1786 -895,-1775 -877,-1763 -849,-1742 -831,-1729 -815,-1717 -796,-1703 -778,-1689 -763,-1678 -747,-1665 -724,-1647 -705,-1633 -687,-1618 -671,-1605 -656,-1593 -642,-1581 -627,-1568 -601,-1546 -571,-1520 -542,-1494 -518,-1473 -495,-1452 -470,-1429 -451,-1411 -434,-1395 -416,-1378 -398,-1360 -380,-1342 -363,-1325 -345,-1306 -328,-1289 -311,-1271 -295,-1254 -278,-1236 -262,-1218 -246,-1200 -230,-1181 -215,-1163 -199,-1145 -184,-1127 -168,-1108 -153,-1089 -139,-1071 -123,-1052 -108,-1033 -97,-1018 -79,-996 -65,-977 -50,-957 -38,-940 -24,-921 -9,-900 4,-883 16,-865 71,-786 83,-768 96,-749 109,-729 122,-709 135,-690 147,-671 159,-652 172,-632 185,-612 197,-592 210,-573 222,-553 234,-534 246,-515 258,-496 270,-477 284,-455 296,-435 309,-414 322,-394 334,-373 347,-353 362,-330 373,-310 386,-290 398,-269 424,-228 448,-188 512,-85 537,-45 576,18 656,145 696,207 723,248 750,288 763,309 778,330 792,351 805,370 818,390 832,410 847,432 860,451 875,472 888,490 903,511 917,531 932,551 946,570 961,591 975,610 991,631 1007,652 1021,671 1037,691 1052,712 1067,731 1082,750 1098,770 1114,790 1129,810 1145,829 1196,893" fill="none" stroke="#decaab" stroke-width="1.4" stroke-dasharray="9 10"/>
+  </g>
+  <g id="sigma-frontages" aria-hidden="true" pointer-events="none"></g>
+  <use href="#sigma-tree" transform="translate(31 317) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(46 314) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(63 311) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(270 240) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(291 244) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(322 244) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(409 313) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(430 315) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(452 314) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(479 315) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(502 315) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(824 296) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(842 314) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(321 603) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(296 613) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(272 621) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(663 563) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(674 583) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(690 612) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(710 631) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(716 663) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(728 690) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(737 715) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(750 742) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(777 723) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(804 699) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(82 610) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(102 600) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(125 607) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(872 634) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(883 650) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(900 675) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(914 704) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(930 725) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(226 761) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(208 741) scale(.60)"/>
+  <use href="#sigma-tree" transform="translate(191 727) scale(.60)"/>
+  <g data-sigma-footprint="183,-77 146,-138 272,-173 284,-153 292,-139 332,-73 323,-71 336,-48 300,-38 297,-42 246,-27 244,-31 242,-34 224,-29 224,-28 162,-11 131,-62">
+    <polygon points="194,-65 157,-126 283,-161 295,-141 303,-127 343,-61 334,-59 347,-36 311,-26 308,-30 257,-15 255,-19 253,-22 235,-17 235,-16 173,1 142,-50" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="183,-103 146,-164 146,-138 183,-77" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="332,-99 323,-97 323,-71 332,-73" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="336,-74 300,-64 300,-38 336,-48" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="300,-64 297,-68 297,-42 300,-38" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="297,-68 246,-53 246,-27 297,-42" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="246,-53 244,-57 244,-31 246,-27" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="244,-57 242,-60 242,-34 244,-31" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="242,-60 224,-55 224,-29 242,-34" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="224,-55 224,-54 224,-28 224,-29" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="224,-54 162,-37 162,-11 224,-28" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="162,-37 131,-88 131,-62 162,-11" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="183,-103 146,-164 272,-199 284,-179 292,-165 332,-99 323,-97 336,-74 300,-64 297,-68 246,-53 244,-57 242,-60 224,-55 224,-54 162,-37 131,-88" fill="#885e50" stroke="#b9846b" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="192,106 191,104 198,104 196,79 189,79 189,75 188,75 191,106">
+    <polygon points="203,118 202,116 209,116 207,91 200,91 200,87 199,87 202,118" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="191,92 198,92 198,104 191,104" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="189,67 189,63 189,75 189,79" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="188,63 191,94 191,106 188,75" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="191,94 192,94 192,106 191,106" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="192,94 191,92 198,92 196,67 189,67 189,63 188,63 191,94" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="807,131 808,120 784,118 783,130">
+    <polygon points="818,143 819,132 795,130 794,142" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="807,119 808,108 808,120 807,131" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="783,118 807,119 807,131 783,130" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="807,119 808,108 784,106 783,118" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="261,146 263,143 253,140 251,144">
+    <polygon points="272,158 274,155 264,152 262,156" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="261,134 263,131 263,143 261,146" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="251,132 261,134 261,146 251,144" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="261,134 263,131 253,128 251,132" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="210,119 199,117 198,104 196,79 196,74 196,75 208,74 213,73 196,52 239,36 247,45 311,22 343,62 347,108 322,152 268,137 265,141 251,138 248,143 203,131">
+    <polygon points="221,131 210,129 209,116 207,91 207,86 207,87 219,86 224,85 207,64 250,48 258,57 322,34 354,74 358,120 333,164 279,149 276,153 262,150 259,155 214,143" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="brick" points="210,93 199,91 199,117 210,119" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="199,91 198,78 198,104 199,117" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="198,78 196,53 196,79 198,104" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="196,53 196,48 196,74 196,79" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="196,48 196,49 196,75 196,74" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="213,47 196,26 196,52 213,73" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="347,82 322,126 322,152 347,108" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-loading="" points="322,126 268,111 268,137 322,152" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="268,111 265,115 265,141 268,137" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="265,115 251,112 251,138 265,141" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="251,112 248,117 248,143 251,138" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="248,117 203,105 203,131 248,143" fill="#d6b396" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="210,93 199,91 198,78 196,53 196,48 196,49 208,48 213,47 196,26 239,10 247,19 311,-4 343,36 347,82 322,126 268,111 265,115 251,112 248,117 203,105" fill="#885e50" stroke="#b9846b" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="12,73 15,92 -29,95 -17,176 43,170 30,90 73,88 69,69">
+    <polygon points="23,85 26,104 -18,107 -6,188 54,182 41,102 84,100 80,81" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="12,47 15,66 15,92 12,73" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="-29,69 -17,150 -17,176 -29,95" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="-17,150 43,144 43,170 -17,176" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="30,64 73,62 73,88 30,90" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="12,47 15,66 -29,69 -17,150 43,144 30,64 73,62 69,43" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="47,260 -24,254 -32,302 12,306 15,287 34,288 36,276 55,267">
+    <polygon points="58,272 -13,266 -21,314 23,318 26,299 45,300 47,288 66,279" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="-32,285 12,289 12,306 -32,302" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="12,289 15,270 15,287 12,306" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="15,270 34,271 34,288 15,287" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="34,271 36,259 36,276 34,288" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="36,259 55,250 55,267 36,276" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="47,243 -24,237 -32,285 12,289 15,270 34,271 36,259 55,250" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="234,306 171,320 204,390 267,376">
+    <polygon points="245,318 182,332 215,402 278,388" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="brick" points="171,294 204,364 204,390 171,320" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-loading="" points="204,364 267,350 267,376 204,390" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" data-sigma-skylights="" points="234,280 171,294 204,364 267,350" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="302,398 307,410 313,408 308,397">
+    <polygon points="313,410 318,422 324,420 319,409" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="302,386 307,398 307,410 302,398" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="307,398 313,396 313,408 307,410" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="302,386 307,398 313,396 308,385" fill="#885e50" stroke="#b9846b" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="307,410 316,427 321,426 313,408">
+    <polygon points="318,422 327,439 332,438 324,420" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="307,398 316,415 316,427 307,410" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="316,415 321,414 321,426 316,427" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="307,398 316,415 321,414 313,396" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="72,363 13,376 28,407 33,406 46,434 97,423 84,395 86,395">
+    <polygon points="83,375 24,388 39,419 44,418 57,446 108,435 95,407 97,407" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="13,353 28,384 28,407 13,376" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="28,384 33,383 33,406 28,407" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="33,383 46,411 46,434 33,406" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="46,411 97,400 97,423 46,434" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="84,372 86,372 86,395 84,395" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="72,340 13,353 28,384 33,383 46,411 97,400 84,372 86,372" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="231,414 245,443 271,437 316,427 307,410 302,398">
+    <polygon points="242,426 256,455 282,449 327,439 318,422 313,410" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="231,399 245,428 245,443 231,414" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="245,428 271,422 271,437 245,443" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="271,422 316,412 316,427 271,437" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="231,399 245,428 271,422 316,412 307,395 302,383" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="459,389 534,373 560,430 486,447">
+    <polygon points="470,401 545,385 571,442 497,459" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="metal" data-sigma-signed="" points="560,395 486,412 486,447 560,430" fill="#b8bec0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="metal" points="486,412 459,354 459,389 486,447" fill="#b8bec0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" data-sigma-skylights="" points="459,354 534,338 560,395 486,412" fill="#475e6a" stroke="#7d9098" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M494 418 549 406v13l-55 12z" fill="#d5d3bf" stroke="#4b5860" stroke-width="1"/>
+    <image href="@Url.Content("~/sigma-logo.png")" width="65" height="23" transform="matrix(.78 -.17 0 .57 495 416)"/>
+    <path d="M492 435l14-3v8l-14 3zm19-4 14-3v8l-14 3zm19-4 14-3v8l-14 3z" fill="url(#sigma-glass)"/>
+    <path d="M514 429l8-2v12l-8 2z" fill="#394a50" stroke="#c4aa8c" stroke-width="1"/>
+    <g class="sigma-door-detail" aria-hidden="true">
+      <path d="M513 441l10-2 2 2-10 2Z" fill="#cfc0a4"/>
+      <path d="M513 427l10-2 2 2-10 2Z" fill="#839697" stroke="#536164" stroke-width=".7"/>
+      <path d="M515 429l10-2v1.5l-10 2Z" fill="#536164"/>
+      <circle cx="518" cy="428" r="1.2" fill="#ffe2a5"/>
+    </g>
+  </g>
+  <g data-sigma-footprint="638,429 708,414 722,442 652,458">
+    <polygon points="649,441 719,426 733,454 663,470" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="722,428 652,444 652,458 722,442" fill="#b2bbc0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="652,444 638,415 638,429 652,458" fill="#b2bbc0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="638,415 708,400 722,428 652,444" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="188,522 191,527 196,526 193,521">
+    <polygon points="199,534 202,539 207,538 204,533" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="188,510 191,515 191,527 188,522" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="191,515 196,514 196,526 191,527" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="188,510 191,515 196,514 193,509" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="425,431 300,459 305,468 280,474 293,502 297,501 298,505 295,506 309,534 334,529 338,538 462,511">
+    <polygon points="436,443 311,471 316,480 291,486 304,514 308,513 309,517 306,518 320,546 345,541 349,550 473,523" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="300,433 305,442 305,468 300,459" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="280,448 293,476 293,502 280,474" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="293,476 297,475 297,501 293,502" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="297,475 298,479 298,505 297,501" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="295,480 309,508 309,534 295,506" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="309,508 334,503 334,529 309,534" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="334,503 338,512 338,538 334,529" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-loading="" points="338,512 462,485 462,511 338,538" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="425,405 300,433 305,442 280,448 293,476 297,475 298,479 295,480 309,508 334,503 338,512 462,485" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="109,442 57,453 97,538 148,527">
+    <polygon points="120,454 68,465 108,550 159,539" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="57,427 97,512 97,538 57,453" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="97,512 148,501 148,527 97,538" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="109,416 57,427 97,512 148,501" fill="#885e50" stroke="#b9846b" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="174,551 148,557 162,587 187,581 187,581 194,580 186,570 183,571">
+    <polygon points="185,563 159,569 173,599 198,593 198,593 205,592 197,582 194,583" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="metal" points="148,545 162,575 162,587 148,557" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="metal" points="162,575 187,569 187,581 162,587" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="metal" data-sigma-solid="" points="187,569 187,569 187,581 187,581" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="metal" data-sigma-solid="" points="187,569 194,568 194,580 187,581" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="174,539 148,545 162,575 187,569 187,569 194,568 186,558 183,559" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="148,578 145,572 101,581 104,588">
+    <polygon points="159,590 156,584 112,593 115,600" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="101,569 104,576 104,588 101,581" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="104,576 148,566 148,578 104,588" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="148,566 145,560 101,569 104,576" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="554,579 533,584 534,586 552,582 559,596 561,595">
+    <polygon points="565,591 544,596 545,598 563,594 570,608 572,607" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="533,572 534,574 534,586 533,584" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="534,574 552,570 552,582 534,586" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="552,570 559,584 559,596 552,582" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="559,584 561,583 561,595 559,596" fill="#998d79" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="554,567 533,572 534,574 552,570 559,584 561,583" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="95,590 109,619 118,617 104,588 104,588">
+    <polygon points="106,602 120,631 129,629 115,600 115,600" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="95,578 109,607 109,619 95,590" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="109,607 118,605 118,617 109,619" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="104,576 104,576 104,588 104,588" fill="#ad8069" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="95,578 109,607 118,605 104,576 104,576" fill="#885e50" stroke="#b9846b" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  <g data-sigma-footprint="533,584 507,590 536,652 583,641 561,595 559,596 552,582 534,586">
+    <polygon points="544,596 518,602 547,664 594,653 572,607 570,608 563,594 545,598" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="metal" points="507,567 536,629 536,652 507,590" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="metal" points="536,629 583,618 583,641 536,652" fill="#909aa0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="533,561 507,567 536,629 583,618 561,572 559,573 552,559 534,563" fill="#646f72" stroke="#879399" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M571 632l9-2v11l-9 2z" fill="#425058" stroke="#c4aa8c" stroke-width="1"/>
+    <g class="sigma-door-detail" aria-hidden="true">
+      <path d="M570 643l11-2 2 1.7-11 2.5Z" fill="#cfc0a4"/>
+      <path d="M570 630l11-2 2 2-11 2Z" fill="#7e8c8d" stroke="#4a585d" stroke-width=".7"/>
+      <circle cx="576" cy="630" r="1.2" fill="#ffe2a5"/>
+    </g>
+  </g>
+  <g data-sigma-footprint="397,708 393,698 479,680 446,612 353,632 352,629 342,631 347,641 349,641 382,711">
+    <polygon points="408,720 404,710 490,692 457,624 364,644 363,641 353,643 358,653 360,653 393,723" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="brick" data-sigma-loading="" points="393,672 479,654 479,680 393,698" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="342,605 347,615 347,641 342,631" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" data-sigma-solid="" points="347,615 349,615 349,641 347,641" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="349,615 382,685 382,711 349,641" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="brick" points="382,685 397,682 397,708 382,711" fill="#9c856e" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="397,682 393,672 479,654 446,586 353,606 352,603 342,605 347,615 349,615 382,685" fill="#686357" stroke="#918775" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M357 645l6 13v13l-6-13z" fill="#513d37" stroke="#c4aa8c" stroke-width="1"/>
+    <g class="sigma-door-detail" aria-hidden="true">
+      <path d="M357 658l6 13-3 1-6-13Z" fill="#cfb58d"/>
+      <path d="M357 644l6 13-3 1-6-13Z" fill="#8f6954" stroke="#5f483e" stroke-width=".7"/>
+      <circle cx="358" cy="650" r="1.2" fill="#ffe2a5"/>
+    </g>
+  </g>
+  <g data-sigma-footprint="388,746 417,739 433,772 403,779">
+    <polygon points="399,758 428,751 444,784 414,791" class="sigma-building-shadow" fill="#4b4138" opacity=".27"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="433,759 403,766 403,779 433,772" fill="#c1b8a0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-wall="plaster" data-sigma-solid="" points="403,766 388,733 388,746 403,779" fill="#c1b8a0" stroke="#5c5147" stroke-width="1"/>
+    <polygon data-sigma-roof="" points="388,733 417,726 433,759 403,766" fill="#706a5e" stroke="#9b9582" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+  </g>
+  <rect x="14" y="26" width="972" height="730" rx="34" fill="none" stroke="#e6d3aa" stroke-width="2"/>
+
+  <g aria-hidden="true" pointer-events="none">
+    <g id="sigma-parking"></g>
+    <path d="M507 518l13-3m-10 1 2 3m2-4 2 3m2-4 2 3M549 508l13-3m-10 1 2 3m2-4 2 3m2-4 2 3" fill="none" stroke="#f4e8d0" stroke-width="1.1"/>
+  </g>
+  <g id="sigma-wet-ground" clip-path="url(#sigma-brillon-frame)" aria-hidden="true" pointer-events="none">
+    <path d="M473 484q10-3 20 1m55 9q13-4 22-2m-196 65q12-3 24-3m208 5q7-4 14-2"
+          fill="none" stroke="#a6bec2" stroke-width="3" stroke-linecap="round" opacity=".48"/>
+    <path d="M516 450l-4 9m8-8-3 8m70 101-1 8m-226 104 3 8"
+          fill="none" stroke="#f0c485" stroke-width="1.4" stroke-linecap="round" opacity=".48"/>
+    <g fill="none" stroke="#d0e7e9" stroke-width=".75">
+      <ellipse class="sigma-rain-ring" cx="484" cy="484" rx="3" ry="1.2"/>
+      <ellipse class="sigma-rain-ring" cx="559" cy="493" rx="3" ry="1.2"/>
+      <ellipse class="sigma-rain-ring" cx="386" cy="556" rx="3" ry="1.2"/>
+    </g>
+  </g>
+  <g id="sigma-after-rain" clip-path="url(#sigma-brillon-frame)" aria-hidden="true" pointer-events="none" opacity="0">
+    <ellipse cx="435" cy="470" rx="425" ry="260" fill="url(#sigma-warm-light)"/>
+  </g>
+  <g id="sigma-cars" clip-path="url(#sigma-brillon-frame)"></g>
+  <g id="sigma-first-van" transform="translate(502 478) rotate(90)" data-sigma-track="" tabindex="0" role="button" aria-pressed="false" aria-label="Suivre la première camionnette Sigma"><rect class="sigma-actor-target" x="-16" y="-13" width="32" height="26" rx="7"/><use href="#sigma-van" transform="scale(.43 .36)"/></g>
+  <g id="sigma-second-van" transform="translate(539 469) rotate(90)" data-sigma-track="" tabindex="0" role="button" aria-pressed="false" aria-label="Suivre la deuxième camionnette Sigma"><rect class="sigma-actor-target" x="-16" y="-13" width="32" height="26" rx="7"/><use href="#sigma-van" transform="scale(.43 .36)"/></g>
+  <g id="sigma-people"></g>
+  <g id="sigma-animals" clip-path="url(#sigma-brillon-frame)" aria-hidden="true" pointer-events="none"></g>
+  <g id="sigma-storm" clip-path="url(#sigma-brillon-frame)" aria-hidden="true" pointer-events="none" opacity="0">
+    <rect x="14" y="26" width="972" height="730" fill="url(#sigma-storm-night)" opacity=".78"/>
+    <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M130 324Q135 358 148 386L205 505Q225 548 280 562Q326 575 360 566L558 523Q582 519 620 528L660 532 825 496"
+            stroke="#28cce7" stroke-width="7" opacity=".28"/>
+      <path d="M133 325Q138 359 151 385L208 504Q228 544 281 558Q325 571 359 562L557 519Q581 515 621 524L660 528 824 492"
+            stroke="#7ceeff" stroke-width="1.3" opacity=".65"/>
+      <path d="M486 447l74-17m-255 101 121-28m-49 195 86-19m42-28 55-13" stroke="#ff79d5" stroke-width="2" opacity=".65"/>
+    </g>
+    <g id="sigma-storm-roofs" fill="none" stroke="url(#sigma-storm-neon)" stroke-linejoin="round"/>
+    <g id="sigma-lightning" opacity="0" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M789 27l-60 61 21 8-65 50 24 4-64 69m83-131-25-3-24 20m29 45 26-8 29-27"
+            stroke="#8668fa" stroke-width="8" opacity=".55"/>
+      <path d="M789 27l-60 61 21 8-65 50 24 4-64 69m83-131-25-3-24 20m29 45 26-8 29-27" stroke="#c8eaff" stroke-width="3"/>
+      <path d="M789 27l-60 61 21 8-65 50 24 4-64 69" stroke="#f1f7ff" stroke-width="1"/>
+    </g>
+  </g>
+  <g id="sigma-rain" clip-path="url(#sigma-brillon-frame)" aria-hidden="true" pointer-events="none">
+    <rect x="14" y="26" width="972" height="730" fill="#435c6d" opacity=".14"/>
+    <rect x="14" y="26" width="972" height="730" fill="url(#sigma-rain-far)" opacity=".38"/>
+    <rect x="14" y="26" width="972" height="730" fill="url(#sigma-rain-near)" opacity=".62"/>
+  </g>
+  <g id="sigma-communications" aria-hidden="true" pointer-events="none">
+    <g id="sigma-alert" transform="translate(408 586)" display="none">
+      <g id="sigma-incident-triangle">
+        <path d="M0-18 18 14h-36z" fill="#c74845" stroke="#fff1d7" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M0-7v10m0 4v1" stroke="#fff7e0" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g id="sigma-issue-badge">
+        <circle r="13" stroke="#fff1d7" stroke-width="2"/>
+        <g id="sigma-issue-conveyor" fill="none" stroke="#fff1d7" stroke-width="1.6" stroke-linejoin="round">
+          <path d="M-8-5h7v6h-7Zm9 2h7v4H1Z"/>
+          <rect x="-10" y="2" width="20" height="6" rx="3"/>
+          <path d="M-6 5h.4m5.4 0h.4m5.2 0h.4" stroke-linecap="round"/>
+        </g>
+        <g id="sigma-issue-robot" fill="none" stroke="#fff1d7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" visibility="hidden">
+          <path d="M-9 8h10m-5 0V3l-3-6 6-5 6 5v4m-2 2 2-2 2 2m-2-6 3 2"/>
+          <circle cx="-1" cy="-8" r="1.4"/>
+          <path d="M3 6h6v3H3Z"/>
+        </g>
+        <g id="sigma-issue-vision" fill="none" stroke="#fff1d7" stroke-width="1.7" stroke-linecap="round" visibility="hidden">
+          <path d="M-9-3h4l2-3h5l2 3h5v10H-9Z" stroke-linejoin="round"/>
+          <circle cy="2" r="3"/>
+        </g>
+        <g id="sigma-issue-supervision" fill="none" stroke="#fff1d7" stroke-width="1.7" stroke-linecap="round" visibility="hidden">
+          <rect x="-9" y="-7" width="18" height="12" rx="1"/>
+          <path d="M0 5v3m-4 1h8m-10-8 3-3 3 2 6-4" stroke-linejoin="round"/>
+        </g>
+      </g>
+      <g id="sigma-work-progress" display="none" fill="#fff1d7">
+        <rect x="-12" y="16" width="24" height="9" rx="4.5" fill="#365c62"/>
+        <circle cx="-6" cy="20.5" r="1.5"/>
+        <circle cx="0" cy="20.5" r="1.5"/>
+        <circle cx="6" cy="20.5" r="1.5"/>
+      </g>
+    </g>
+    <g id="sigma-emotion" class="sigma-reaction" visibility="hidden">
+      <g class="sigma-reaction-bubble">
+        <path d="M-5 11l-3 7 10-5A14 14 0 1 0-5 11Z" fill="#fff0cf" stroke="#70503e" stroke-width="1.5" stroke-linejoin="round"/>
+        <text id="sigma-emotion-face" y="7" text-anchor="middle" font-size="22" font-family="Segoe UI Emoji, sans-serif"></text>
+      </g>
+    </g>
+    <g id="sigma-agreement" class="sigma-reaction" transform="translate(552 374)" visibility="hidden">
+      <g class="sigma-reaction-bubble">
+        <path d="M-5 11l-3 7 10-5A14 14 0 1 0-5 11Z" fill="#f2edcd" stroke="#667a56" stroke-width="1.5" stroke-linejoin="round"/>
+        <text y="6.5" text-anchor="middle" font-size="21" font-family="Segoe UI Emoji, sans-serif">🤝</text>
+      </g>
+    </g>
+    <g id="sigma-resolved" transform="translate(408 586)" visibility="hidden">
+      <circle r="13" fill="#537950" stroke="#fff1d7" stroke-width="2"/>
+      <path d="m-6 0 4 4 7-8" fill="none" stroke="#fff7e0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <path id="sigma-communication-link" fill="none" stroke-width="3.5" stroke-dasharray="7 7" visibility="hidden"/>
+    <g id="sigma-phone-signal" visibility="hidden"><use href="#sigma-phone-icon"/></g>
+    <g id="sigma-mail-signal" visibility="hidden"><use href="#sigma-mail-icon"/></g>
+  </g>
+  <rect id="sigma-dusk" x="14" y="26" width="972" height="730" rx="34" fill="#303965" opacity="0" pointer-events="none"/>
+  <g id="sigma-lamp-glows" fill="url(#sigma-lamp-glow)" opacity="0" pointer-events="none">
+    <ellipse cx="515" cy="463" rx="26" ry="20"/><ellipse cx="483" cy="516" rx="26" ry="20"/>
+    <ellipse cx="639" cy="515" rx="26" ry="20"/><ellipse cx="229" cy="529" rx="26" ry="20"/>
+  </g>
+  <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" aria-label="Sources cartographiques OpenStreetMap">
+    <text x="975" y="746" text-anchor="end" font-family="system-ui, sans-serif" font-size="10" fill="#282924" stroke="#f1dec2" stroke-width="2" paint-order="stroke">© OpenStreetMap</text>
+  </a>
+</g>

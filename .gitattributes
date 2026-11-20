@@ -1,0 +1,4 @@
+# Preserve the exact audited QCM source bytes and their SHA-256 hashes.
+sources/SYNTHESE_MATHS_CODE_V0.2.0/qcm_studio/** -text
+sources/SYNTHESE_MATHS_CODE_V0.2.0/mvc_runtime.py -text
+sources/SYNTHESE_MATHS_CODE_V0.2.0/launch_site.py -text

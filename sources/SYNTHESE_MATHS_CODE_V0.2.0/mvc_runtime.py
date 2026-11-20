@@ -2,10 +2,12 @@
 from pathlib import Path
 from datetime import datetime,timezone
 import hashlib,json,os,queue,re,shutil,subprocess,threading,time,urllib.request,uuid
+from itertools import chain
 BASE=Path(__file__).resolve().parent
 SDK_ROOT=BASE/'toolchains/dotnet/install'
 SDK_MANIFEST=BASE/'toolchains/dotnet/manifest.json'
 SOURCE=BASE/'qcm_studio'
+PROJECT_OUTPUTS=frozenset({'.vs','bin','obj'})
 FLAGS=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
 
 def sha(path):
@@ -13,12 +15,17 @@ def sha(path):
 def save(path,value):
     Path(path).parent.mkdir(parents=True,exist_ok=True)
     Path(path).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-def inventory(root):
+def inventory(root,ignore_top=()):
     root=Path(root).resolve();files={}
-    for p in root.rglob('*'):
-        if p.is_symlink() or (hasattr(p,'is_junction') and p.is_junction()) or not p.resolve().is_relative_to(root):raise ValueError('Linked/escaping file refused')
-        if p.is_file():files[p.relative_to(root).as_posix()]=sha(p)
+    for entry in root.iterdir():
+        if entry.name.casefold() in ignore_top:continue
+        for p in chain((entry,), entry.rglob('*') if entry.is_dir() else ()):
+            if p.is_symlink() or (hasattr(p,'is_junction') and p.is_junction()) or not p.resolve().is_relative_to(root):raise ValueError('Linked/escaping file refused')
+            if p.is_file():files[p.relative_to(root).as_posix()]=sha(p)
     return files
+
+def ignore_project_outputs(directory, names):
+    return [name for name in names if name.casefold() in PROJECT_OUTPUTS] if Path(directory)==SOURCE else []
 def dotnet_toolchain():
     m=json.loads(SDK_MANIFEST.read_bytes())
     if m.get('schema_version')!='mia-dotnet-toolchain-1' or m.get('status')!='SDK_INFO_VERIFIED':raise ValueError('SDK not qualified')
@@ -37,10 +44,10 @@ def build_studio():
     folder=BASE/'runtime'/('MVC-'+uuid.uuid4().hex);folder.mkdir(parents=True)
     r={'status':'INCONCLUSIVE','folder':str(folder),'at':datetime.now(timezone.utc).isoformat(),'source_directory':str(SOURCE),'scope':'Owned local ASP.NET Core MVC project, not generic source migration'}
     try:
-        before=inventory(SOURCE)
-        if not before or any(p.startswith(('bin/','obj/')) for p in before):raise ValueError('Source contains build output')
+        before=inventory(SOURCE,PROJECT_OUTPUTS)
+        if not before:raise ValueError('Source is empty')
         tool=dotnet_toolchain();r.update(source_files_sha256=before,toolchain=tool)
-        project=folder/'source';shutil.copytree(SOURCE,project)
+        project=folder/'source';shutil.copytree(SOURCE,project,ignore=ignore_project_outputs)
         if inventory(project)!=before:raise ValueError('Source copy differs')
         config=folder/'NuGet.Config';config.write_text('<configuration><packageSources><clear /></packageSources></configuration>',encoding='utf-8')
         output=folder/'published';output.mkdir()
@@ -49,7 +56,7 @@ def build_studio():
         p=subprocess.run(command,cwd=folder,env=environment(),capture_output=True,encoding='utf-8',errors='replace',timeout=120,creationflags=FLAGS)
         save(folder/'compilation.json',{'exit_code':p.returncode,'stdout':p.stdout,'stderr':p.stderr})
         if p.returncode:raise RuntimeError('MVC compilation failed; see '+str(folder/'compilation.json'))
-        if inventory(SOURCE)!=before or dotnet_toolchain()!=tool:raise RuntimeError('Source or SDK changed during build')
+        if inventory(SOURCE,PROJECT_OUTPUTS)!=before or dotnet_toolchain()!=tool:raise RuntimeError('Source or SDK changed during build')
         assembly=output/'QcmDemo.dll'
         if not assembly.is_file():raise RuntimeError('MVC assembly absent')
         r.update(status='COMPILED',published=str(output),assembly=str(assembly),published_files_sha256=inventory(output))
@@ -64,15 +71,30 @@ def check_build(build):
     if inventory(published)!=build['published_files_sha256']:raise ValueError('Published build changed')
     if dotnet_toolchain()!=build['toolchain']:raise ValueError('SDK changed since build')
 
+class StudioStorageBusy(RuntimeError):
+    def __init__(self, log_path):
+        self.log_path = log_path
+        super().__init__(
+            "Une autre instance de Game Editor utilise les sauvegardes. "
+            "Ferme la fenêtre MultiversIA — Game Editor déjà ouverte, "
+            "puis relance le raccourci."
+        )
+
+
 class StudioProcess:
     def __init__(self,build,data_dir=None):
         self.build=build;self.data_dir=Path(data_dir or BASE/'local/qcm-studio').resolve();self.process=None;self.url=None;self.logs=[]
+        self.stable_origin = self.data_dir == (BASE/'local/qcm-studio').resolve()
         self.session_dir=Path(build['folder'])/('session-'+uuid.uuid4().hex);self.stopped=False
         if not self.data_dir.is_relative_to(BASE.resolve()):raise ValueError('Data must stay in this workspace')
     def start(self):
         if self.process is not None:raise RuntimeError('Process object already used')
         check_build(self.build);self.data_dir.mkdir(parents=True,exist_ok=True);self.session_dir.mkdir()
         env=environment();env['MIA_QCM_DATA_DIR']=str(self.data_dir)
+        # The user's browser storage belongs to an origin including its port.
+        # Disposable test stores retain ephemeral ports; the real studio does not.
+        env.pop('MIA_QCM_PORT', None)
+        if self.stable_origin: env['MIA_QCM_PORT']='5187'
         ready=queue.Queue();b=self.build
         self.process=subprocess.Popen([b['toolchain']['path'],b['assembly']],cwd=b['published'],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,encoding='utf-8',errors='replace',creationflags=FLAGS)
         def reader():
@@ -88,6 +110,10 @@ class StudioProcess:
             line=ready.get(timeout=25)
             if line is None:
                 log=''.join(self.logs)
+                if 'STORAGE_LOCKED: another Studio owns this data directory.' in log:
+                    raise StudioStorageBusy(self.session_dir/'server.log')
+                if self.stable_origin and ('AddressInUseException' in log or 'address already in use' in log.lower()):
+                    raise RuntimeError('Le port local 5187 est déjà utilisé. Ferme l’autre instance du Game Editor ou libère ce port, puis réessaie. Aucune autre adresse n’a été choisie afin de conserver tes préférences et brouillons du navigateur.')
                 raise RuntimeError('Server stopped before readiness: '+log.split('\n',1)[0]+'\nJournal complet : '+str(self.session_dir/'server.log')+'\n'+log[-800:])
             port=int(line.split()[1])
             if not 1<=port<=65535:raise RuntimeError('Invalid port')
@@ -114,8 +140,9 @@ def load_or_build():
     if receipt.is_file():
         try:
             b=json.loads(receipt.read_bytes())
-            if inventory(SOURCE)==b.get('source_files_sha256'):check_build(b);return b
-        except (ValueError,KeyError,OSError):pass
+            if not isinstance(b,dict):raise ValueError('Build receipt must be an object')
+            if inventory(SOURCE,PROJECT_OUTPUTS)==b.get('source_files_sha256'):check_build(b);return b
+        except (ValueError,KeyError,TypeError,OSError):pass
     b=build_studio()
     if b['status']!='COMPILED':raise RuntimeError(b.get('reason','Build failed'))
     save(receipt,b);return b

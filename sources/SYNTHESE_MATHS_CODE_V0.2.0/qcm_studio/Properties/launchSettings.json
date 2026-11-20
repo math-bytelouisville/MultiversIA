@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Game Editor — Local": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://127.0.0.1:5187",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MIA_QCM_DEBUG_PORT": "5187"
+      }
+    }
+  }
+}
