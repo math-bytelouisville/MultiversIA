@@ -4,15 +4,15 @@ Outils locaux pour explorer une représentation commune entre les langages infor
 
 ## Téléchargements
 
-**Mise à jour du 20 novembre 2026 :** les sources du QCM incluent désormais la personnalisation des questions, des images, de la disposition et des règles, ainsi que les corrections des audits fonctionnel et sécurité. Voir le [guide de lancement et le bilan](sources/SYNTHESE_MATHS_CODE_V0.2.0/QCM_2026-11-20.md). Les archives ci-dessous restent celles du 15 novembre ; elles ne contiennent pas ces correctifs.
+**Mise à jour du 20 novembre 2026 :** les sources du QCM incluent désormais la personnalisation des questions, des images, de la disposition et des règles, ainsi que les corrections des audits fonctionnel et sécurité. Voir le [guide de lancement et le bilan](sources/SYNTHESE_MATHS_CODE_V0.2.0/QCM_2026-11-20.md). Le ZIP Game Editor ci-dessous contient cette mise à jour. La suite de sources du 15 novembre reste une archive historique.
 
 | Je veux… | Télécharger | Prérequis et portée |
 | --- | --- | --- |
-| Essayer le **Game Editor QCM V0.2.0** | [Game Editor pour Windows](https://github.com/math-bytelouisville/MultiversIA/releases/download/suite-2026-11-15/Game-Editor-V0.2.0-Windows.zip) | Windows, PowerShell, .NET Runtime 10 et ASP.NET Core Runtime 10. Application compilée, sources et guide inclus. |
-| Consulter **toutes les dernières sources** | [Suite de sources du 15 novembre 2026](https://github.com/math-bytelouisville/MultiversIA/releases/download/suite-2026-11-15/MultiversIA-sources-2026-11-15.zip) | Sources, tests et guides. Les outils de migration demandent une préparation de leur environnement ; ce ZIP n'est pas un installateur autonome. |
-| Vérifier les téléchargements | [Empreintes SHA-256](https://github.com/math-bytelouisville/MultiversIA/releases/download/suite-2026-11-15/SHA256SUMS.txt) | Comparer avec `Get-FileHash fichier.zip -Algorithm SHA256` dans PowerShell. |
+| Essayer le **Game Editor QCM du 20 novembre 2026** | [Game Editor pour Windows](https://github.com/math-bytelouisville/MultiversIA/releases/latest/download/Game-Editor-Windows.zip) | Windows, PowerShell, .NET Runtime 10 et ASP.NET Core Runtime 10. Application compilée, sources et guide inclus. |
+| Consulter la **suite historique du 15 novembre** | [Suite de sources du 15 novembre 2026](https://github.com/math-bytelouisville/MultiversIA/releases/download/suite-2026-11-15/MultiversIA-sources-2026-11-15.zip) | Sources, tests et guides. Les outils de migration demandent une préparation de leur environnement ; ce ZIP n'est pas un installateur autonome. |
+| Vérifier les téléchargements | [Empreintes SHA-256](https://github.com/math-bytelouisville/MultiversIA/releases/latest/download/SHA256SUMS.txt) | Comparer avec `Get-FileHash fichier.zip -Algorithm SHA256` dans PowerShell. |
 
-[Voir la publication et ses notes](https://github.com/math-bytelouisville/MultiversIA/releases/tag/suite-2026-11-15).
+[Voir la dernière publication et ses notes](https://github.com/math-bytelouisville/MultiversIA/releases/latest).
 
 ## Essayer le Game Editor
 
